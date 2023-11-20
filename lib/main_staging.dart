@@ -1,6 +1,19 @@
+import 'package:api_client/api_client.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/bootstrap.dart';
 
 void main() {
-  bootstrap(() => const App());
+  bootstrap(
+    () {
+      final apiClient = ApiClient(
+        baseUrl: 'http://staging',
+        idTokenStream: const Stream.empty(),
+        refreshIdToken: () async => Future.value(null),
+      );
+
+      return App(
+        apiClient: apiClient,
+      );
+    },
+  );
 }
