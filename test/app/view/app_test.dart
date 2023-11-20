@@ -15,9 +15,11 @@ void main() {
     });
 
     testWidgets('renders CounterPage', (tester) async {
-      await tester.pumpWidget(App(
-        apiClient: apiClient,
-      ));
+      await tester.pumpWidget(
+        App(
+          apiClient: apiClient,
+        ),
+      );
       expect(find.byType(CounterPage), findsOneWidget);
     });
   });
