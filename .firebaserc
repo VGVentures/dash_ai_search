@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "dash-ai-search-development"
+  },
+  "targets": {
+    "dash-ai-search-development": {
+      "hosting": {
+        "app_dev": [
+          "2d12d9f2-5904-40cf-aa41-02c530b2852f"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
