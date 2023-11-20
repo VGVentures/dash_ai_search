@@ -1,6 +1,6 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/counter/counter.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('App', () {
