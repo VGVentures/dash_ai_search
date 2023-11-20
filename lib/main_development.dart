@@ -8,7 +8,7 @@ void main() {
       final apiClient = ApiClient(
         baseUrl: 'http://localhost:8080',
         idTokenStream: const Stream.empty(),
-        refreshIdToken: () async => Future.value(null),
+        refreshIdToken: () async => Future.value(),
       );
 
       return App(
