@@ -6,26 +6,6 @@
 
 Client to access the api
 
-## Installation 💻
-
-**❗ In order to start using Api Client you must have the [Dart SDK][dart_install_link] installed on your machine.**
-
-Install via `dart pub add`:
-
-```sh
-dart pub add api_client
-```
-
----
-
-## Continuous Integration 🤖
-
-Api Client comes with a built-in [GitHub Actions workflow][github_actions_link] powered by [Very Good Workflows][very_good_workflows_link] but you can also add your preferred CI/CD solution.
-
-Out of the box, on each pull request and push, the CI `formats`, `lints`, and `tests` the code. This ensures the code remains consistent and behaves correctly as you add functionality or make changes. The project uses [Very Good Analysis][very_good_analysis_link] for a strict set of analysis options used by our team. Code coverage is enforced using the [Very Good Workflows][very_good_coverage_link].
-
----
-
 ## Running Tests 🧪
 
 To run all unit tests:
