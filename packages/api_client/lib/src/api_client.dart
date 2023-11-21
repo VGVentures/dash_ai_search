@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:api_client/api_client.dart';
 import 'package:http/http.dart' as http;
 
 /// {@template api_client_error}
@@ -58,8 +59,6 @@ class ApiClient {
   /// {@macro api_client}
   ApiClient({
     required String baseUrl,
-    required Stream<String?> idTokenStream,
-    required Future<String?> Function() refreshIdToken,
     PostCall postCall = http.post,
     PutCall putCall = http.put,
     PatchCall patchCall = http.patch,
@@ -68,26 +67,16 @@ class ApiClient {
         _post = postCall,
         _put = putCall,
         _patch = patchCall,
-        _get = getCall,
-        _refreshIdToken = refreshIdToken {
-    _idTokenSubscription = idTokenStream.listen((idToken) {
-      _idToken = idToken;
-    });
-  }
+        _get = getCall;
 
   final Uri _base;
   final PostCall _post;
   final PostCall _put;
   final PatchCall _patch;
   final GetCall _get;
-  final Future<String?> Function() _refreshIdToken;
 
-  late final StreamSubscription<String?> _idTokenSubscription;
-  String? _idToken;
-
-  Map<String, String> get _headers => {
-        if (_idToken != null) 'Authorization': 'Bearer $_idToken',
-      };
+  /// Questions resource.
+  late final QuestionsResource questionsResource = const QuestionsResource();
 
   Future<http.Response> _handleUnauthorized(
     Future<http.Response> Function() sendRequest,
@@ -95,15 +84,9 @@ class ApiClient {
     final response = await sendRequest();
 
     if (response.statusCode == HttpStatus.unauthorized) {
-      _idToken = await _refreshIdToken();
       return sendRequest();
     }
     return response;
-  }
-
-  /// Dispose of resources used by this client.
-  Future<void> dispose() async {
-    await _idTokenSubscription.cancel();
   }
 
   /// Sends a POST request to the specified [path] with the given [body].
@@ -119,7 +102,6 @@ class ApiClient {
           queryParameters: queryParameters,
         ),
         body: body,
-        headers: _headers..addContentTypeJson(),
       );
 
       return response;
@@ -139,7 +121,6 @@ class ApiClient {
           queryParameters: queryParameters,
         ),
         body: body,
-        headers: _headers..addContentTypeJson(),
       );
 
       return response;
@@ -155,7 +136,6 @@ class ApiClient {
       final response = await _put(
         _base.replace(path: path),
         body: body,
-        headers: _headers..addContentTypeJson(),
       );
 
       return response;
@@ -173,16 +153,9 @@ class ApiClient {
           path: path,
           queryParameters: queryParameters,
         ),
-        headers: _headers,
       );
 
       return response;
     });
-  }
-}
-
-extension on Map<String, String> {
-  void addContentTypeJson() {
-    addAll({HttpHeaders.contentTypeHeader: ContentType.json.value});
   }
 }
