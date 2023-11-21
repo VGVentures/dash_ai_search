@@ -24,6 +24,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  app_ui:
+    dependency: "direct main"
+    description:
+      path: "packages/app_ui"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   args:
     dependency: transitive
     description:
@@ -136,6 +143,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  flame:
+    dependency: "direct main"
+    description:
+      name: flame
+      sha256: b6bb76224fc29fd5eea25d66cda6e322e3678bdedc1f65956c6151326a6a798b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -287,6 +302,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  ordered_set:
+    dependency: transitive
+    description:
+      name: ordered_set
+      sha256: "3858c7d84619edfab87c3e367584648020903187edb70b52697646f4b2a93022"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.2"
   package_config:
     dependency: transitive
     description:
