@@ -1,5 +1,4 @@
 import 'package:api_client/api_client.dart';
-import 'package:dash_ai_search/counter/counter.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
