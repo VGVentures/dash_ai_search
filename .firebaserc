@@ -6,7 +6,7 @@
     "dash-ai-search-development": {
       "hosting": {
         "app_dev": [
-          "eb86b9a7-2a3b-4b23-9819-d70882879f8b"
+          "dash-ai-search-dev"
         ]
       }
     }
