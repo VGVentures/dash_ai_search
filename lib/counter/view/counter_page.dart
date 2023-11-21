@@ -17,7 +17,6 @@ class CounterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    const dashSize = Size(800, 800);
     final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
@@ -26,15 +25,28 @@ class CounterView extends StatelessWidget {
           alignment: Alignment.center,
           height: screenSize.height / 2,
           width: screenSize.height / 2,
-          child: const AnimatedSprite(
-            showLoadingIndicator: false,
-            sprites: Sprites(
-              asset: 'dash_animation.png',
-              size: dashSize,
-              frames: 34,
-            ),
-          ),
+          child: const DashAnimation(),
         ),
+      ),
+    );
+  }
+}
+
+class DashAnimation extends StatelessWidget {
+  @visibleForTesting
+  const DashAnimation({super.key});
+
+  static const dashSize = Size(800, 800);
+
+  @override
+  Widget build(BuildContext context) {
+    return const AnimatedSprite(
+      showLoadingIndicator: false,
+      sprites: Sprites(
+        asset: 'dash_animation.png',
+        size: dashSize,
+        frames: 34,
+        stepTime: 0.07,
       ),
     );
   }
