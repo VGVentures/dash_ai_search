@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dash_ai_search/counter/counter.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
@@ -6,10 +7,12 @@ import 'package:provider/provider.dart';
 
 class App extends StatelessWidget {
   const App({
+    required this.apiClient,
     required this.user,
     super.key,
   });
 
+  final ApiClient apiClient;
   final User user;
 
   @override

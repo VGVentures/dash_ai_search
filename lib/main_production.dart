@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:api_client/api_client.dart';
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/bootstrap.dart';
@@ -14,10 +15,17 @@ void main() async {
         firebaseAuth: firebaseAuth,
       );
 
+      final apiClient = ApiClient(
+        baseUrl: 'http://production',
+        idTokenStream: authenticationRepository.idToken,
+        refreshIdToken: authenticationRepository.refreshIdToken,
+      );
+
       await authenticationRepository.signInAnonymously();
       await authenticationRepository.idToken.first;
 
       return App(
+        apiClient: apiClient,
         user: await authenticationRepository.user.first,
       );
     }),
