@@ -24,6 +24,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  app_ui:
+    dependency: "direct main"
+    description:
+      path: "packages/app_ui"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   args:
     dependency: transitive
     description:

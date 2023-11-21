@@ -10,6 +10,8 @@ environment:
 dependencies:
   api_client:
     path: packages/api_client
+  app_ui:
+    path: packages/app_ui
   bloc: ^8.1.2
   flame: ^1.10.1
   flutter:

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:ui' as ui show Image;
 
-import 'package:dash_ai_search/app_ui/app_ui.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flame/components.dart' hide Timer;
 import 'package:flame/flame.dart';
 import 'package:flame/sprite.dart';
