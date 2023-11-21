@@ -103,7 +103,7 @@ class _AnimatedSpriteState extends State<AnimatedSprite> {
   Future<void> _loadAnimation() async {
     late ui.Image image;
     try {
-      final images = Flame.images..prefix = 'animations/';
+      final images = Flame.images..prefix = 'assets/animations/';
       image = await images.load(widget.sprites.asset);
     } catch (_) {
       setState(() => _status = _AnimatedSpriteStatus.failure);
