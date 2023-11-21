@@ -5,17 +5,21 @@ publish_to: none
 
 environment:
   sdk: ">=3.1.0 <4.0.0"
+  flutter: 3.16.0
 
 dependencies:
   authentication_repository:
     path: packages/authentication_repository
   bloc: ^8.1.2
+  firebase_auth: ^4.14.0
+  firebase_core: ^2.22.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.0
+  provider: ^6.1.1
 
 dev_dependencies:
   bloc_test: ^9.1.4

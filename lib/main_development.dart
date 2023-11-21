@@ -1,18 +1,25 @@
+import 'dart:async';
+
 import 'package:authentication_repository/authentication_repository.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/bootstrap.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  bootstrap(() async {
-    final authenticationRepository = AuthenticationRepository(
-      firebaseAuth: firebaseAuth,
-    );
+void main() async {
+  await Firebase.initializeApp();
 
-    await authenticationRepository.signInAnonymously();
-    await authenticationRepository.idToken.first;
+  unawaited(
+    bootstrap((firebaseAuth) async {
+      final authenticationRepository = AuthenticationRepository(
+        firebaseAuth: firebaseAuth,
+      );
 
-    return App(
-      user: authenticationRepository.user.first,
-    );
-  });
+      await authenticationRepository.signInAnonymously();
+      await authenticationRepository.idToken.first;
+
+      return App(
+        user: await authenticationRepository.user.first,
+      );
+    }),
+  );
 }
