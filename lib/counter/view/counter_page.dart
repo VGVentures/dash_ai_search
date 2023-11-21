@@ -22,20 +22,21 @@ class CounterView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    const dashSize = Size(800, 800);
+    final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Center(
-        child: FittedBox(
-          child: SizedBox(
-            width: 960,
-            height: 450,
-            child: AnimatedSprite(
-              showLoadingIndicator: false,
-              sprites: Sprites(
-                asset: 'dash_animation.png',
-                size: Size(800, 800),
-                frames: 34,
-              ),
+      body: Center(
+        child: Container(
+          alignment: Alignment.center,
+          height: screenSize.height / 2,
+          width: screenSize.height / 2,
+          child: const AnimatedSprite(
+            showLoadingIndicator: false,
+            sprites: Sprites(
+              asset: 'dash_animation.png',
+              size: dashSize,
+              frames: 34,
             ),
           ),
         ),
