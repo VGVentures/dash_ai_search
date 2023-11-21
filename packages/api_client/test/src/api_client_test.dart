@@ -34,12 +34,17 @@ void main() {
 
   group('ApiClient', () {
     const baseUrl = 'http://baseurl.com';
+    const mockIdToken = 'mockIdToken';
+    const mockNewIdToken = 'mockNewIdToken';
 
     final testJson = {'data': 'test'};
     final expectedResponse = http.Response(testJson.toString(), 200);
 
     late ApiClient subject;
     late _MockHttpClient httpClient;
+    late StreamController<String?> idTokenStreamController;
+
+    Future<String?> Function() refreshIdToken = () async => null;
 
     setUp(() {
       httpClient = _MockHttpClient();
@@ -75,12 +80,16 @@ void main() {
         ),
       ).thenAnswer((_) async => expectedResponse);
 
+      idTokenStreamController = StreamController.broadcast();
+
       subject = ApiClient(
         baseUrl: baseUrl,
         getCall: httpClient.get,
         postCall: httpClient.post,
         patchCall: httpClient.patch,
         putCall: httpClient.put,
+        idTokenStream: idTokenStreamController.stream,
+        refreshIdToken: () => refreshIdToken(),
       );
     });
 
@@ -88,9 +97,21 @@ void main() {
       expect(
         ApiClient(
           baseUrl: 'http://localhost',
+          idTokenStream: Stream.empty(),
+          refreshIdToken: () async => null,
         ),
         isNotNull,
       );
+    });
+
+    group('dispose', () {
+      test('cancels id token stream subscription', () async {
+        expect(idTokenStreamController.hasListener, isTrue);
+
+        await subject.dispose();
+
+        expect(idTokenStreamController.hasListener, isFalse);
+      });
     });
 
     group('get', () {
@@ -125,6 +146,53 @@ void main() {
           ),
         ).called(1);
       });
+
+      test('sends the authentication and app check token', () async {
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.get('/path/to/endpoint');
+
+        verify(
+          () => httpClient.get(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+            },
+          ),
+        ).called(1);
+      });
+
+      test('refreshes the authentication token when needed', () async {
+        when(
+          () => httpClient.get(
+            any(),
+            headers: any(named: 'headers'),
+          ),
+        ).thenAnswer((_) async => http.Response('', 401));
+
+        refreshIdToken = () async => mockNewIdToken;
+
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.get('/path/to/endpoint');
+
+        verify(
+          () => httpClient.get(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+            },
+          ),
+        ).called(1);
+        verify(
+          () => httpClient.get(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockNewIdToken',
+            },
+          ),
+        ).called(1);
+      });
     });
 
     group('post', () {
@@ -147,6 +215,56 @@ void main() {
             Uri.parse('$baseUrl/path/to/endpoint?param1=value1&param2=value2'),
             body: 'BODY_CONTENT',
             headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
+          ),
+        ).called(1);
+      });
+
+      test('sends the authentication and app check token', () async {
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.post('/path/to/endpoint');
+
+        verify(
+          () => httpClient.post(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+      });
+
+      test('refreshes the authentication token when needed', () async {
+        when(
+          () => httpClient.post(
+            any(),
+            headers: any(named: 'headers'),
+          ),
+        ).thenAnswer((_) async => http.Response('', 401));
+
+        refreshIdToken = () async => mockNewIdToken;
+
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.post('/path/to/endpoint');
+
+        verify(
+          () => httpClient.post(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+        verify(
+          () => httpClient.post(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockNewIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
           ),
         ).called(1);
       });
@@ -175,6 +293,56 @@ void main() {
           ),
         ).called(1);
       });
+
+      test('sends the authentication and app check token', () async {
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.patch('/path/to/endpoint');
+
+        verify(
+          () => httpClient.patch(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+      });
+
+      test('refreshes the authentication token when needed', () async {
+        when(
+          () => httpClient.patch(
+            any(),
+            headers: any(named: 'headers'),
+          ),
+        ).thenAnswer((_) async => http.Response('', 401));
+
+        refreshIdToken = () async => mockNewIdToken;
+
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.patch('/path/to/endpoint');
+
+        verify(
+          () => httpClient.patch(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+        verify(
+          () => httpClient.patch(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockNewIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+      });
     });
 
     group('put', () {
@@ -196,6 +364,56 @@ void main() {
             Uri.parse('$baseUrl/path/to/endpoint'),
             body: 'BODY_CONTENT',
             headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
+          ),
+        ).called(1);
+      });
+
+      test('sends the authentication and app check token', () async {
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.put('/path/to/endpoint');
+
+        verify(
+          () => httpClient.put(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+      });
+
+      test('refreshes the authentication token when needed', () async {
+        when(
+          () => httpClient.put(
+            any(),
+            headers: any(named: 'headers'),
+          ),
+        ).thenAnswer((_) async => http.Response('', 401));
+
+        refreshIdToken = () async => mockNewIdToken;
+
+        idTokenStreamController.add(mockIdToken);
+        await Future.microtask(() {});
+        await subject.put('/path/to/endpoint');
+
+        verify(
+          () => httpClient.put(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
+          ),
+        ).called(1);
+        verify(
+          () => httpClient.put(
+            Uri.parse('$baseUrl/path/to/endpoint'),
+            headers: {
+              'Authorization': 'Bearer $mockNewIdToken',
+              HttpHeaders.contentTypeHeader: ContentType.json.value,
+            },
           ),
         ).called(1);
       });

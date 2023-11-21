@@ -6,7 +6,9 @@ void main() {
   bootstrap(
     () {
       final apiClient = ApiClient(
-        baseUrl: 'http://localhost:8080',
+        baseUrl: 'http://development',
+        idTokenStream: const Stream.empty(),
+        refreshIdToken: () async => Future.value(),
       );
 
       return App(

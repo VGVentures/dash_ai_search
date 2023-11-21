@@ -2,7 +2,9 @@ import 'package:api_client/api_client.dart';
 
 Future<void> main() async {
   final apiClient = ApiClient(
-    baseUrl: '',
+    baseUrl: 'http://development',
+    idTokenStream: const Stream.empty(),
+    refreshIdToken: () async => Future.value(),
   );
   final questionsResource = apiClient.questionsResource;
   final answer = await questionsResource.getVertexResponse('random');
