@@ -7,6 +7,8 @@ environment:
   sdk: ">=3.1.0 <4.0.0"
 
 dependencies:
+  api_client:
+    path: packages/api_client
   bloc: ^8.1.2
   flutter:
     sdk: flutter
