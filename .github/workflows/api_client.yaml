@@ -1,0 +1,22 @@
+name: api_client
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    paths:
+      - "packages/api_client/**"
+      - ".github/workflows/api_client.yaml"
+
+  pull_request:
+    paths:
+      - "packages/api_client/**"
+      - ".github/workflows/api_client.yaml"
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: packages/api_client
