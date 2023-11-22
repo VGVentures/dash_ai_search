@@ -19,7 +19,7 @@ class WelcomeView extends StatelessWidget {
               l10n.initialScreenTitle,
               textAlign: TextAlign.center,
               style: theme.textTheme.displayLarge?.copyWith(
-                color: Colors.black,
+                color: VertexColors.navy,
               ),
             ),
             const SizedBox(height: 40),

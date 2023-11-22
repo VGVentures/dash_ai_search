@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template cta_button}
@@ -28,7 +29,7 @@ class CTAButton extends StatelessWidget {
       onPressed: onPressed,
       style: const ButtonStyle(
         backgroundColor: MaterialStatePropertyAll(
-          Color(0xFF0273E6),
+          VertexColors.googleBlue,
         ),
         padding: MaterialStatePropertyAll(
           EdgeInsets.only(
@@ -49,7 +50,7 @@ class CTAButton extends StatelessWidget {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
-              color: Colors.white,
+              color: VertexColors.white,
             ),
           ),
         ],

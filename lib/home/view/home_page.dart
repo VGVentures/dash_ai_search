@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Color(0xFFF8FAFF),
+      backgroundColor: VertexColors.arctic,
       body: Stack(
         children: [
           Positioned(

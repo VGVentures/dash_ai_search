@@ -15,7 +15,7 @@ class Logo extends StatelessWidget {
         Text(
           l10n.vertexAI,
           style: theme.textTheme.bodyLarge?.copyWith(
-            color: Colors.black,
+            color: VertexColors.navy,
           ),
         ),
         const SizedBox(width: 4),
@@ -24,7 +24,7 @@ class Logo extends StatelessWidget {
         Text(
           l10n.flutter,
           style: theme.textTheme.bodyLarge?.copyWith(
-            color: Colors.black,
+            color: VertexColors.navy,
           ),
         ),
       ],
