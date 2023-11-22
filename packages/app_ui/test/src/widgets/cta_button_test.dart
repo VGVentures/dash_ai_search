@@ -9,7 +9,7 @@ void main() {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
         CTAButton(
-          icon: Assets.icons.arrowForward,
+          icon: Assets.icons.arrowForward.image(),
           label: 'label',
         ),
       );
@@ -22,7 +22,7 @@ void main() {
 
       await tester.pumpApp(
         CTAButton(
-          icon: Assets.icons.arrowForward,
+          icon: Assets.icons.arrowForward.image(),
           label: 'label',
           onPressed: () {
             called = true;

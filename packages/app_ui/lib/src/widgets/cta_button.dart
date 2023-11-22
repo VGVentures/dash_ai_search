@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:app_ui/src/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 /// {@template cta_button}
@@ -16,7 +15,7 @@ class CTAButton extends StatelessWidget {
   });
 
   /// The image that will be displayed on the left side of the button.
-  final AssetGenImage? icon;
+  final Image? icon;
 
   /// The text that will be displayed on the right side of the button.
   final String label;
@@ -27,51 +26,34 @@ class CTAButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: const ButtonStyle(
         backgroundColor: MaterialStatePropertyAll(
           VertexColors.googleBlue,
         ),
         padding: MaterialStatePropertyAll(
           EdgeInsets.only(
-            left: 8,
-            top: 8,
-            bottom: 8,
+            left: 24,
+            top: 20,
+            bottom: 20,
             right: 32,
           ),
         ),
       ),
-      child: Container(
-        padding: const EdgeInsets.only(
-          top: 8,
-          bottom: 8,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null)
-              Container(
-                height: 48,
-                width: 48,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(48),
-                  color: VertexColors.white,
-                ),
-                child: icon!.image(color: VertexColors.googleBlue),
-              ),
-            if (icon != null) const SizedBox(width: 12),
-            Text(
-              label,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: VertexColors.white,
-              ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (icon != null) icon!,
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: VertexColors.white,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
