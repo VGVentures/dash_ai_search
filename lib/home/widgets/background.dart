@@ -136,8 +136,6 @@ class CirclePainter extends CustomPainter {
     }
   }
 
-  // coverage:ignore-start
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
-  // coverage:ignore-end
 }
