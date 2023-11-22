@@ -7,7 +7,7 @@ part 'vertex_document.g.dart';
 /// {@template vertex_document}
 /// Vertex document
 /// {@endtemplate}
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class VertexDocument extends Equatable {
   /// {@macro vertex_document}
   const VertexDocument({
@@ -17,6 +17,9 @@ class VertexDocument extends Equatable {
   /// Convert from Map<String, dynamic> to [VertexDocument]
   factory VertexDocument.fromJson(Map<String, dynamic> json) =>
       _$VertexDocumentFromJson(json);
+
+  /// Converts this object to a map in JSON format.
+  Map<String, dynamic> toJson() => _$VertexDocumentToJson(this);
 
   /// Metadata.
   final VertexMetadata metadata;

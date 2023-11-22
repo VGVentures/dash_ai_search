@@ -7,7 +7,7 @@ part 'vertex_metadata.g.dart';
 /// {@template vertex_metadata}
 /// Vertex metadata inside a [VertexDocument]
 /// {@endtemplate}
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class VertexMetadata extends Equatable {
   /// {@macro vertex_metadata}
   const VertexMetadata({
@@ -19,6 +19,9 @@ class VertexMetadata extends Equatable {
   /// Convert from Map<String, dynamic> to [VertexMetadata]
   factory VertexMetadata.fromJson(Map<String, dynamic> json) =>
       _$VertexMetadataFromJson(json);
+
+  /// Converts this object to a map in JSON format.
+  Map<String, dynamic> toJson() => _$VertexMetadataToJson(this);
 
   /// Url
   final String url;
