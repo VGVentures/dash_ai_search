@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:api_client/api_client.dart';
+import 'package:cross_file/cross_file.dart';
 
 /// {@template questions_resource}
 /// An api resource to get response to question from the VERTEX api
@@ -21,22 +21,39 @@ class QuestionsResource {
   ///
   /// Returns a [List<String>].
   Future<VertexResponse> getVertexResponse(String query) async {
+    String body;
     if (_realApiEnabled) {
       final response = await _apiClient.get(
-        // TODO(oscar): update with real API once is enabled.
+        // TODO(oscar): update with real API once is enabled
+        // and add possible failures.
         'google.es',
         queryParameters: {
           'query': query,
         },
       );
-      final json = jsonDecode(response.body);
-      return VertexResponse.fromJson(json as Map<String, dynamic>);
+      if (response.statusCode != 200) {
+        throw ApiClientError(
+          'GET getVertexResponse with query=$query '
+          'returned status ${response.statusCode} '
+          'with the following response: "${response.body}"',
+          StackTrace.current,
+        );
+      }
+      body = response.body;
     } else {
       const path = 'lib/src/resources/fake_response.json';
-      final fakeResponse = await File(path).readAsString();
+      body = await XFile(path).readAsString();
+    }
 
-      final json = jsonDecode(fakeResponse) as Map<String, dynamic>;
+    try {
+      final json = jsonDecode(body) as Map<String, dynamic>;
       return VertexResponse.fromJson(json);
+    } catch (e) {
+      throw ApiClientError(
+        'GET getVertexResponse with query=$query '
+        'returned invalid response "$body"',
+        StackTrace.current,
+      );
     }
   }
 }
