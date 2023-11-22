@@ -13,3 +13,9 @@ VertexResponse _$VertexResponseFromJson(Map<String, dynamic> json) =>
           .map((e) => VertexDocument.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
+
+Map<String, dynamic> _$VertexResponseToJson(VertexResponse instance) =>
+    <String, dynamic>{
+      'summary': instance.summary,
+      'documents': instance.documents,
+    };

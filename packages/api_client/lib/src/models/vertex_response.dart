@@ -7,7 +7,7 @@ part 'vertex_response.g.dart';
 /// {@template vertex_response}
 /// Vertex response
 /// {@endtemplate}
-@JsonSerializable(createToJson: false)
+@JsonSerializable()
 class VertexResponse extends Equatable {
   /// {@macro vertex_response}
 
@@ -19,6 +19,9 @@ class VertexResponse extends Equatable {
   /// Convert from Map<String, dynamic> to [VertexResponse]
   factory VertexResponse.fromJson(Map<String, dynamic> json) =>
       _$VertexResponseFromJson(json);
+
+  /// Converts this object to a map in JSON format.
+  Map<String, dynamic> toJson() => _$VertexResponseToJson(this);
 
   /// Summary.
   final String summary;
