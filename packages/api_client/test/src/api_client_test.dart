@@ -104,6 +104,10 @@ void main() {
       );
     });
 
+    test('returns a QuestionsResource instance', () {
+      expect(subject.questionsResource, isA<QuestionsResource>());
+    });
+
     group('dispose', () {
       test('cancels id token stream subscription', () async {
         expect(idTokenStreamController.hasListener, isTrue);
