@@ -9,7 +9,7 @@ class VertexTextStyles {
   static TextStyle get _baseTextStyle => const TextStyle(
         fontWeight: FontWeight.w400,
         package: 'app_ui',
-        fontFamily: 'OpenSans',
+        fontFamily: 'GoogleSans',
         color: Colors.black,
       );
 

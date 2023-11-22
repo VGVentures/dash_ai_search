@@ -24,11 +24,11 @@ flutter:
   assets: 
     - assets/icons/
   fonts:
-    - family: OpenSans
+    - family: GoogleSans
       fonts:
-        - asset: assets/fonts/OpenSans-Bold.ttf
+        - asset: assets/fonts/GoogleSansText-Bold.ttf
           weight: 700
-        - asset: assets/fonts/OpenSans-Medium.ttf
+        - asset: assets/fonts/GoogleSansText-Regular.ttf
           weight: 400
 
 flutter_gen:
