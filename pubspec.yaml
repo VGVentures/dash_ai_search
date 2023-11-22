@@ -10,7 +10,10 @@ environment:
 dependencies:
   api_client:
     path: packages/api_client
+  app_ui:
+    path: packages/app_ui
   bloc: ^8.1.2
+  flame: ^1.10.1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3
@@ -35,4 +38,5 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
+    - assets/animations/  
     - assets/icons/
