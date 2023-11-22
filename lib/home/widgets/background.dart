@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_drawing/path_drawing.dart';
 
 class Background extends StatelessWidget {
   const Background({super.key});
@@ -21,11 +22,11 @@ class Background extends StatelessWidget {
             child: Circle(
               offset: Offset(diameter + leftOffset, 0),
               radius: 255,
-              borderColor: Color(0xFFBAC4E1),
+              borderColor: Color(0xFFDDE2F6),
               child: Circle(
                 offset: Offset(diameter + leftOffset, 0),
                 radius: 185,
-                borderColor: Color(0xFFBAC4E1),
+                borderColor: Color(0xFFDDE2F6),
                 dotted: true,
               ),
             ),
@@ -85,7 +86,8 @@ class CirclePainter extends CustomPainter {
       ..style = PaintingStyle.fill;
     _paintBorder = Paint()
       ..color = borderColor
-      ..strokeWidth = 1
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.butt
       ..style = PaintingStyle.stroke;
   }
 
@@ -106,11 +108,23 @@ class CirclePainter extends CustomPainter {
     );
 
     if (dotted) {
-      canvas.drawCircle(
-        offset,
-        radius,
-        _paintBorder,
-      );
+      const dashPattern = <double>[4, 4];
+      final s = radius * 2;
+
+      var path = Path()
+        ..addRRect(
+          RRect.fromRectAndRadius(
+            Rect.fromLTWH(
+              offset.dx - s / 2,
+              offset.dy / 2 - s / 2,
+              s,
+              s,
+            ),
+            Radius.circular(s / 2),
+          ),
+        );
+      path = dashPath(path, dashArray: CircularIntervalList(dashPattern));
+      canvas.drawPath(path, _paintBorder);
     } else {
       canvas.drawCircle(
         offset,
