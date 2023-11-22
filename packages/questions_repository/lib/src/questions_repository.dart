@@ -9,6 +9,7 @@ class QuestionsRepository {
 
   final QuestionsResource _questionsResource;
 
+  /// Returns [VertexResponse] based on a query.
   Future<VertexResponse> getVertexResponse(String query) async {
     return _questionsResource.getVertexResponse(query);
   }

@@ -1,0 +1,22 @@
+name: questions_repository
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    paths:
+      - "packages/questions_repository/**"
+      - ".github/workflows/questions_repository.yaml"
+
+  pull_request:
+    paths:
+      - "packages/questions_repository/**"
+      - ".github/workflows/questions_repository.yaml"
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/dart_package.yml@v1
+    with:
+      working_directory: packages/questions_repository
