@@ -17,9 +17,8 @@ class QuestionsResource {
   final ApiClient _apiClient;
   final bool _realApiEnabled;
 
-  /// Get /game/prompt/terms
+  /// Returns [VertexResponse] based on a query.
   ///
-  /// Returns a [List<String>].
   Future<VertexResponse> getVertexResponse(String query) async {
     String body;
     if (_realApiEnabled) {
