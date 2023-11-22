@@ -1,6 +1,6 @@
 import 'package:api_client/api_client.dart';
 import 'package:dash_ai_search/app/app.dart';
-import 'package:dash_ai_search/counter/counter.dart';
+import 'package:dash_ai_search/home/view/home_page.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,13 +14,13 @@ void main() {
       apiClient = _MockApiClient();
     });
 
-    testWidgets('renders CounterPage', (tester) async {
+    testWidgets('renders correctly', (tester) async {
       await tester.pumpWidget(
         App(
           apiClient: apiClient,
         ),
       );
-      expect(find.byType(CounterPage), findsOneWidget);
+      expect(find.byType(HomePage), findsOneWidget);
     });
   });
 }

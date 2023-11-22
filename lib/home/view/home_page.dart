@@ -10,8 +10,16 @@ class HomePage extends StatelessWidget {
       backgroundColor: Color(0xFFF8FAFF),
       body: Stack(
         children: [
-          Background(),
-          Logo(),
+          Positioned(
+            top: 0,
+            bottom: 0,
+            child: Background(),
+          ),
+          Positioned(
+            top: 40,
+            left: 48,
+            child: Logo(),
+          ),
           InitialScreen(),
         ],
       ),

@@ -9,50 +9,48 @@ class Background extends StatelessWidget {
     const radius = 303.0;
     const diameter = radius * 2;
 
-    return const Positioned(
-      top: 0,
-      bottom: 0,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            _Circle(
-              offset: Offset(leftOffset, 0),
-            ),
-            _Circle(
+    return const SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Circle(
+            offset: Offset(leftOffset, 0),
+          ),
+          Circle(
+            offset: Offset(diameter + leftOffset, 0),
+            child: Circle(
               offset: Offset(diameter + leftOffset, 0),
-              child: _Circle(
+              radius: 255,
+              borderColor: Color(0xFFBAC4E1),
+              child: Circle(
                 offset: Offset(diameter + leftOffset, 0),
-                radius: 255,
+                radius: 185,
                 borderColor: Color(0xFFBAC4E1),
-                child: _Circle(
-                  offset: Offset(diameter + leftOffset, 0),
-                  radius: 185,
-                  borderColor: Color(0xFFBAC4E1),
-                  dotted: true,
-                ),
+                dotted: true,
               ),
             ),
-            _Circle(
-              offset: Offset(diameter * 2 + leftOffset, 0),
-            ),
-            _Circle(
-              offset: Offset(diameter * 3 + leftOffset, 0),
-            ),
-          ],
-        ),
+          ),
+          Circle(
+            offset: Offset(diameter * 2 + leftOffset, 0),
+          ),
+          Circle(
+            offset: Offset(diameter * 3 + leftOffset, 0),
+          ),
+        ],
       ),
     );
   }
 }
 
-class _Circle extends StatelessWidget {
-  const _Circle({
+class Circle extends StatelessWidget {
+  @visibleForTesting
+  const Circle({
     this.offset = Offset.zero,
     this.radius = 303,
     this.borderColor = Colors.white,
     this.dotted = false,
     this.child,
+    super.key,
   });
 
   final Offset offset;
@@ -122,6 +120,8 @@ class CirclePainter extends CustomPainter {
     }
   }
 
+  // coverage:ignore-start
   @override
   bool shouldRepaint(CustomPainter oldDelegate) => false;
+  // coverage:ignore-end
 }

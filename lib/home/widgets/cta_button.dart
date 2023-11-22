@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-class NextButton extends StatelessWidget {
-  const NextButton({
+class CTAButton extends StatelessWidget {
+  const CTAButton({
     required this.icon,
     required this.label,
-    required this.onPressed,
+    this.onPressed,
     super.key,
   });
 
   final Image icon;
   final String label;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

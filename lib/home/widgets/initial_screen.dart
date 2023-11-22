@@ -25,10 +25,9 @@ class InitialScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40),
-            NextButton(
+            CTAButton(
               icon: Assets.icons.arrowForward.image(),
               label: l10n.startAsking,
-              onPressed: () {},
             ),
           ],
         ),

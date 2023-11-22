@@ -9,32 +9,28 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Positioned(
-      top: 40,
-      left: 48,
-      child: Row(
-        children: [
-          Text(
-            l10n.vertexAI,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
+    return Row(
+      children: [
+        Text(
+          l10n.vertexAI,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
           ),
-          const SizedBox(width: 4),
-          Assets.icons.asterisk.image(),
-          const SizedBox(width: 4),
-          Text(
-            l10n.flutter,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w400,
-              color: Colors.black,
-            ),
+        ),
+        const SizedBox(width: 4),
+        Assets.icons.asterisk.image(),
+        const SizedBox(width: 4),
+        Text(
+          l10n.flutter,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

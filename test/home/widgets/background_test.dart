@@ -6,15 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import '../../helpers/helpers.dart';
 
 void main() {
-  group('HomePage', () {
+  group('Background', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
-        HomePage(),
+        Background(),
       );
 
-      expect(find.byType(Background), findsOneWidget);
-      expect(find.byType(Logo), findsOneWidget);
-      expect(find.byType(InitialScreen), findsOneWidget);
+      expect(find.byType(Circle), findsNWidgets(6));
     });
   });
 }
