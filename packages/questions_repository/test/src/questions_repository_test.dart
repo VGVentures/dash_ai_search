@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 import 'package:api_client/api_client.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:questions_repository/questions_repository.dart';
