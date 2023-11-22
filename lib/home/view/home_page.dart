@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
             left: 48,
             child: Logo(),
           ),
-          InitialScreen(),
+          WelcomeView(),
           Positioned(
             bottom: 50,
             left: 50,

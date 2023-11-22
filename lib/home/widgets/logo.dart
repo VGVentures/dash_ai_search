@@ -1,4 +1,4 @@
-import 'package:dash_ai_search/gen/assets.gen.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +20,7 @@ class Logo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        Assets.icons.asterisk.image(),
+        VertexIcons.asterisk.image(),
         const SizedBox(width: 4),
         Text(
           l10n.flutter,

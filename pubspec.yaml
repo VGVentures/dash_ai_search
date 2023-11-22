@@ -39,4 +39,3 @@ flutter:
   generate: true
   assets:
     - assets/animations/  
-    - assets/icons/

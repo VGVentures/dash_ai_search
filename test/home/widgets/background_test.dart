@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter_test/flutter_test.dart';
 

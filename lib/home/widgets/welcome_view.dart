@@ -1,10 +1,9 @@
-import 'package:dash_ai_search/gen/assets.gen.dart';
-import 'package:dash_ai_search/home/home.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 
-class InitialScreen extends StatelessWidget {
-  const InitialScreen({super.key});
+class WelcomeView extends StatelessWidget {
+  const WelcomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class InitialScreen extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             CTAButton(
-              icon: Assets.icons.arrowForward.image(),
+              icon: VertexIcons.arrowForward.image(),
               label: l10n.startAsking,
             ),
           ],
