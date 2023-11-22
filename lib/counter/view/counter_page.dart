@@ -16,10 +16,19 @@ class CounterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final l10n = context.l10n;
     final screenSize = MediaQuery.sizeOf(context);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
+      appBar: AppBar(
+        title: Text(
+          l10n.counterAppBarTitle,
+          style: theme.textTheme.displayLarge?.copyWith(
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: Center(
         child: Container(
           alignment: Alignment.center,

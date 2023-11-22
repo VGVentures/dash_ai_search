@@ -17,3 +17,19 @@ dev_dependencies:
     sdk: flutter
   mocktail: ^1.0.0
   very_good_analysis: ^5.1.0
+
+flutter:
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/OpenSans-Medium.ttf
+          weight: 400
+
+flutter_gen:
+  assets:
+    outputs:
+      package_parameter_enabled: true
+  output: lib/src/generated/
+  line_length: 80
