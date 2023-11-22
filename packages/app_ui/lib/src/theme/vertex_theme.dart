@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 /// The default [ThemeData].
 /// {@endtemplate}
 class VertexTheme {
-  /// {@macro vertex_theme}
-  const VertexTheme();
-
   /// Standard `ThemeData` for VertexAI UI.
   static ThemeData get standard {
     return ThemeData(
