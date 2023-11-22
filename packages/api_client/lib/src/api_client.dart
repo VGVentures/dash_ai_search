@@ -53,62 +53,38 @@ typedef GetCall = Future<http.Response> Function(
 });
 
 /// {@template api_client}
-/// Client to access the api
+/// Client to access the api.
 /// {@endtemplate}
 class ApiClient {
   /// {@macro api_client}
   ApiClient({
     required String baseUrl,
-    required Stream<String?> idTokenStream,
-    required Future<String?> Function() refreshIdToken,
     PostCall postCall = http.post,
     PutCall putCall = http.put,
     PatchCall patchCall = http.patch,
     GetCall getCall = http.get,
+    bool realApiEnabled = false,
   })  : _base = Uri.parse(baseUrl),
         _post = postCall,
         _put = putCall,
         _patch = patchCall,
         _get = getCall,
-        _refreshIdToken = refreshIdToken {
-    _idTokenSubscription = idTokenStream.listen((idToken) {
-      _idToken = idToken;
-    });
-  }
+        _realApiEnabled = realApiEnabled;
 
   final Uri _base;
   final PostCall _post;
   final PostCall _put;
   final PatchCall _patch;
   final GetCall _get;
-  final Future<String?> Function() _refreshIdToken;
+  final bool _realApiEnabled;
 
-  late final StreamSubscription<String?> _idTokenSubscription;
-  String? _idToken;
-
-  Map<String, String> get _headers => {
-        if (_idToken != null) 'Authorization': 'Bearer $_idToken',
-      };
+  Map<String, String> get _headers => {};
 
   /// Questions resource.
-  late final QuestionsResource questionsResource = const QuestionsResource();
-
-  Future<http.Response> _handleUnauthorized(
-    Future<http.Response> Function() sendRequest,
-  ) async {
-    final response = await sendRequest();
-
-    if (response.statusCode == HttpStatus.unauthorized) {
-      _idToken = await _refreshIdToken();
-      return sendRequest();
-    }
-    return response;
-  }
-
-  /// Dispose of resources used by this client.
-  Future<void> dispose() async {
-    await _idTokenSubscription.cancel();
-  }
+  late final QuestionsResource questionsResource = QuestionsResource(
+    apiClient: this,
+    realApiEnabled: _realApiEnabled,
+  );
 
   /// Sends a POST request to the specified [path] with the given [body].
   Future<http.Response> post(
@@ -116,18 +92,16 @@ class ApiClient {
     Object? body,
     Map<String, String>? queryParameters,
   }) async {
-    return _handleUnauthorized(() async {
-      final response = await _post(
-        _base.replace(
-          path: path,
-          queryParameters: queryParameters,
-        ),
-        body: body,
-        headers: _headers..addContentTypeJson(),
-      );
+    final response = await _post(
+      _base.replace(
+        path: path,
+        queryParameters: queryParameters,
+      ),
+      body: body,
+      headers: _headers..addContentTypeJson(),
+    );
 
-      return response;
-    });
+    return response;
   }
 
   /// Sends a PATCH request to the specified [path] with the given [body].
@@ -136,18 +110,16 @@ class ApiClient {
     Object? body,
     Map<String, String>? queryParameters,
   }) async {
-    return _handleUnauthorized(() async {
-      final response = await _patch(
-        _base.replace(
-          path: path,
-          queryParameters: queryParameters,
-        ),
-        body: body,
-        headers: _headers..addContentTypeJson(),
-      );
+    final response = await _patch(
+      _base.replace(
+        path: path,
+        queryParameters: queryParameters,
+      ),
+      body: body,
+      headers: _headers..addContentTypeJson(),
+    );
 
-      return response;
-    });
+    return response;
   }
 
   /// Sends a PUT request to the specified [path] with the given [body].
@@ -155,15 +127,13 @@ class ApiClient {
     String path, {
     Object? body,
   }) async {
-    return _handleUnauthorized(() async {
-      final response = await _put(
-        _base.replace(path: path),
-        body: body,
-        headers: _headers..addContentTypeJson(),
-      );
+    final response = await _put(
+      _base.replace(path: path),
+      body: body,
+      headers: _headers..addContentTypeJson(),
+    );
 
-      return response;
-    });
+    return response;
   }
 
   /// Sends a GET request to the specified [path].
@@ -171,17 +141,15 @@ class ApiClient {
     String path, {
     Map<String, String>? queryParameters,
   }) async {
-    return _handleUnauthorized(() async {
-      final response = await _get(
-        _base.replace(
-          path: path,
-          queryParameters: queryParameters,
-        ),
-        headers: _headers,
-      );
+    final response = await _get(
+      _base.replace(
+        path: path,
+        queryParameters: queryParameters,
+      ),
+      headers: _headers,
+    );
 
-      return response;
-    });
+    return response;
   }
 }
 
