@@ -26,7 +26,6 @@ class WelcomeView extends StatelessWidget {
             CTAButton(
               icon: vertexIcons.arrowForward.image(),
               label: l10n.startAsking,
-              onPressed: () {},
             ),
           ],
         ),
