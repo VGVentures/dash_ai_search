@@ -7,8 +7,10 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const leftOffset = -50.0;
-    const radius = 303.0;
-    const diameter = radius * 2;
+    const baseRadius = 303.0;
+    const baseMediumRadius = 255.0;
+    const baseSmallRadius = 185.0;
+    const horizontalOffset = baseRadius * 2;
 
     return const SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -18,24 +20,24 @@ class Background extends StatelessWidget {
             offset: Offset(leftOffset, 0),
           ),
           Circle(
-            offset: Offset(diameter + leftOffset, 0),
+            offset: Offset(horizontalOffset + leftOffset, 0),
             child: Circle(
-              offset: Offset(diameter + leftOffset, 0),
-              radius: 255,
+              offset: Offset(horizontalOffset + leftOffset, 0),
+              radius: baseMediumRadius,
               borderColor: Color(0xFFDDE2F6),
               child: Circle(
-                offset: Offset(diameter + leftOffset, 0),
-                radius: 185,
+                offset: Offset(horizontalOffset + leftOffset, 0),
+                radius: baseSmallRadius,
                 borderColor: Color(0xFFDDE2F6),
                 dotted: true,
               ),
             ),
           ),
           Circle(
-            offset: Offset(diameter * 2 + leftOffset, 0),
+            offset: Offset(horizontalOffset * 2 + leftOffset, 0),
           ),
           Circle(
-            offset: Offset(diameter * 3 + leftOffset, 0),
+            offset: Offset(horizontalOffset * 3 + leftOffset, 0),
           ),
         ],
       ),
