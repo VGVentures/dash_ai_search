@@ -20,13 +20,19 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.0
+  path_drawing: ^1.0.1
 
 dev_dependencies:
   bloc_test: ^9.1.4
+  build_runner: ^2.4.6
+  flutter_gen_runner: ^5.3.2
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.0
   very_good_analysis: ^5.1.0
+
+flutter_gen:
+  line_length: 80 #
 
 flutter:
   uses-material-design: true

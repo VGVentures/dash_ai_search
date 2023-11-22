@@ -1,7 +1,19 @@
 {
     "@@locale": "en",
-    "counterAppBarTitle": "Counter",
-    "@counterAppBarTitle": {
-        "description": "Text shown in the AppBar of the Counter Page"
+    "vertexAI": "Vertex AI",
+    "@vertexAI": {
+        "description": "Vertex AI text on logo"
+    },
+    "flutter": "Flutter",
+    "@flutter": {
+        "description": "Flutter text on logo"
+    },
+    "initialScreenTitle": "Ask a question, get \nthe right answer, with \nGoogle Vertex AI",
+    "@initialScreenTitle": {
+        "description": "Title shown on Initial screen"
+    },
+    "startAsking": "Start asking",
+    "@startAsking": {
+        "description": "Button text for start asking"
     }
 }

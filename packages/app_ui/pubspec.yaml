@@ -13,8 +13,10 @@ dependencies:
     sdk: flutter
 
 dev_dependencies:
+  build_runner: ^2.4.6
   flutter_test:
     sdk: flutter
+  flutter_gen_runner: ^5.3.2
   mocktail: ^1.0.0
   very_good_analysis: ^5.1.0
 
@@ -28,8 +30,10 @@ flutter:
           weight: 400
 
 flutter_gen:
+  uses-material-design: true
   assets:
+    - assets/icons/
     outputs:
       package_parameter_enabled: true
   output: lib/src/generated/
-  line_length: 80
+  line_length: 80  
