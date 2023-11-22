@@ -27,5 +27,8 @@ class VertexResponse extends Equatable {
   final List<VertexDocument> documents;
 
   @override
-  List<Object?> get props => [documents];
+  List<Object?> get props => [
+        summary,
+        documents,
+      ];
 }

@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'vertex_metadata.g.dart';
 
 /// {@template vertex_metadata}
-/// Vertex metadata inside a [VertexResponse]
+/// Vertex metadata inside a [VertexDocument]
 /// {@endtemplate}
 @JsonSerializable(createToJson: false)
 class VertexMetadata extends Equatable {
