@@ -12,3 +12,10 @@ VertexMetadata _$VertexMetadataFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String,
     );
+
+Map<String, dynamic> _$VertexMetadataToJson(VertexMetadata instance) =>
+    <String, dynamic>{
+      'url': instance.url,
+      'title': instance.title,
+      'description': instance.description,
+    };

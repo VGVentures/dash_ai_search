@@ -11,3 +11,8 @@ VertexDocument _$VertexDocumentFromJson(Map<String, dynamic> json) =>
       metadata:
           VertexMetadata.fromJson(json['metadata'] as Map<String, dynamic>),
     );
+
+Map<String, dynamic> _$VertexDocumentToJson(VertexDocument instance) =>
+    <String, dynamic>{
+      'metadata': instance.metadata,
+    };
