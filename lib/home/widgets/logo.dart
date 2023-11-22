@@ -20,7 +20,7 @@ class Logo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        VertexIcons.asterisk.image(),
+        vertexIcons.asterisk.image(),
         const SizedBox(width: 4),
         Text(
           l10n.flutter,

@@ -25,7 +25,7 @@ class WelcomeView extends StatelessWidget {
             ),
             const SizedBox(height: 40),
             CTAButton(
-              icon: VertexIcons.arrowForward.image(),
+              icon: vertexIcons.arrowForward.image(),
               label: l10n.startAsking,
             ),
           ],
