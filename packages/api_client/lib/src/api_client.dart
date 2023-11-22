@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:api_client/api_client.dart';
 import 'package:http/http.dart' as http;
 
 /// {@template api_client_error}
@@ -88,6 +89,9 @@ class ApiClient {
   Map<String, String> get _headers => {
         if (_idToken != null) 'Authorization': 'Bearer $_idToken',
       };
+
+  /// Questions resource.
+  late final QuestionsResource questionsResource = const QuestionsResource();
 
   Future<http.Response> _handleUnauthorized(
     Future<http.Response> Function() sendRequest,
