@@ -29,6 +29,14 @@ class HomeState extends Equatable {
       status == Status.askQuestionToThinking || status == Status.thinking;
   bool get isResultsVisible =>
       status == Status.thinkingToResults || status == Status.results;
+  bool get isDashVisible => [
+        Status.welcome,
+        Status.welcomeToAskQuestion,
+        Status.askQuestion,
+        Status.askQuestionToThinking,
+        Status.thinkingToResults,
+        Status.results,
+      ].contains(status);
 
   HomeState copyWith({
     Status? status,

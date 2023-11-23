@@ -5,6 +5,9 @@ abstract class VertexColors {
   /// Navy Color Swatch
   static const Color navy = Color(0xff020f30);
 
+  /// Fluter Navy Color Swatch
+  static const Color flutterNavy = Color(0xff042A59);
+
   /// Google Blue Color Swatch
   static const Color googleBlue = Color(0xff3089f1);
 
