@@ -10,3 +10,6 @@ export 'src/widgets/widgets.dart';
 
 /// Global reference to actual app_ui icons.
 const vertexIcons = Assets.icons;
+
+/// Global reference to actual app_ui images.
+const vertexImages = Assets.images;

@@ -12,7 +12,7 @@ enum Status {
 
 class HomeState extends Equatable {
   const HomeState({
-    this.status = Status.welcome,
+    this.status = Status.results,
     this.query = '',
     this.vertexResponse = const VertexResponse.empty(),
   });
