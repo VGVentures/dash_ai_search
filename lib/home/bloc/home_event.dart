@@ -25,7 +25,4 @@ class QueryUpdated extends HomeEvent {
 
 class QuestionAsked extends HomeEvent {
   const QuestionAsked();
-
-  @override
-  List<Object> get props => [];
 }
