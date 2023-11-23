@@ -33,6 +33,12 @@ class QuestionView extends StatelessWidget {
                 icon: vertexIcons.stars.image(),
                 hint: l10n.questionHint,
                 actionText: l10n.ask,
+                onTextUpdated: (String query) {
+                  context.read<HomeBloc>().add(QueryUpdated(query: query));
+                },
+                onActionPressed: () {
+                  context.read<HomeBloc>().add(const QuestionAsked());
+                },
               ),
             ],
           ),

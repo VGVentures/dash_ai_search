@@ -11,6 +11,8 @@ class QuestionInputTextField extends StatefulWidget {
     required this.icon,
     required this.hint,
     required this.actionText,
+    required this.onTextUpdated,
+    required this.onActionPressed,
     super.key,
   });
 
@@ -23,6 +25,10 @@ class QuestionInputTextField extends StatefulWidget {
   /// The text to display on the right side of the text field.
   final String actionText;
 
+  final void Function(String) onTextUpdated;
+
+  final VoidCallback onActionPressed;
+
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
 }
@@ -34,6 +40,9 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _controller.addListener(() {
+      widget.onTextUpdated(_controller.text);
+    });
   }
 
   @override
@@ -61,6 +70,9 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
             padding: const EdgeInsets.only(right: 12),
             child: CTAButton(
               label: widget.actionText,
+              onPressed: () {
+                widget.onActionPressed();
+              },
             ),
           ),
         ),

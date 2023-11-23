@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:questions_repository/questions_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeBloc(),
+      create: (_) => HomeBloc(context.read<QuestionsRepository>()),
       child: const HomeView(),
     );
   }
