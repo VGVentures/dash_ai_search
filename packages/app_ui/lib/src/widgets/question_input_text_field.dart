@@ -25,8 +25,10 @@ class QuestionInputTextField extends StatefulWidget {
   /// The text to display on the right side of the text field.
   final String actionText;
 
-  final void Function(String) onTextUpdated;
+  /// Function called when text is updated
+  final ValueChanged<String> onTextUpdated;
 
+  ///
   final VoidCallback onActionPressed;
 
   @override
@@ -70,9 +72,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
             padding: const EdgeInsets.only(right: 12),
             child: CTAButton(
               label: widget.actionText,
-              onPressed: () {
-                widget.onActionPressed();
-              },
+              onPressed: () => widget.onActionPressed(),
             ),
           ),
         ),

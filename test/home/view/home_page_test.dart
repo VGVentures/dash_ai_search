@@ -3,17 +3,29 @@ import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:questions_repository/questions_repository.dart';
 
 import '../../helpers/helpers.dart';
 
 class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
     implements HomeBloc {}
 
+class _MockQuestionsRepository extends Mock implements QuestionsRepository {}
+
 void main() {
   group('HomePage', () {
+    late QuestionsRepository questionsRepository;
+
+    setUp(() {
+      questionsRepository = _MockQuestionsRepository();
+    });
+
     testWidgets('renders HomeView', (tester) async {
       await tester.pumpApp(
-        HomePage(),
+        RepositoryProvider.value(
+          value: questionsRepository,
+          child: HomePage(),
+        ),
       );
 
       expect(find.byType(HomeView), findsOneWidget);
