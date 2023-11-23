@@ -7,7 +7,7 @@ void main() {
   group('HomePage', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
-        HomePage(),
+        HomeView(),
       );
 
       expect(find.byType(Background), findsOneWidget);

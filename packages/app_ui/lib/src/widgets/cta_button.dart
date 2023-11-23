@@ -27,13 +27,13 @@ class CTAButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: const ButtonStyle(
-        backgroundColor: MaterialStatePropertyAll(
+      style: ButtonStyle(
+        backgroundColor: const MaterialStatePropertyAll(
           VertexColors.googleBlue,
         ),
         padding: MaterialStatePropertyAll(
           EdgeInsets.only(
-            left: 24,
+            left: (icon != null) ? 24 : 32,
             top: 20,
             bottom: 20,
             right: 32,

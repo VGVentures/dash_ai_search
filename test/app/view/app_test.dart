@@ -20,7 +20,7 @@ void main() {
           apiClient: apiClient,
         ),
       );
-      expect(find.byType(HomePage), findsOneWidget);
+      expect(find.byType(HomeView), findsOneWidget);
     });
   });
 }

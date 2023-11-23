@@ -15,5 +15,13 @@
     "startAsking": "Start asking",
     "@startAsking": {
         "description": "Button text for start asking"
+    },
+    "questionScreenTitle": "Ask a question",
+    "@questionScreenTitle": {
+        "description": "Title shown on Question screen"
+    },
+    "ask": "Ask",
+    "@ask": {
+        "description": "Button text for ask"
     }
 }
