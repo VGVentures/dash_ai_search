@@ -17,7 +17,7 @@ void main() {
 
     setUp(() {
       homeBloc = _MockHomeBloc();
-      when(() => homeBloc.state).thenReturn(HomeState.initial());
+      when(() => homeBloc.state).thenReturn(HomeState());
     });
 
     testWidgets('renders correctly', (tester) async {

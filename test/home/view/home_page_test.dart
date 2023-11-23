@@ -18,27 +18,27 @@ void main() {
 
       expect(find.byType(HomeView), findsOneWidget);
     });
+  });
 
-    group('HomeView', () {
-      late HomeBloc homeBloc;
+  group('HomeView', () {
+    late HomeBloc homeBloc;
 
-      setUp(() {
-        homeBloc = _MockHomeBloc();
-        when(() => homeBloc.state).thenReturn(HomeState.initial());
-      });
+    setUp(() {
+      homeBloc = _MockHomeBloc();
+      when(() => homeBloc.state).thenReturn(HomeState());
+    });
 
-      testWidgets('renders correctly', (tester) async {
-        await tester.pumpApp(
-          BlocProvider.value(
-            value: homeBloc,
-            child: HomeView(),
-          ),
-        );
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: HomeView(),
+        ),
+      );
 
-        expect(find.byType(Background), findsOneWidget);
-        expect(find.byType(Logo), findsOneWidget);
-        expect(find.byType(WelcomeView), findsOneWidget);
-      });
+      expect(find.byType(Background), findsOneWidget);
+      expect(find.byType(Logo), findsOneWidget);
+      expect(find.byType(WelcomeView), findsOneWidget);
     });
   });
 }

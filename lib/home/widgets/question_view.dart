@@ -29,54 +29,14 @@ class QuestionView extends StatelessWidget {
                 style: theme.textTheme.displayLarge,
               ),
               const SizedBox(height: 40),
-              const QuestionInputTextField(),
+              QuestionInputTextField(
+                icon: vertexIcons.stars.image(),
+                hint: 'Ex: How do I manage a state?',
+                action: CTAButton(
+                  label: l10n.ask,
+                ),
+              ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class QuestionInputTextField extends StatefulWidget {
-  const QuestionInputTextField({super.key});
-
-  @override
-  State<QuestionInputTextField> createState() => _QuestionTextFieldState();
-}
-
-class _QuestionTextFieldState extends State<QuestionInputTextField> {
-  late TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final l10n = context.l10n;
-
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 659),
-      child: TextField(
-        controller: _controller,
-        style: theme.textTheme.bodyLarge?.copyWith(
-          color: VertexColors.navy,
-        ),
-        decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: const EdgeInsets.only(left: 12),
-            child: vertexIcons.stars.image(),
-          ),
-          hintText: 'Ex: How do I manage a state?',
-          suffixIcon: Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: CTAButton(
-              label: l10n.ask,
-            ),
           ),
         ),
       ),

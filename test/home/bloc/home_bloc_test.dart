@@ -6,7 +6,7 @@ void main() {
   group('HomeBloc', () {
     group('FromWelcomeToQuestion', () {
       blocTest<HomeBloc, HomeState>(
-        'emits [welcomeToAskQuestion] when FromWelcomeToQuestion',
+        'emits [welcomeToAskQuestion]',
         build: HomeBloc.new,
         act: (bloc) => bloc.add(FromWelcomeToQuestion()),
         expect: () => [
@@ -21,7 +21,7 @@ void main() {
 
     group('AskQuestion', () {
       blocTest<HomeBloc, HomeState>(
-        'emits [askQuestion] when AskQuestion',
+        'emits [askQuestion]',
         build: HomeBloc.new,
         act: (bloc) => bloc.add(AskQuestion()),
         expect: () => [
