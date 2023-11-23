@@ -21,31 +21,78 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
-
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: VertexColors.arctic,
       body: Stack(
         children: [
-          const Positioned(
+          Positioned(
             top: 0,
             bottom: 0,
             child: Background(),
           ),
-          const Positioned(
+          Positioned(
             top: 40,
             left: 48,
             child: Logo(),
           ),
-          if (state.isWelcomeVisible) const WelcomeView(),
-          if (state.isQuestionVisible) const QuestionView(),
-          const Positioned(
+          _WelcomeView(),
+          _QuestionView(),
+          _ResultsView(),
+          Positioned(
             bottom: 50,
             left: 50,
             child: DashAnimation(),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _WelcomeView extends StatelessWidget {
+  const _WelcomeView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, bool>(
+      selector: (state) => state.isWelcomeVisible,
+      builder: (_, isVisible) =>
+          isVisible ? const WelcomeView() : const SizedBox.shrink(),
+    );
+  }
+}
+
+class _QuestionView extends StatelessWidget {
+  const _QuestionView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, bool>(
+      selector: (state) => state.isQuestionVisible,
+      builder: (_, isVisible) =>
+          isVisible ? const QuestionView() : const SizedBox.shrink(),
+    );
+  }
+}
+
+class _ResultsView extends StatelessWidget {
+  const _ResultsView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, bool>(
+      selector: (state) => state.isResultsVisible,
+      builder: (_, isVisible) {
+        return isVisible
+            ? Center(
+                child: CTAButton(
+                  label: 'Back',
+                  onPressed: () =>
+                      context.read<HomeBloc>().add(const AskQuestionAgain()),
+                ),
+              )
+            : const SizedBox.shrink();
+      },
     );
   }
 }

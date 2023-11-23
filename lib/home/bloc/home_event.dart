@@ -14,3 +14,11 @@ class FromWelcomeToQuestion extends HomeEvent {
 class AskQuestion extends HomeEvent {
   const AskQuestion();
 }
+
+class FromAskQuestionToResults extends HomeEvent {
+  const FromAskQuestionToResults();
+}
+
+class AskQuestionAgain extends HomeEvent {
+  const AskQuestionAgain();
+}

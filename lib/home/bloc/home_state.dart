@@ -1,6 +1,13 @@
 part of 'home_bloc.dart';
 
-enum Status { welcome, welcomeToAskQuestion, askQuestion }
+enum Status {
+  welcome,
+  welcomeToAskQuestion,
+  askQuestion,
+  askQuestionToResults,
+  results,
+  resultsBackToAskQuestion,
+}
 
 class HomeState extends Equatable {
   const HomeState({
@@ -12,7 +19,13 @@ class HomeState extends Equatable {
   bool get isWelcomeVisible =>
       status == Status.welcome || status == Status.welcomeToAskQuestion;
   bool get isQuestionVisible =>
-      status == Status.welcomeToAskQuestion || status == Status.askQuestion;
+      status == Status.welcomeToAskQuestion ||
+      status == Status.askQuestion ||
+      status == Status.resultsBackToAskQuestion;
+  bool get isResultsVisible =>
+      status == Status.askQuestionToResults ||
+      status == Status.results ||
+      status == Status.resultsBackToAskQuestion;
 
   HomeState copyWith({
     Status? status,

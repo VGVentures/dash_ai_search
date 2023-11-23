@@ -10,7 +10,7 @@ class QuestionInputTextField extends StatefulWidget {
   const QuestionInputTextField({
     required this.icon,
     required this.hint,
-    required this.actionText,
+    required this.action,
     super.key,
   });
 
@@ -20,8 +20,8 @@ class QuestionInputTextField extends StatefulWidget {
   /// The hint text to display in the text field.
   final String hint;
 
-  /// The text to display on the right side of the text field.
-  final String actionText;
+  /// The action to display on the right side of the text field.
+  final Widget action;
 
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
@@ -59,9 +59,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
           hintText: widget.hint,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: CTAButton(
-              label: widget.actionText,
-            ),
+            child: widget.action,
           ),
         ),
       ),
