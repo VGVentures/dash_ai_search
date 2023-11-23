@@ -16,5 +16,19 @@ void main() {
         equals(AskQuestion()),
       );
     });
+
+    test('QueryUpdated supports value equality', () {
+      expect(
+        QueryUpdated(query: 'query'),
+        equals(QueryUpdated(query: 'query')),
+      );
+    });
+
+    test('QuestionAsked supports value equality', () {
+      expect(
+        QuestionAsked(),
+        equals(QuestionAsked()),
+      );
+    });
   });
 }

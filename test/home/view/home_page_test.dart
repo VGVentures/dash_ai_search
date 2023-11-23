@@ -40,7 +40,8 @@ void main() {
       when(() => homeBloc.state).thenReturn(HomeState());
     });
 
-    testWidgets('renders correctly', (tester) async {
+    testWidgets('renders WelcomeView if isWelcomeVisible', (tester) async {
+      when(() => homeBloc.state).thenReturn(HomeState());
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
@@ -48,9 +49,55 @@ void main() {
         ),
       );
 
-      expect(find.byType(Background), findsOneWidget);
-      expect(find.byType(Logo), findsOneWidget);
       expect(find.byType(WelcomeView), findsOneWidget);
+    });
+
+    testWidgets('renders QuestionView if isQuestionVisible', (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(
+          status: Status.askQuestion,
+        ),
+      );
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: HomeView(),
+        ),
+      );
+
+      expect(find.byType(QuestionView), findsOneWidget);
+    });
+
+    testWidgets('renders ThinkingView if isThinkingVisible', (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(
+          status: Status.thinking,
+        ),
+      );
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: HomeView(),
+        ),
+      );
+
+      expect(find.byType(ThinkingView), findsOneWidget);
+    });
+
+    testWidgets('renders ResultsView if isResultsVisible', (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(
+          status: Status.results,
+        ),
+      );
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: HomeView(),
+        ),
+      );
+
+      expect(find.byType(ResultsView), findsOneWidget);
     });
   });
 }

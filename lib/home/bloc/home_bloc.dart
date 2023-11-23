@@ -12,8 +12,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this._questionsRepository) : super(const HomeState()) {
     on<FromWelcomeToQuestion>(_onFromWelcomeToQuestion);
     on<AskQuestion>(_onQuestion);
-    on<QuestionAsked>(_questionAsked);
     on<QueryUpdated>(_queryUpdated);
+    on<QuestionAsked>(_questionAsked);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -32,6 +32,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.askQuestion));
   }
 
+  FutureOr<void> _queryUpdated(QueryUpdated event, Emitter<HomeState> emit) {
+    emit(state.copyWith(query: event.query));
+  }
+
   Future<FutureOr<void>> _questionAsked(
     QuestionAsked event,
     Emitter<HomeState> emit,
@@ -44,9 +48,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         vertexResponse: result,
       ),
     );
-  }
-
-  FutureOr<void> _queryUpdated(QueryUpdated event, Emitter<HomeState> emit) {
-    emit(state.copyWith(query: event.query));
   }
 }

@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,6 +44,37 @@ void main() {
             (element) => element.status,
             'status',
             Status.askQuestion,
+          ),
+        ],
+      );
+    });
+
+    group('QueryUpdated', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits query updated',
+        build: buildBloc,
+        act: (bloc) => bloc.add(QueryUpdated(query: 'new query')),
+        expect: () => [
+          HomeState(query: 'new query'),
+        ],
+      );
+    });
+
+    group('QuestionAsked', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits [Status.askQuestionToThinking, Status.thinkingToResults] '
+        'with vertex response from _questionsRepository.getVertexResponse',
+        setUp: () {
+          when(() => questionsRepository.getVertexResponse(any()))
+              .thenAnswer((_) async => VertexResponse.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(QuestionAsked()),
+        expect: () => [
+          HomeState(status: Status.askQuestionToThinking),
+          HomeState(
+            status: Status.thinkingToResults,
+            vertexResponse: VertexResponse.empty(),
           ),
         ],
       );

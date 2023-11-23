@@ -5,6 +5,7 @@ enum Status {
   welcomeToAskQuestion,
   askQuestion,
   askQuestionToThinking,
+  thinking,
   thinkingToResults,
   results,
 }
@@ -24,10 +25,8 @@ class HomeState extends Equatable {
       status == Status.welcome || status == Status.welcomeToAskQuestion;
   bool get isQuestionVisible =>
       status == Status.welcomeToAskQuestion || status == Status.askQuestion;
-
   bool get isThinkingVisible =>
-      status == Status.askQuestionToThinking ||
-      status == Status.thinkingToResults;
+      status == Status.askQuestionToThinking || status == Status.thinking;
   bool get isResultsVisible =>
       status == Status.thinkingToResults || status == Status.results;
 
