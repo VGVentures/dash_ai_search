@@ -31,7 +31,7 @@ class QuestionView extends StatelessWidget {
               const SizedBox(height: 40),
               QuestionInputTextField(
                 icon: vertexIcons.stars.image(),
-                hint: 'Ex: How do I manage a state?',
+                hint: l10n.questionHint,
                 actionText: l10n.ask,
               ),
             ],

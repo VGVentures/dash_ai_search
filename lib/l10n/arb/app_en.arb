@@ -20,6 +20,10 @@
     "@questionScreenTitle": {
         "description": "Title shown on Question screen"
     },
+    "questionHint": "Ex: How do I manage a state?",
+    "@questionHint": {
+        "description": "Hint shown on Question screen"
+    },
     "ask": "Ask",
     "@ask": {
         "description": "Button text for ask"
