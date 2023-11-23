@@ -1,7 +1,7 @@
 import 'package:api_client/api_client.dart';
 
 /// {@template questions_repository}
-/// A Very Good Project created by Very Good CLI.
+/// Repository to access QuestionsResource from the Api Client.
 /// {@endtemplate}
 class QuestionsRepository {
   /// {@macro questions_repository}
