@@ -32,9 +32,7 @@ class QuestionView extends StatelessWidget {
               QuestionInputTextField(
                 icon: vertexIcons.stars.image(),
                 hint: 'Ex: How do I manage a state?',
-                action: CTAButton(
-                  label: l10n.ask,
-                ),
+                actionText: l10n.ask,
               ),
             ],
           ),

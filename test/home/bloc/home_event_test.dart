@@ -6,14 +6,14 @@ void main() {
     test('FromWelcomeToQuestion supports value equality', () {
       expect(
         FromWelcomeToQuestion(),
-        FromWelcomeToQuestion(),
+        equals(FromWelcomeToQuestion()),
       );
     });
 
     test('AskQuestion supports value equality', () {
       expect(
         AskQuestion(),
-        AskQuestion(),
+        equals(AskQuestion()),
       );
     });
   });

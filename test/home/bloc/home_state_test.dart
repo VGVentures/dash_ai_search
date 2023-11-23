@@ -11,7 +11,7 @@ void main() {
       test('returns same HomeState object when no properties', () {
         expect(
           HomeState().copyWith(),
-          HomeState(),
+          equals(HomeState()),
         );
       });
 
@@ -19,7 +19,9 @@ void main() {
           () {
         expect(
           HomeState().copyWith(status: Status.askQuestion),
-          HomeState(status: Status.askQuestion),
+          equals(
+            HomeState(status: Status.askQuestion),
+          ),
         );
       });
     });

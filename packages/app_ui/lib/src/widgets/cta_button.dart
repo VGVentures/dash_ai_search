@@ -33,7 +33,7 @@ class CTAButton extends StatelessWidget {
         ),
         padding: MaterialStatePropertyAll(
           EdgeInsets.only(
-            left: (icon != null) ? 24 : 32,
+            left: icon != null ? 24 : 32,
             top: 20,
             bottom: 20,
             right: 32,
