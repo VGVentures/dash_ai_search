@@ -1,5 +1,5 @@
 name: questions_repository
-description: Repository to access QuestionsResource from the Api Client.
+description: Repository to access QuestionsResource through the Api Client.
 version: 0.1.0+1
 publish_to: none
 
