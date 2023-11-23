@@ -20,8 +20,11 @@ class $AssetsIconsGen {
   AssetGenImage get asterisk =>
       const AssetGenImage('assets/icons/asterisk.png');
 
+  /// File path: assets/icons/stars.png
+  AssetGenImage get stars => const AssetGenImage('assets/icons/stars.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [arrowForward, asterisk];
+  List<AssetGenImage> get values => [arrowForward, asterisk, stars];
 }
 
 class Assets {
