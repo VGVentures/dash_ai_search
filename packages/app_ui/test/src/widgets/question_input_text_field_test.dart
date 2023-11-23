@@ -8,20 +8,17 @@ void main() {
   group('QuestionInputTextField', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
-        QuestionInputTextField(
-          icon: SizedBox.shrink(
-            key: Key('iconKey'),
-          ),
-          hint: 'hint',
-          action: SizedBox.shrink(
-            key: Key('actionKey'),
+        Material(
+          child: QuestionInputTextField(
+            icon: SizedBox.shrink(),
+            hint: 'hint',
+            actionText: 'actionText',
           ),
         ),
       );
 
-      expect(find.byKey(Key('iconKey')), findsOneWidget);
       expect(find.text('hint'), findsOneWidget);
-      expect(find.byKey(Key('actionKey')), findsOneWidget);
+      expect(find.byType(CTAButton), findsOneWidget);
     });
   });
 }
