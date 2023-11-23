@@ -13,6 +13,7 @@ dependencies:
   app_ui:
     path: packages/app_ui
   bloc: ^8.1.2
+  equatable: ^2.0.5
   flame: ^1.10.1
   flutter:
     sdk: flutter
