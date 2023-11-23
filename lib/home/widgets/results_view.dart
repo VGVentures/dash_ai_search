@@ -46,6 +46,10 @@ class BlueContainer extends StatelessWidget {
             alignment: Alignment.bottomLeft,
             child: FeedbackButtons(),
           ),
+          const Align(
+            alignment: Alignment.bottomRight,
+            child: SeeSourceAnswersButton(),
+          ),
         ],
       ),
     );
@@ -111,6 +115,21 @@ class FeedbackButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         child: SizedBox.square(dimension: 33, child: icon),
+      ),
+    );
+  }
+}
+
+class SeeSourceAnswersButton extends StatelessWidget {
+  const SeeSourceAnswersButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 64,
+      child: TertiaryCTA(
+        label: 'See source answers',
+        icon: vertexIcons.arrowForward.image(),
       ),
     );
   }
