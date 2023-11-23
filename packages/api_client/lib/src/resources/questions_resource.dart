@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:api_client/api_client.dart';
-import 'package:cross_file/cross_file.dart';
+import 'package:api_client/src/resources/fake_response.dart';
 
 /// {@template questions_resource}
 /// An api resource to get response to question from the VERTEX api
@@ -40,8 +40,8 @@ class QuestionsResource {
       }
       body = response.body;
     } else {
-      const path = 'lib/src/resources/fake_response.json';
-      body = await XFile(path).readAsString();
+      await Future<void>.delayed(const Duration(seconds: 1));
+      body = FakeResponses.whatIsFlutterResponse;
     }
 
     try {

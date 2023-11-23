@@ -3,6 +3,13 @@ import 'package:test/test.dart';
 
 void main() {
   group('VertexResponse', () {
+    test('empty constructor', () {
+      expect(
+        VertexResponse.empty(),
+        equals(VertexResponse(summary: '', documents: const [])),
+      );
+    });
+
     test('supports equality', () {
       expect(
         VertexResponse(

@@ -10,11 +10,13 @@ part 'vertex_response.g.dart';
 @JsonSerializable()
 class VertexResponse extends Equatable {
   /// {@macro vertex_response}
-
   const VertexResponse({
     required this.summary,
     required this.documents,
   });
+
+  /// {@macro vertex_response}
+  const VertexResponse.empty({this.summary = '', this.documents = const []});
 
   /// Convert from Map<String, dynamic> to [VertexResponse]
   factory VertexResponse.fromJson(Map<String, dynamic> json) =>

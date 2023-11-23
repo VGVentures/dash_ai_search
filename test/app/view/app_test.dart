@@ -1,23 +1,23 @@
-import 'package:api_client/api_client.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:questions_repository/questions_repository.dart';
 
-class _MockApiClient extends Mock implements ApiClient {}
+class _MockQuestionsRepository extends Mock implements QuestionsRepository {}
 
 void main() {
   group('App', () {
-    late ApiClient apiClient;
+    late QuestionsRepository questionsRepository;
 
     setUp(() {
-      apiClient = _MockApiClient();
+      questionsRepository = _MockQuestionsRepository();
     });
 
     testWidgets('renders HomePage', (tester) async {
       await tester.pumpWidget(
         App(
-          apiClient: apiClient,
+          questionsRepository: questionsRepository,
         ),
       );
       expect(find.byType(HomePage), findsOneWidget);

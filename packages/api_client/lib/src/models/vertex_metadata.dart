@@ -30,7 +30,7 @@ class VertexMetadata extends Equatable {
   final String title;
 
   /// Description
-  final String description;
+  final String? description;
 
   @override
   List<Object?> get props => [url, title, description];

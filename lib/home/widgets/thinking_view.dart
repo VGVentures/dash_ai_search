@@ -1,11 +1,10 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class QuestionView extends StatelessWidget {
-  const QuestionView({super.key});
+class ThinkingView extends StatelessWidget {
+  const ThinkingView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +12,8 @@ class QuestionView extends StatelessWidget {
     final l10n = context.l10n;
 
     final state = context.watch<HomeBloc>().state;
-    final isAnimating = state.status == Status.welcomeToAskQuestion;
-
+    final isAnimating = state.status == Status.askQuestionToThinking;
+    final query = context.select((HomeBloc bloc) => bloc.state.query);
     return AnimatedOpacity(
       opacity: isAnimating ? 1 : 0,
       duration: const Duration(milliseconds: 500),
@@ -24,21 +23,14 @@ class QuestionView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                l10n.questionScreenTitle,
+                l10n.thinkingHeadline,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.displayLarge,
+                style: theme.textTheme.bodyMedium,
               ),
-              const SizedBox(height: 40),
-              QuestionInputTextField(
-                icon: vertexIcons.stars.image(),
-                hint: l10n.questionHint,
-                actionText: l10n.ask,
-                onTextUpdated: (String query) {
-                  context.read<HomeBloc>().add(QueryUpdated(query: query));
-                },
-                onActionPressed: () {
-                  context.read<HomeBloc>().add(const QuestionAsked());
-                },
+              Text(
+                query,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.headlineLarge,
               ),
             ],
           ),
