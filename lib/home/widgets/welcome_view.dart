@@ -7,6 +7,7 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final l10n = context.l10n;
 
     return Center(
@@ -17,10 +18,8 @@ class WelcomeView extends StatelessWidget {
             Text(
               l10n.initialScreenTitle,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 72,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF020F30),
+              style: theme.textTheme.displayLarge?.copyWith(
+                color: VertexColors.navy,
               ),
             ),
             const SizedBox(height: 40),

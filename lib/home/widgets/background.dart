@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:path_drawing/path_drawing.dart';
 
@@ -24,11 +25,11 @@ class Background extends StatelessWidget {
             child: Circle(
               offset: Offset(horizontalOffset + leftOffset, 0),
               radius: baseMediumRadius,
-              borderColor: Color(0xFFDDE2F6),
+              borderColor: VertexColors.lilac,
               child: Circle(
                 offset: Offset(horizontalOffset + leftOffset, 0),
                 radius: baseSmallRadius,
-                borderColor: Color(0xFFDDE2F6),
+                borderColor: VertexColors.lilac,
                 dotted: true,
               ),
             ),
@@ -50,7 +51,7 @@ class Circle extends StatelessWidget {
   const Circle({
     this.offset = Offset.zero,
     this.radius = 303,
-    this.borderColor = Colors.white,
+    this.borderColor = VertexColors.white,
     this.dotted = false,
     this.child,
     super.key,
@@ -84,7 +85,7 @@ class CirclePainter extends CustomPainter {
     required this.dotted,
   }) {
     _paintCircle = Paint()
-      ..color = Colors.white
+      ..color = VertexColors.white
       ..style = PaintingStyle.fill;
     _paintBorder = Paint()
       ..color = borderColor

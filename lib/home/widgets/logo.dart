@@ -7,16 +7,15 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final l10n = context.l10n;
 
     return Row(
       children: [
         Text(
           l10n.vertexAI,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: VertexColors.navy,
           ),
         ),
         const SizedBox(width: 4),
@@ -24,10 +23,8 @@ class Logo extends StatelessWidget {
         const SizedBox(width: 4),
         Text(
           l10n.flutter,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w400,
-            color: Colors.black,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            color: VertexColors.navy,
           ),
         ),
       ],
