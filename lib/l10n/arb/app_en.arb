@@ -27,5 +27,9 @@
     "ask": "Ask",
     "@ask": {
         "description": "Button text for ask"
+    },
+    "thinkingHeadline": "Getting answers for",
+    "@thinkingHeadline": {
+        "description": "Headline on thinking screen"
     }
 }

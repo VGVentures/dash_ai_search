@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:api_client/api_client.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:questions_repository/questions_repository.dart';
@@ -37,7 +38,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(status: Status.askQuestionToThinking));
     final result = await _questionsRepository.getVertexResponse(state.query);
-    emit(state.copyWith(status: Status.thinkingToResults));
+    emit(
+      state.copyWith(
+        status: Status.thinkingToResults,
+        vertexResponse: result,
+      ),
+    );
   }
 
   FutureOr<void> _queryUpdated(QueryUpdated event, Emitter<HomeState> emit) {

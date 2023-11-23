@@ -17,7 +17,7 @@ void main() {
     testWidgets('renders HomePage', (tester) async {
       await tester.pumpWidget(
         App(
-          apiClient: apiClient,
+          questionsRepository: apiClient,
         ),
       );
       expect(find.byType(HomePage), findsOneWidget);
