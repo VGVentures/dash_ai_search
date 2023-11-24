@@ -34,6 +34,36 @@ void main() {
       expect(find.byType(PrimaryCTA), findsOneWidget);
     });
 
+    testWidgets('animates in when enter', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: WelcomeView(),
+        ),
+      );
+
+      final forwardEnterStatuses = tester
+          .state<WelcomeViewState>(find.byType(WelcomeView))
+          .forwardEnterStatuses;
+
+      expect(forwardEnterStatuses, equals([Status.welcome]));
+    });
+
+    testWidgets('animates out when exits forward', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: WelcomeView(),
+        ),
+      );
+
+      final forwardExitStatuses = tester
+          .state<WelcomeViewState>(find.byType(WelcomeView))
+          .forwardExitStatuses;
+
+      expect(forwardExitStatuses, equals([Status.welcomeToAskQuestion]));
+    });
+
     testWidgets('calls FromWelcomeToQuestion on PrimaryCTA tapped',
         (tester) async {
       await tester.pumpApp(
@@ -43,6 +73,7 @@ void main() {
         ),
       );
 
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(PrimaryCTA));
 
       verify(() => homeBloc.add(const FromWelcomeToQuestion())).called(1);
