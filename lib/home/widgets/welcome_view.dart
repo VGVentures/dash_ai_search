@@ -17,21 +17,22 @@ class _WelcomeViewState extends State<WelcomeView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get inStatuses => [Status.welcome];
+  List<Status> get forwardEnterStatuses => [Status.welcome];
 
   @override
-  List<Status> get outStatuses => [Status.welcomeToAskQuestion];
+  List<Status> get forwardExitStatuses => [Status.welcomeToAskQuestion];
 
   @override
   void initState() {
-    transitionController = AnimationController(
+    forwardTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
 
     super.initState();
 
-    _opacity = Tween<double>(begin: 0, end: 1).animate(transitionController);
+    _opacity =
+        Tween<double>(begin: 0, end: 1).animate(forwardTransitionController);
   }
 
   @override

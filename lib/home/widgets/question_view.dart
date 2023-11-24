@@ -17,14 +17,14 @@ class _QuestionViewState extends State<QuestionView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get inStatuses => [Status.welcomeToAskQuestion];
+  List<Status> get forwardEnterStatuses => [Status.welcomeToAskQuestion];
 
   @override
-  List<Status> get outStatuses => [Status.askQuestionToThinking];
+  List<Status> get forwardExitStatuses => [Status.askQuestionToThinking];
 
   @override
   void initState() {
-    transitionController = AnimationController(
+    forwardTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     )..addStatusListener((status) {
@@ -35,7 +35,8 @@ class _QuestionViewState extends State<QuestionView>
 
     super.initState();
 
-    _opacity = Tween<double>(begin: 0, end: 1).animate(transitionController);
+    _opacity =
+        Tween<double>(begin: 0, end: 1).animate(forwardTransitionController);
   }
 
   @override
