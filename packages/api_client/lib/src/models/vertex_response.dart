@@ -16,11 +16,7 @@ class VertexResponse extends Equatable {
   });
 
   /// {@macro vertex_response}
-  const VertexResponse.empty({
-    this.summary =
-        'To manage states in Flutter, you can use the navigator class. When you press the back button, the Navigator.pop method is called. On Android, pressing the system back button also calls this method . You can also use named navigator routes This is often the easiest way to refer to a large number of routes ',
-    this.documents = const [],
-  });
+  const VertexResponse.empty({this.summary = '', this.documents = const []});
 
   /// Convert from Map<String, dynamic> to [VertexResponse]
   factory VertexResponse.fromJson(Map<String, dynamic> json) =>
