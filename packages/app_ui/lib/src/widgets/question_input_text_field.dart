@@ -70,7 +70,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
           hintText: widget.hint,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: CTAButton(
+            child: PrimaryCTA(
               label: widget.actionText,
               onPressed: () => widget.onActionPressed(),
             ),

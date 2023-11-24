@@ -1,13 +1,13 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-/// {@template cta_button}
+/// {@template primary_cta}
 /// A button that displays an image on the left side and a text on the right
 /// side.
 /// {@endtemplate}
-class CTAButton extends StatelessWidget {
-  /// {@macro cta_button}
-  const CTAButton({
+class PrimaryCTA extends StatelessWidget {
+  /// {@macro primary_cta}
+  const PrimaryCTA({
     required this.label,
     this.icon,
     this.onPressed,

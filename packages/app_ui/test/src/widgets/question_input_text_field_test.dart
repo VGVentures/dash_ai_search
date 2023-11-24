@@ -20,7 +20,7 @@ void main() {
       );
 
       expect(find.text('hint'), findsOneWidget);
-      expect(find.byType(CTAButton), findsOneWidget);
+      expect(find.byType(PrimaryCTA), findsOneWidget);
     });
 
     testWidgets('calls onTextUpdated typing on the text field', (tester) async {
@@ -42,7 +42,7 @@ void main() {
       expect(text, equals('test'));
     });
 
-    testWidgets('calls onActionPressed clicking on CTAButton', (tester) async {
+    testWidgets('calls onActionPressed clicking on PrimaryCTA', (tester) async {
       var called = false;
       await tester.pumpApp(
         Material(
@@ -57,7 +57,7 @@ void main() {
           ),
         ),
       );
-      await tester.tap(find.byType(CTAButton));
+      await tester.tap(find.byType(PrimaryCTA));
 
       expect(called, equals(true));
     });
