@@ -9,10 +9,10 @@ class QuestionView extends StatefulWidget {
   const QuestionView({super.key});
 
   @override
-  State<QuestionView> createState() => _QuestionViewState();
+  State<QuestionView> createState() => QuestionViewState();
 }
 
-class _QuestionViewState extends State<QuestionView>
+class QuestionViewState extends State<QuestionView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
 
@@ -80,14 +80,11 @@ class _QuestionView extends StatelessWidget {
               icon: vertexIcons.stars.image(),
               hint: l10n.questionHint,
               actionText: l10n.ask,
-              onTextUpdated: (String query) {
-                context.read<HomeBloc>().add(QueryUpdated(query: query));
-              },
-              onActionPressed: () {
-                context.read<HomeBloc>().add(const QuestionAsked());
-              },
+              onTextUpdated: (String query) =>
+                  context.read<HomeBloc>().add(QueryUpdated(query: query)),
+              onActionPressed: () =>
+                  context.read<HomeBloc>().add(const QuestionAsked()),
             ),
-//FromAskQuestionToResults
           ],
         ),
       ),

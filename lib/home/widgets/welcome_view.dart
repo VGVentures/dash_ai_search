@@ -9,10 +9,10 @@ class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});
 
   @override
-  State<WelcomeView> createState() => _WelcomeViewState();
+  State<WelcomeView> createState() => WelcomeViewState();
 }
 
-class _WelcomeViewState extends State<WelcomeView>
+class WelcomeViewState extends State<WelcomeView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<Offset> _offset;
   late Animation<double> _opacity;

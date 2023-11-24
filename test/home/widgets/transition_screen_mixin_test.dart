@@ -15,33 +15,42 @@ class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
 
 class _MockAnimationController extends Mock implements AnimationController {}
 
-class SampleWidget extends StatefulWidget {
-  const SampleWidget({
+class _SampleWidget extends StatefulWidget {
+  const _SampleWidget({
     required this.mockedEnterTransitionController,
     required this.mockedExitTransitionController,
-    super.key,
+    this.mockedForwardEnterStatuses,
+    this.mockedForwardExitStatuses,
+    this.mockedBackEnterStatuses,
+    this.mockedBackExitStatuses,
   });
 
   final AnimationController mockedEnterTransitionController;
   final AnimationController mockedExitTransitionController;
+  final List<Status>? mockedForwardEnterStatuses;
+  final List<Status>? mockedForwardExitStatuses;
+  final List<Status>? mockedBackEnterStatuses;
+  final List<Status>? mockedBackExitStatuses;
 
   @override
-  State<SampleWidget> createState() => _SampleWidgetState();
+  State<_SampleWidget> createState() => _SampleWidgetState();
 }
 
-class _SampleWidgetState extends State<SampleWidget>
+class _SampleWidgetState extends State<_SampleWidget>
     with SingleTickerProviderStateMixin, TransitionScreenMixin {
   @override
-  List<Status> get forwardEnterStatuses => [Status.welcome];
+  List<Status> get forwardEnterStatuses =>
+      widget.mockedForwardEnterStatuses ?? [];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.welcomeToAskQuestion];
+  List<Status> get forwardExitStatuses =>
+      widget.mockedForwardExitStatuses ?? [];
 
   @override
-  List<Status> get backEnterStatuses => [Status.askQuestion];
+  List<Status> get backEnterStatuses => widget.mockedBackEnterStatuses ?? [];
 
   @override
-  List<Status> get backExitStatuses => [Status.askQuestionToThinking];
+  List<Status> get backExitStatuses => widget.mockedBackExitStatuses ?? [];
 
   @override
   void initializeTransitionController() {
@@ -98,14 +107,16 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: SampleWidget(
+          child: _SampleWidget(
             mockedEnterTransitionController: enterAnimationController,
             mockedExitTransitionController: exitAnimationController,
+            mockedForwardEnterStatuses: const [Status.welcome],
           ),
         ),
       );
 
       streamController.add(const HomeState());
+
       verify(() => enterAnimationController.forward()).called(1);
     });
 
@@ -122,15 +133,19 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: SampleWidget(
+          child: _SampleWidget(
             mockedEnterTransitionController: enterAnimationController,
             mockedExitTransitionController: exitAnimationController,
+            mockedForwardExitStatuses: const [Status.welcomeToAskQuestion],
           ),
         ),
       );
 
       streamController
           .add(const HomeState(status: Status.welcomeToAskQuestion));
+
+      await tester.pumpAndSettle();
+
       verify(() => exitAnimationController.forward()).called(1);
     });
 
@@ -147,14 +162,18 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: SampleWidget(
+          child: _SampleWidget(
             mockedEnterTransitionController: enterAnimationController,
             mockedExitTransitionController: exitAnimationController,
+            mockedBackEnterStatuses: const [Status.askQuestion],
           ),
         ),
       );
 
       streamController.add(const HomeState(status: Status.askQuestion));
+
+      await tester.pumpAndSettle();
+
       verify(() => exitAnimationController.reverse()).called(1);
     });
 
@@ -171,9 +190,10 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: SampleWidget(
+          child: _SampleWidget(
             mockedEnterTransitionController: enterAnimationController,
             mockedExitTransitionController: exitAnimationController,
+            mockedBackExitStatuses: const [Status.askQuestionToThinking],
           ),
         ),
       );
@@ -182,6 +202,7 @@ void main() {
           .add(const HomeState(status: Status.askQuestionToThinking));
 
       await tester.pumpAndSettle();
+
       verify(() => enterAnimationController.reverse()).called(1);
     });
   });

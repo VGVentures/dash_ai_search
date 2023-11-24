@@ -9,10 +9,10 @@ class ThinkingView extends StatefulWidget {
   const ThinkingView({super.key});
 
   @override
-  State<ThinkingView> createState() => _ThinkingViewState();
+  State<ThinkingView> createState() => ThinkingViewState();
 }
 
-class _ThinkingViewState extends State<ThinkingView>
+class ThinkingViewState extends State<ThinkingView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
 
