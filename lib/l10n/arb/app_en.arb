@@ -31,5 +31,9 @@
     "thinkingHeadline": "Getting answers for",
     "@thinkingHeadline": {
         "description": "Headline on thinking screen"
+    },
+    "seeSourceAnswers": "See source answers",
+    "@seeSourceAnswers": {
+        "description": "Text in see source answers button."
     }
 }
