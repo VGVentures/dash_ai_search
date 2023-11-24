@@ -110,7 +110,7 @@ void main() {
     });
 
     testWidgets(
-        'calls exitTransitionController forward '
+        'calls exitAnimationController forward '
         'when status is in forwardExitStatuses', (tester) async {
       final streamController = StreamController<HomeState>();
       whenListen(
@@ -180,6 +180,8 @@ void main() {
 
       streamController
           .add(const HomeState(status: Status.askQuestionToThinking));
+
+      await tester.pumpAndSettle();
       verify(() => enterAnimationController.reverse()).called(1);
     });
   });

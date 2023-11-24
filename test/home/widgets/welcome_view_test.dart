@@ -43,6 +43,7 @@ void main() {
         ),
       );
 
+      await tester.pumpAndSettle();
       await tester.tap(find.byType(PrimaryCTA));
 
       verify(() => homeBloc.add(const FromWelcomeToQuestion())).called(1);

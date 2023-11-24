@@ -24,6 +24,8 @@ class _QuestionViewState extends State<QuestionView>
 
   @override
   void initializeTransitionController() {
+    super.initializeTransitionController();
+
     enterTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
