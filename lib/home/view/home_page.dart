@@ -24,6 +24,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<HomeBloc>().state;
 
+    return const CarouselView();
+
     return Scaffold(
       backgroundColor: VertexColors.arctic,
       body: Stack(

@@ -1,7 +1,9 @@
 export 'background.dart';
+export 'carousel_view.dart';
 export 'circle.dart';
 export 'logo.dart';
 export 'question_view.dart';
 export 'results_view.dart';
 export 'thinking_view.dart';
+export 'transition_screen_mixin.dart';
 export 'welcome_view.dart';
