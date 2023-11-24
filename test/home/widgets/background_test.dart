@@ -20,6 +20,7 @@ void main() {
         radius: 10,
         borderColor: Colors.white,
         dotted: false,
+        backgroundColor: Colors.white,
       );
       expect(circlePainter.shouldRepaint(circlePainter), false);
     });

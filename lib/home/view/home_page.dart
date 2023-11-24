@@ -28,11 +28,12 @@ class HomeView extends StatelessWidget {
       backgroundColor: VertexColors.arctic,
       body: Stack(
         children: [
-          const Positioned(
-            top: 0,
-            bottom: 0,
-            child: Background(),
-          ),
+          if (state.isWelcomeVisible)
+            const Positioned(
+              top: 0,
+              bottom: 0,
+              child: Background(),
+            ),
           const Positioned(
             top: 40,
             left: 48,
@@ -42,11 +43,12 @@ class HomeView extends StatelessWidget {
           if (state.isQuestionVisible) const QuestionView(),
           if (state.isThinkingVisible) const ThinkingView(),
           if (state.isResultsVisible) const ResultsView(),
-          const Positioned(
-            bottom: 50,
-            left: 50,
-            child: DashAnimation(),
-          ),
+          if (state.isDashVisible)
+            const Positioned(
+              bottom: 50,
+              left: 50,
+              child: DashAnimation(),
+            ),
         ],
       ),
     );
