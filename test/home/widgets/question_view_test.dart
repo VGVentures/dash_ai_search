@@ -51,7 +51,7 @@ void main() {
     );
 
     testWidgets(
-      'calls QuestionAsked clicking on the CTAButton ',
+      'calls QuestionAsked clicking on the PrimaryCTA ',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -59,7 +59,7 @@ void main() {
             child: Material(child: QuestionView()),
           ),
         );
-        await tester.tap(find.byType(CTAButton));
+        await tester.tap(find.byType(PrimaryCTA));
         verify(() => homeBloc.add(QuestionAsked())).called(1);
       },
     );

@@ -13,7 +13,8 @@ class WelcomeView extends StatefulWidget {
 }
 
 class _WelcomeViewState extends State<WelcomeView>
-    with SingleTickerProviderStateMixin, TransitionScreenMixin {
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<Offset> _offset;
   late Animation<double> _opacity;
 
   @override
@@ -23,23 +24,35 @@ class _WelcomeViewState extends State<WelcomeView>
   List<Status> get forwardExitStatuses => [Status.welcomeToAskQuestion];
 
   @override
-  void initState() {
-    forwardTransitionController = AnimationController(
+  void initializeTransitionController() {
+    enterTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
 
+  @override
+  void initState() {
     super.initState();
 
+    _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(enterTransitionController);
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(forwardTransitionController);
+        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: const _WelcomeView(),
+    return SlideTransition(
+      position: _offset,
+      child: FadeTransition(
+        opacity: _opacity,
+        child: const _WelcomeView(),
+      ),
     );
   }
 }
@@ -52,26 +65,31 @@ class _WelcomeView extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = context.l10n;
 
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              l10n.initialScreenTitle,
-              textAlign: TextAlign.center,
-              style: theme.textTheme.displayLarge?.copyWith(
-                color: VertexColors.navy,
+    final state = context.watch<HomeBloc>().state;
+
+    return IgnorePointer(
+      ignoring: !state.isWelcomeVisible,
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                l10n.initialScreenTitle,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.displayLarge?.copyWith(
+                  color: VertexColors.navy,
+                ),
               ),
-            ),
-            const SizedBox(height: 40),
-            CTAButton(
-              icon: vertexIcons.arrowForward.image(),
-              label: l10n.startAsking,
-              onPressed: () =>
-                  context.read<HomeBloc>().add(const FromWelcomeToQuestion()),
-            ),
-          ],
+              const SizedBox(height: 40),
+              PrimaryCTA(
+                icon: vertexIcons.arrowForward.image(),
+                label: l10n.startAsking,
+                onPressed: () =>
+                    context.read<HomeBloc>().add(const FromWelcomeToQuestion()),
+              ),
+            ],
+          ),
         ),
       ),
     );

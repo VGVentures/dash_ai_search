@@ -121,13 +121,15 @@ class _AnimatedSpriteState extends State<AnimatedSprite> {
     );
     _spriteAnimationTicker = _animation.createTicker();
 
-    setState(() {
-      _status = _AnimatedSpriteStatus.loaded;
-      if (widget.mode == AnimationMode.loop ||
-          widget.mode == AnimationMode.oneTime) {
-        _isPlaying = true;
-      }
-    });
+    if (mounted) {
+      setState(() {
+        _status = _AnimatedSpriteStatus.loaded;
+        if (widget.mode == AnimationMode.loop ||
+            widget.mode == AnimationMode.oneTime) {
+          _isPlaying = true;
+        }
+      });
+    }
   }
 
   @override

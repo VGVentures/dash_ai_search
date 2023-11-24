@@ -1,4 +1,5 @@
 export 'background.dart';
+export 'circle.dart';
 export 'logo.dart';
 export 'question_view.dart';
 export 'results_view.dart';

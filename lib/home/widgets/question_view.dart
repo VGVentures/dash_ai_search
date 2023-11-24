@@ -13,7 +13,7 @@ class QuestionView extends StatefulWidget {
 }
 
 class _QuestionViewState extends State<QuestionView>
-    with SingleTickerProviderStateMixin, TransitionScreenMixin {
+    with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
 
   @override
@@ -23,8 +23,8 @@ class _QuestionViewState extends State<QuestionView>
   List<Status> get forwardExitStatuses => [Status.askQuestionToThinking];
 
   @override
-  void initState() {
-    forwardTransitionController = AnimationController(
+  void initializeTransitionController() {
+    enterTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     )..addStatusListener((status) {
@@ -32,11 +32,18 @@ class _QuestionViewState extends State<QuestionView>
           context.read<HomeBloc>().add(const AskQuestion());
         }
       });
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
 
+  @override
+  void initState() {
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(forwardTransitionController);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
 
   @override

@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   @protected
-  late AnimationController forwardTransitionController;
+  late AnimationController enterTransitionController;
 
   @protected
-  late AnimationController backTransitionController;
+  late AnimationController exitTransitionController;
 
   @protected
   List<Status> forwardEnterStatuses = [];
@@ -21,9 +21,14 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   @protected
   List<Status> backExitStatuses = [];
 
+  @protected
+  void initializeTransitionController() {}
+
   @override
   void initState() {
     super.initState();
+
+    initializeTransitionController();
 
     enterAnimation();
 
@@ -45,28 +50,28 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    forwardTransitionController.dispose();
-    backTransitionController.dispose();
+    enterTransitionController.dispose();
+    exitTransitionController.dispose();
     super.dispose();
   }
 
   @protected
   void enterAnimation() {
-    forwardTransitionController.forward();
+    enterTransitionController.forward();
   }
 
   @protected
   void exitAnimation() {
-    forwardTransitionController.reverse();
+    exitTransitionController.forward();
   }
 
   @protected
   void popEnterAnimation() {
-    backTransitionController.forward();
+    exitTransitionController.reverse();
   }
 
   @protected
   void popExitAnimation() {
-    backTransitionController.reverse();
+    enterTransitionController.reverse();
   }
 }

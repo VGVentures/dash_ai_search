@@ -22,83 +22,35 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    final state = context.watch<HomeBloc>().state;
+
+    return Scaffold(
       backgroundColor: VertexColors.arctic,
       body: Stack(
         children: [
-          Positioned(
-            top: 0,
-            bottom: 0,
-            child: Background(),
-          ),
-          Positioned(
+          if (state.isWelcomeVisible)
+            const Positioned(
+              top: 0,
+              bottom: 0,
+              child: Background(),
+            ),
+          const Positioned(
             top: 40,
             left: 48,
             child: Logo(),
           ),
-          _WelcomeView(),
-          _QuestionView(),
-          _ThinkingView(),
-          _ResultsView(),
-          Positioned(
-            bottom: 50,
-            left: 50,
-            child: DashAnimation(),
-          ),
+          if (state.isWelcomeVisible) const WelcomeView(),
+          if (state.isQuestionVisible) const QuestionView(),
+          if (state.isThinkingVisible) const ThinkingView(),
+          if (state.isResultsVisible) const ResultsView(),
+          if (state.isDashVisible)
+            const Positioned(
+              bottom: 50,
+              left: 50,
+              child: DashAnimation(),
+            ),
         ],
       ),
-    );
-  }
-}
-
-class _WelcomeView extends StatelessWidget {
-  const _WelcomeView();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, bool>(
-      selector: (state) => state.isWelcomeVisible,
-      builder: (_, isVisible) =>
-          isVisible ? const WelcomeView() : const SizedBox.shrink(),
-    );
-  }
-}
-
-class _QuestionView extends StatelessWidget {
-  const _QuestionView();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, bool>(
-      selector: (state) => state.isQuestionVisible,
-      builder: (_, isVisible) =>
-          isVisible ? const QuestionView() : const SizedBox.shrink(),
-    );
-  }
-}
-
-class _ThinkingView extends StatelessWidget {
-  const _ThinkingView();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, bool>(
-      selector: (state) => state.isThinkingVisible,
-      builder: (_, isVisible) =>
-          isVisible ? const ThinkingView() : const SizedBox.shrink(),
-    );
-  }
-}
-
-class _ResultsView extends StatelessWidget {
-  const _ResultsView();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocSelector<HomeBloc, HomeState, bool>(
-      selector: (state) => state.isResultsVisible,
-      builder: (_, isVisible) =>
-          isVisible ? const ResultsView() : const SizedBox.shrink(),
     );
   }
 }

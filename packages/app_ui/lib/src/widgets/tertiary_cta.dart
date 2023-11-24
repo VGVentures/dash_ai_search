@@ -1,13 +1,13 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
-/// {@template cta_button}
-/// A button that displays an image on the left side and a text on the right
+/// {@template tertiary_cta}
+/// TertiaryCTA
 /// side.
 /// {@endtemplate}
-class CTAButton extends StatelessWidget {
-  /// {@macro cta_button}
-  const CTAButton({
+class TertiaryCTA extends StatelessWidget {
+  /// {@macro tertiary_cta}
+  const TertiaryCTA({
     required this.label,
     this.icon,
     this.onPressed,
@@ -25,21 +25,8 @@ class CTAButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        backgroundColor: const MaterialStatePropertyAll(
-          VertexColors.googleBlue,
-        ),
-        padding: MaterialStatePropertyAll(
-          EdgeInsets.only(
-            left: icon != null ? 24 : 32,
-            top: 20,
-            bottom: 20,
-            right: 32,
-          ),
-        ),
-      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
