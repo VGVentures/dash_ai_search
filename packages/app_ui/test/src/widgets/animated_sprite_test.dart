@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors
 import 'dart:ui' as ui show Image;
 
 import 'package:app_ui/app_ui.dart';

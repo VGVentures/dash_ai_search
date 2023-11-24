@@ -4,37 +4,44 @@ enum Status {
   welcome,
   welcomeToAskQuestion,
   askQuestion,
-  askQuestionToResults,
+  askQuestionToThinking,
+  thinking,
+  thinkingToResults,
   results,
-  resultsBackToAskQuestion,
 }
 
 class HomeState extends Equatable {
   const HomeState({
     this.status = Status.welcome,
+    this.query = '',
+    this.vertexResponse = const VertexResponse.empty(),
   });
 
   final Status status;
+  final String query;
+  final VertexResponse vertexResponse;
 
   bool get isWelcomeVisible =>
       status == Status.welcome || status == Status.welcomeToAskQuestion;
   bool get isQuestionVisible =>
-      status == Status.welcomeToAskQuestion ||
-      status == Status.askQuestion ||
-      status == Status.resultsBackToAskQuestion;
+      status == Status.welcomeToAskQuestion || status == Status.askQuestion;
+  bool get isThinkingVisible =>
+      status == Status.askQuestionToThinking || status == Status.thinking;
   bool get isResultsVisible =>
-      status == Status.askQuestionToResults ||
-      status == Status.results ||
-      status == Status.resultsBackToAskQuestion;
+      status == Status.thinkingToResults || status == Status.results;
 
   HomeState copyWith({
     Status? status,
+    String? query,
+    VertexResponse? vertexResponse,
   }) {
     return HomeState(
       status: status ?? this.status,
+      query: query ?? this.query,
+      vertexResponse: vertexResponse ?? this.vertexResponse,
     );
   }
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [status, query, vertexResponse];
 }

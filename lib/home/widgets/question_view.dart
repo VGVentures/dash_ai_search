@@ -17,11 +17,10 @@ class _QuestionViewState extends State<QuestionView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get inStatuses =>
-      [Status.welcomeToAskQuestion, Status.resultsBackToAskQuestion];
+  List<Status> get inStatuses => [Status.welcomeToAskQuestion];
 
   @override
-  List<Status> get outStatuses => [Status.askQuestionToResults];
+  List<Status> get outStatuses => [Status.askQuestionToThinking];
 
   @override
   void initState() {
@@ -70,13 +69,15 @@ class _QuestionView extends StatelessWidget {
             QuestionInputTextField(
               icon: vertexIcons.stars.image(),
               hint: l10n.questionHint,
-              action: CTAButton(
-                label: l10n.ask,
-                onPressed: () => context
-                    .read<HomeBloc>()
-                    .add(const FromAskQuestionToResults()),
-              ),
+              actionText: l10n.ask,
+              onTextUpdated: (String query) {
+                context.read<HomeBloc>().add(QueryUpdated(query: query));
+              },
+              onActionPressed: () {
+                context.read<HomeBloc>().add(const QuestionAsked());
+              },
             ),
+//FromAskQuestionToResults
           ],
         ),
       ),

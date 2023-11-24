@@ -2,6 +2,7 @@ import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:questions_repository/questions_repository.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +10,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => HomeBloc(),
+      create: (_) => HomeBloc(context.read<QuestionsRepository>()),
       child: const HomeView(),
     );
   }
@@ -37,6 +38,7 @@ class HomeView extends StatelessWidget {
           ),
           _WelcomeView(),
           _QuestionView(),
+          _ThinkingView(),
           _ResultsView(),
           Positioned(
             bottom: 50,
@@ -75,6 +77,19 @@ class _QuestionView extends StatelessWidget {
   }
 }
 
+class _ThinkingView extends StatelessWidget {
+  const _ThinkingView();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<HomeBloc, HomeState, bool>(
+      selector: (state) => state.isThinkingVisible,
+      builder: (_, isVisible) =>
+          isVisible ? const ThinkingView() : const SizedBox.shrink(),
+    );
+  }
+}
+
 class _ResultsView extends StatelessWidget {
   const _ResultsView();
 
@@ -82,17 +97,8 @@ class _ResultsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocSelector<HomeBloc, HomeState, bool>(
       selector: (state) => state.isResultsVisible,
-      builder: (_, isVisible) {
-        return isVisible
-            ? Center(
-                child: CTAButton(
-                  label: 'Back',
-                  onPressed: () =>
-                      context.read<HomeBloc>().add(const AskQuestionAgain()),
-                ),
-              )
-            : const SizedBox.shrink();
-      },
+      builder: (_, isVisible) =>
+          isVisible ? const ResultsView() : const SizedBox.shrink(),
     );
   }
 }

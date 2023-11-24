@@ -22,6 +22,8 @@ dependencies:
     sdk: flutter
   intl: ^0.18.0
   path_drawing: ^1.0.1
+  questions_repository:
+    path: packages/questions_repository
 
 dev_dependencies:
   bloc_test: ^9.1.4

@@ -15,10 +15,14 @@ class AskQuestion extends HomeEvent {
   const AskQuestion();
 }
 
-class FromAskQuestionToResults extends HomeEvent {
-  const FromAskQuestionToResults();
+class QueryUpdated extends HomeEvent {
+  const QueryUpdated({required this.query});
+
+  final String query;
+  @override
+  List<Object> get props => [query];
 }
 
-class AskQuestionAgain extends HomeEvent {
-  const AskQuestionAgain();
+class QuestionAsked extends HomeEvent {
+  const QuestionAsked();
 }

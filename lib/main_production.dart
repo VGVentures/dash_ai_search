@@ -1,6 +1,7 @@
 import 'package:api_client/api_client.dart';
 import 'package:dash_ai_search/app/app.dart';
 import 'package:dash_ai_search/bootstrap.dart';
+import 'package:questions_repository/questions_repository.dart';
 
 void main() {
   bootstrap(
@@ -9,8 +10,11 @@ void main() {
         baseUrl: 'http://production',
       );
 
+      final questionsRepository =
+          QuestionsRepository(apiClient.questionsResource);
+
       return App(
-        apiClient: apiClient,
+        questionsRepository: questionsRepository,
       );
     },
   );
