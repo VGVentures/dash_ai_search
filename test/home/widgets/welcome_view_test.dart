@@ -31,10 +31,10 @@ void main() {
       final l10n = tester.element(find.byType(WelcomeView)).l10n;
 
       expect(find.text(l10n.initialScreenTitle), findsOneWidget);
-      expect(find.byType(CTAButton), findsOneWidget);
+      expect(find.byType(PrimaryCTA), findsOneWidget);
     });
 
-    testWidgets('calls FromWelcomeToQuestion on CTAButton tapped',
+    testWidgets('calls FromWelcomeToQuestion on PrimaryCTA tapped',
         (tester) async {
       await tester.pumpApp(
         BlocProvider.value(
@@ -43,7 +43,7 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(CTAButton));
+      await tester.tap(find.byType(PrimaryCTA));
 
       verify(() => homeBloc.add(const FromWelcomeToQuestion())).called(1);
     });

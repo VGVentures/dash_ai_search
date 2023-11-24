@@ -5,10 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import '../helpers/helpers.dart';
 
 void main() {
-  group('CTAButton', () {
+  group('PrimaryCTA', () {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
-        CTAButton(
+        PrimaryCTA(
           icon: Assets.icons.arrowForward.image(),
           label: 'label',
         ),
@@ -21,7 +21,7 @@ void main() {
       var called = false;
 
       await tester.pumpApp(
-        CTAButton(
+        PrimaryCTA(
           icon: Assets.icons.arrowForward.image(),
           label: 'label',
           onPressed: () {
@@ -30,7 +30,7 @@ void main() {
         ),
       );
 
-      await tester.tap(find.byType(CTAButton));
+      await tester.tap(find.byType(PrimaryCTA));
       expect(called, isTrue);
     });
   });

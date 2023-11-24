@@ -27,10 +27,26 @@ class $AssetsIconsGen {
   List<AssetGenImage> get values => [arrowForward, asterisk, stars];
 }
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/thumb_down.png
+  AssetGenImage get thumbDown =>
+      const AssetGenImage('assets/images/thumb_down.png');
+
+  /// File path: assets/images/thumb_up.png
+  AssetGenImage get thumbUp =>
+      const AssetGenImage('assets/images/thumb_up.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [thumbDown, thumbUp];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsIconsGen icons = $AssetsIconsGen();
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
 class AssetGenImage {
