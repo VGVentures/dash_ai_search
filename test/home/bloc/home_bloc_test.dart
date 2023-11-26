@@ -79,5 +79,16 @@ void main() {
         ],
       );
     });
+
+    group('SeeSourceAnswersRequested', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.seeSourceAnswers',
+        build: buildBloc,
+        act: (bloc) => bloc.add(SeeSourceAnswersRequested()),
+        expect: () => [
+          HomeState(status: Status.seeSourceAnswers),
+        ],
+      );
+    });
   });
 }
