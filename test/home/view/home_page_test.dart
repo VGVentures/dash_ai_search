@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:dash_ai_search/home/widgets/see_source_answers.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -84,11 +85,43 @@ void main() {
       expect(find.byType(ThinkingView), findsOneWidget);
     });
 
-    testWidgets('renders ResultsView if isResultsVisible', (tester) async {
+    group('ResultsView', () {
+      testWidgets('is rendered if isResultsVisible', (tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(
+            status: Status.results,
+          ),
+        );
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: homeBloc,
+            child: HomeView(),
+          ),
+        );
+
+        expect(find.byType(ResultsView), findsOneWidget);
+      });
+
+      testWidgets('adds SeeSourceAnswersRequested to bloc', (tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(status: Status.results),
+        );
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: homeBloc,
+            child: HomeView(),
+          ),
+        );
+        expect(find.byType(SeeSourceAnswersButton), findsOneWidget);
+        await tester.tap(find.byType(SeeSourceAnswersButton));
+        verify(() => homeBloc.add(const SeeSourceAnswersRequested())).called(1);
+      });
+    });
+
+    testWidgets('renders SeeSourceAnswers if isSeeSourceAnswersVisible',
+        (tester) async {
       when(() => homeBloc.state).thenReturn(
-        HomeState(
-          status: Status.results,
-        ),
+        HomeState(status: Status.seeSourceAnswers),
       );
       await tester.pumpApp(
         BlocProvider.value(
@@ -97,7 +130,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(ResultsView), findsOneWidget);
+      expect(find.byType(SeeSourceAnswers), findsOneWidget);
     });
   });
 }

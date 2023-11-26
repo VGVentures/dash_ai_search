@@ -14,6 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<AskQuestion>(_onQuestion);
     on<QueryUpdated>(_queryUpdated);
     on<QuestionAsked>(_questionAsked);
+    on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -48,5 +49,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         vertexResponse: result,
       ),
     );
+  }
+
+  void _onSeeSourceAnswersRequested(
+    SeeSourceAnswersRequested event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(status: Status.seeSourceAnswers));
   }
 }

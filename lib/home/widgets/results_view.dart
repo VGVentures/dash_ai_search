@@ -58,71 +58,6 @@ class BlueContainer extends StatelessWidget {
   }
 }
 
-class FeedbackButtons extends StatelessWidget {
-  @visibleForTesting
-  const FeedbackButtons({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        Like(),
-        SizedBox(
-          width: 16,
-        ),
-        Dislike(),
-      ],
-    );
-  }
-}
-
-class Like extends StatelessWidget {
-  @visibleForTesting
-  const Like({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FeedbackButton(
-      icon: vertexImages.thumbUp.image(),
-    );
-  }
-}
-
-class Dislike extends StatelessWidget {
-  @visibleForTesting
-  const Dislike({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return FeedbackButton(
-      icon: vertexImages.thumbDown.image(),
-    );
-  }
-}
-
-class FeedbackButton extends StatelessWidget {
-  const FeedbackButton({
-    required this.icon,
-    this.onPressed,
-    super.key,
-  });
-
-  final Widget icon;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return CircleAvatar(
-      backgroundColor: VertexColors.white,
-      radius: 32,
-      child: InkWell(
-        onTap: onPressed,
-        child: SizedBox.square(dimension: 33, child: icon),
-      ),
-    );
-  }
-}
-
 class SeeSourceAnswersButton extends StatelessWidget {
   const SeeSourceAnswersButton({super.key});
 
@@ -134,6 +69,8 @@ class SeeSourceAnswersButton extends StatelessWidget {
       child: TertiaryCTA(
         label: l10n.seeSourceAnswers,
         icon: vertexIcons.arrowForward.image(),
+        onPressed: () =>
+            context.read<HomeBloc>().add(const SeeSourceAnswersRequested()),
       ),
     );
   }
