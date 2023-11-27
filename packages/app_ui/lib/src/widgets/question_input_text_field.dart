@@ -55,12 +55,13 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       constraints: const BoxConstraints(maxWidth: 659),
       child: TextField(
         controller: _controller,
-        style: VertexTextStyles.body.copyWith(
-          color: VertexColors.navy,
+        style: textTheme.bodyMedium?.copyWith(
+          color: VertexColors.flutterNavy,
         ),
         decoration: InputDecoration(
           prefixIcon: Padding(

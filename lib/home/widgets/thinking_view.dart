@@ -80,7 +80,7 @@ class TextArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -88,7 +88,7 @@ class TextArea extends StatelessWidget {
           l10n.thinkingHeadline,
           textAlign: TextAlign.center,
           style:
-              VertexTextStyles.body.copyWith(color: VertexColors.flutterNavy),
+              textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
         ),
         const SizedBox(
           height: 40,
@@ -98,7 +98,7 @@ class TextArea extends StatelessWidget {
           child: Text(
             query,
             textAlign: TextAlign.center,
-            style: VertexTextStyles.display,
+            style: textTheme.displayLarge,
           ),
         ),
       ],
