@@ -76,6 +76,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     for (var i = 0; i < maxCardsVisible; i++) {
       children.add(
         AnimatedBox(
+          index: allCards[i].id,
           controller: animationController,
           offset: _getOffset(i),
           scale: _getScale(i),
@@ -112,6 +113,7 @@ class AnimatedBox extends StatelessWidget {
     required this.offset,
     required this.scale,
     required this.document,
+    required this.index,
     super.key,
   });
 
@@ -119,12 +121,11 @@ class AnimatedBox extends StatelessWidget {
   final Animation<Offset> offset;
   final Animation<double> scale;
   final VertexDocument document;
+  final String index;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 300,
-      right: 300,
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
@@ -132,11 +133,9 @@ class AnimatedBox extends StatelessWidget {
             scale: scale.value,
             child: Transform.translate(
               offset: offset.value,
-              child: Container(
-                height: 300,
-                width: 300,
-                color: VertexColors.arctic,
-                child: SourceCard(document: document),
+              child: SourceCard(
+                document: document,
+                index: index,
               ),
             ),
           );
@@ -147,20 +146,67 @@ class AnimatedBox extends StatelessWidget {
 }
 
 class SourceCard extends StatelessWidget {
-  const SourceCard({required this.document, super.key});
+  const SourceCard({required this.document, required this.index, super.key});
 
   final VertexDocument document;
+  final String index;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(document.metadata.title),
-        const Text('Average page title is 45 characters  | Flutter'),
-        const Text(
-          'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
-        ),
-      ],
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      height: 600,
+      width: 420,
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 56),
+      decoration: BoxDecoration(
+        color: VertexColors.arctic,
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(4.5, 4.5),
+            blurRadius: 3.59,
+            color: Colors.black.withOpacity(0.02),
+          ),
+          BoxShadow(
+            offset: const Offset(12.5, 12.5),
+            blurRadius: 10,
+            color: Colors.black.withOpacity(0.03),
+          ),
+          BoxShadow(
+            offset: const Offset(20, 20),
+            blurRadius: 24,
+            color: Colors.black.withOpacity(0.04),
+          ),
+          BoxShadow(
+            offset: const Offset(30, 30),
+            blurRadius: 32,
+            color: Colors.black.withOpacity(0.05),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            index,
+            style: textTheme.displaySmall
+                ?.copyWith(color: VertexColors.googleBlue),
+          ),
+          Text(
+            document.metadata.title,
+            style: textTheme.displaySmall
+                ?.copyWith(color: VertexColors.flutterNavy),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            document.metadata.description!,
+            style:
+                textTheme.bodySmall?.copyWith(color: VertexColors.mediumGrey),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -13,23 +13,49 @@ enum Status {
 
 class HomeState extends Equatable {
   const HomeState({
-    this.status = Status.results,
+    this.status = Status.seeSourceAnswers,
     this.query = '',
-    this.vertexResponse =
-        const VertexResponse(summary: "asdasd sa", documents: [
-      VertexDocument(
+    this.vertexResponse = const VertexResponse(
+      summary: 'asdasd sa',
+      documents: [
+        VertexDocument(
+          id: '1',
           metadata: VertexMetadata(
-              url: "url", title: "1", description: "description")),
-      VertexDocument(
+            url: 'url',
+            title: 'Average page title is 45 characters  | Flutter',
+            description:
+                'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
+          ),
+        ),
+        VertexDocument(
+          id: '2',
           metadata: VertexMetadata(
-              url: "url", title: "2", description: "description")),
-      VertexDocument(
+            url: 'url',
+            title: 'Average page title is 45 characters  | Flutter',
+            description:
+                'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
+          ),
+        ),
+        VertexDocument(
+          id: '3',
           metadata: VertexMetadata(
-              url: "url", title: "3", description: "description")),
-      VertexDocument(
+            url: 'url',
+            title: 'Average page title is 45 characters  | Flutter',
+            description:
+                'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
+          ),
+        ),
+        VertexDocument(
+          id: '4',
           metadata: VertexMetadata(
-              url: "url", title: "4", description: "description")),
-    ]),
+            url: 'url',
+            title: 'Average page title is 45 characters  | Flutter',
+            description:
+                'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
+          ),
+        ),
+      ],
+    ),
   });
 
   final Status status;
