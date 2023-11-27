@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//// Defines the color palette for the VertexAI UI.
+/// Defines the color palette for the VertexAI UI.
 //// import 'package:flutter/material.dart';
 
 abstract class VertexColors {
