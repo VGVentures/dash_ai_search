@@ -145,3 +145,19 @@ class AnimatedBox extends StatelessWidget {
     );
   }
 }
+
+class SourceCard extends StatelessWidget {
+  const SourceCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      children: [
+        Text('[1]'),
+        Text('Average page title is 45 characters  | Flutter'),
+        Text(
+            'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.'),
+      ],
+    );
+  }
+}
