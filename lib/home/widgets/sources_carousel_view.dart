@@ -70,13 +70,17 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     );
   }
 
+  int index(VertexDocument document) {
+    return widget.documents.indexOf(document) + 1;
+  }
+
   void setupBoxes() {
     final children = <AnimatedBox>[];
     animationController.reset();
     for (var i = 0; i < maxCardsVisible; i++) {
       children.add(
         AnimatedBox(
-          index: allCards[i].id,
+          index: index(allCards[i]),
           controller: animationController,
           offset: _getOffset(i),
           scale: _getScale(i),
@@ -94,12 +98,11 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       children: [
         ...boxes,
         Align(
-          alignment: Alignment.bottomCenter,
-          child: TextButton(
-            onPressed: () {
-              animationController.forward(from: 0);
-            },
-            child: const Text('Press'),
+          alignment: Alignment.bottomLeft,
+          child: NextButton(
+            animationController: animationController,
+            current: index(boxes.last.document),
+            total: widget.documents.length,
           ),
         ),
       ],
@@ -108,6 +111,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 }
 
 class AnimatedBox extends StatelessWidget {
+  @visibleForTesting
   const AnimatedBox({
     required this.controller,
     required this.offset,
@@ -121,7 +125,7 @@ class AnimatedBox extends StatelessWidget {
   final Animation<Offset> offset;
   final Animation<double> scale;
   final VertexDocument document;
-  final String index;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -146,10 +150,11 @@ class AnimatedBox extends StatelessWidget {
 }
 
 class SourceCard extends StatelessWidget {
+  @visibleForTesting
   const SourceCard({required this.document, required this.index, super.key});
 
   final VertexDocument document;
-  final String index;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +196,7 @@ class SourceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                index,
+                '[ $index ]',
                 style: textTheme.displaySmall
                     ?.copyWith(color: VertexColors.googleBlue),
               ),
@@ -221,6 +226,45 @@ class SourceCard extends StatelessWidget {
               backgroundColor: VertexColors.googleBlue,
               child: Icon(Icons.link_sharp),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NextButton extends StatelessWidget {
+  @visibleForTesting
+  const NextButton({
+    required this.animationController,
+    required this.current,
+    required this.total,
+    super.key,
+  });
+
+  final AnimationController animationController;
+  final int current;
+  final int total;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return TextButton(
+      onPressed: () {
+        animationController.forward(from: 0);
+      },
+      child: Row(
+        children: [
+          Text(
+            '$current/$total',
+            style: textTheme.bodyMedium?.copyWith(color: VertexColors.arctic),
+          ),
+          const SizedBox(
+            width: 2,
+          ),
+          const Icon(
+            Icons.arrow_forward,
+            color: VertexColors.arctic,
           ),
         ],
       ),
