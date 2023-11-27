@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:dash_ai_search/home/widgets/see_source_answers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:questions_repository/questions_repository.dart';
@@ -36,21 +37,22 @@ class HomeView extends StatelessWidget {
               bottom: 0,
               child: Background(),
             ),
-          const Positioned(
-            top: 40,
-            left: 48,
-            child: Logo(),
-          ),
           if (state.isWelcomeVisible) const WelcomeView(),
           if (state.isQuestionVisible) const QuestionView(),
           if (state.isThinkingVisible) const ThinkingView(),
           if (state.isResultsVisible) const ResultsView(),
+          if (state.isSeeSourceAnswersVisible) const SeeSourceAnswers(),
           if (state.isDashVisible)
             const Positioned(
               bottom: 50,
               left: 50,
               child: DashAnimation(),
             ),
+          Positioned(
+            top: 40,
+            left: 48,
+            child: Logo(hasDarkBackground: state.isSeeSourceAnswersVisible),
+          ),
         ],
       ),
     );

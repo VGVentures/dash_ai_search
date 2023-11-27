@@ -30,5 +30,12 @@ void main() {
         equals(QuestionAsked()),
       );
     });
+
+    test('SeeSourceAnswersRequested supports value equality', () {
+      expect(
+        SeeSourceAnswersRequested(),
+        equals(SeeSourceAnswersRequested()),
+      );
+    });
   });
 }

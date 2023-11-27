@@ -26,3 +26,7 @@ class QueryUpdated extends HomeEvent {
 class QuestionAsked extends HomeEvent {
   const QuestionAsked();
 }
+
+class SeeSourceAnswersRequested extends HomeEvent {
+  const SeeSourceAnswersRequested();
+}
