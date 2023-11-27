@@ -12,7 +12,7 @@ class Logo extends StatelessWidget {
     final theme = Theme.of(context);
     final l10n = context.l10n;
     final textColor =
-        hasDarkBackground ? VertexColors.arctic : VertexColors.navy;
+        hasDarkBackground ? VertexColors.arctic : VertexColors.flutterNavy;
 
     return Row(
       children: [
