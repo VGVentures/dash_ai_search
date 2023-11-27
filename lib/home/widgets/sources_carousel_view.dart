@@ -184,29 +184,43 @@ class SourceCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
+        fit: StackFit.expand,
         children: [
-          Text(
-            index,
-            style: textTheme.displaySmall
-                ?.copyWith(color: VertexColors.googleBlue),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                index,
+                style: textTheme.displaySmall
+                    ?.copyWith(color: VertexColors.googleBlue),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                document.metadata.title,
+                style: textTheme.displaySmall
+                    ?.copyWith(color: VertexColors.flutterNavy),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Text(
+                document.metadata.description!,
+                style: textTheme.bodySmall
+                    ?.copyWith(color: VertexColors.mediumGrey),
+              ),
+            ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            document.metadata.title,
-            style: textTheme.displaySmall
-                ?.copyWith(color: VertexColors.flutterNavy),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Text(
-            document.metadata.description!,
-            style:
-                textTheme.bodySmall?.copyWith(color: VertexColors.mediumGrey),
+          const Positioned(
+            left: 0,
+            bottom: 0,
+            child: CircleAvatar(
+              radius: 30,
+              backgroundColor: VertexColors.googleBlue,
+              child: Icon(Icons.link_sharp),
+            ),
           ),
         ],
       ),
