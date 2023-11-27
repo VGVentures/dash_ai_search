@@ -7,10 +7,12 @@ void main() {
       expect(
         VertexDocument(
           metadata: VertexMetadata(url: '', title: '', description: ''),
+          id: '',
         ),
         equals(
           VertexDocument(
             metadata: VertexMetadata(url: '', title: '', description: ''),
+            id: '',
           ),
         ),
       );

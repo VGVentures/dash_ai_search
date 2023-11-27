@@ -24,6 +24,7 @@ void main() {
             title: 'title',
             description: 'description',
           ),
+          id: '',
         ),
       ],
     );
@@ -31,7 +32,7 @@ void main() {
     setUp(() {
       homeBloc = _MockHomeBloc();
       when(() => homeBloc.state).thenReturn(
-        HomeState(status: Status.seeSourceAnswers, vertexResponse: response),
+        HomeState(vertexResponse: response),
       );
     });
 
