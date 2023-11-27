@@ -13,12 +13,13 @@ class _CarouselView2State extends State<CarouselView2>
     Colors.red,
     Colors.blue,
     Colors.green,
+    Colors.pink,
   ];
   late AnimationController animationController;
   List<AnimatedBox> boxes = <AnimatedBox>[];
   static const maxCardsVisible = 3;
   int currentIndex = 0;
-  static const incrementsOffset = 250.0;
+  static const incrementsOffset = 300.0;
   static const incrementScale = 0.33;
 
   @override
@@ -41,7 +42,7 @@ class _CarouselView2State extends State<CarouselView2>
 
   Animation<Offset> _getOffset(int index) {
     if (index == 0) {
-      return Tween<Offset>(begin: Offset.zero, end: const Offset(600, 0))
+      return Tween<Offset>(begin: Offset.zero, end: const Offset(5000, 0))
           .animate(
         animationController,
       );
@@ -56,13 +57,14 @@ class _CarouselView2State extends State<CarouselView2>
 
   Animation<double> _getScale(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 0).animate(
+      return Tween<double>(begin: 1, end: 1 - 0.4).animate(
         animationController,
       );
     }
+    final startScale = 1 - (0.2 * index);
     return Tween<double>(
-      begin: 1 - (incrementScale * index),
-      end: 1 - (incrementScale * index) - incrementScale,
+      begin: startScale,
+      end: startScale + 0.2,
     ).animate(
       animationController,
     );
@@ -72,7 +74,6 @@ class _CarouselView2State extends State<CarouselView2>
     final children = <AnimatedBox>[];
     animationController.reset();
     for (var i = 0; i < maxCardsVisible; i++) {
-      final offset = _getOffset(i);
       children.add(
         AnimatedBox(
           controller: animationController,
@@ -83,7 +84,7 @@ class _CarouselView2State extends State<CarouselView2>
       );
     }
 
-    boxes = children;
+    boxes = children.reversed.toList();
   }
 
   @override
@@ -121,21 +122,20 @@ class AnimatedBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return Positioned(
+      top: 300,
+      right: 300,
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
           return Transform.scale(
-            scale: 1,
+            scale: scale.value,
             child: Transform.translate(
               offset: offset.value,
-              child: Opacity(
-                opacity: 1,
-                child: Container(
-                  height: 300,
-                  width: 300,
-                  color: color,
-                ),
+              child: Container(
+                height: 300,
+                width: 300,
+                color: color,
               ),
             ),
           );
