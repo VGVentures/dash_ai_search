@@ -192,6 +192,9 @@ class SourceCard extends StatelessWidget {
             style: textTheme.displaySmall
                 ?.copyWith(color: VertexColors.googleBlue),
           ),
+          const SizedBox(
+            height: 8,
+          ),
           Text(
             document.metadata.title,
             style: textTheme.displaySmall

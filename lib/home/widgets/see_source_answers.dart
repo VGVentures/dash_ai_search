@@ -34,13 +34,14 @@ class _AiResponse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       children: [
         Text(
           text,
-          style: VertexTextStyles.body.copyWith(
+          style: textTheme.headlineLarge?.copyWith(
             color: VertexColors.white,
-            fontSize: 32,
           ),
         ),
         const SizedBox(height: 20),

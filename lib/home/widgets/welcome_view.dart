@@ -63,7 +63,7 @@ class _WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final textTheme = Theme.of(context).textTheme;
     final l10n = context.l10n;
 
     final state = context.watch<HomeBloc>().state;
@@ -78,8 +78,8 @@ class _WelcomeView extends StatelessWidget {
               Text(
                 l10n.initialScreenTitle,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.displayLarge?.copyWith(
-                  color: VertexColors.navy,
+                style: textTheme.displayLarge?.copyWith(
+                  color: VertexColors.flutterNavy,
                 ),
               ),
               const SizedBox(height: 40),
