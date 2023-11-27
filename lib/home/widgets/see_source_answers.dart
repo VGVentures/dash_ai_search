@@ -11,22 +11,15 @@ class SeeSourceAnswers extends StatelessWidget {
   Widget build(BuildContext context) {
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-    return SizedBox.expand(
-      child: ColoredBox(
-        color: VertexColors.googleBlue,
-        child: Column(
+    return ColoredBox(
+      color: VertexColors.googleBlue,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: Row(
           children: [
-            const SizedBox(height: 100),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                children: [
-                  Expanded(child: _AiResponse(response.summary)),
-                  const SizedBox(width: 150),
-                  Expanded(child: _ResponseCarousel(response.documents)),
-                ],
-              ),
-            ),
+            Expanded(child: _AiResponse(response.summary)),
+            const SizedBox(width: 150),
+            Expanded(child: _ResponseCarousel(response.documents)),
           ],
         ),
       ),
@@ -64,20 +57,8 @@ class _ResponseCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const Placeholder(color: VertexColors.flutterCyan),
-        Center(
-          child: Text(
-            '${documents.length}',
-            style: VertexTextStyles.body.copyWith(
-              color: VertexColors.flutterCyan,
-              fontSize: 60,
-            ),
-          ),
-        ),
-      ],
+    return SourcesCarouselView(
+      documents: documents,
     );
   }
 }

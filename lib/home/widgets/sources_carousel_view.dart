@@ -1,7 +1,11 @@
+import 'package:api_client/api_client.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 class SourcesCarouselView extends StatefulWidget {
-  const SourcesCarouselView({super.key});
+  const SourcesCarouselView({required this.documents, super.key});
+
+  final List<VertexDocument> documents;
 
   @override
   State<SourcesCarouselView> createState() => _SourcesCarouselViewState();
@@ -9,25 +13,20 @@ class SourcesCarouselView extends StatefulWidget {
 
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
-  List<MaterialColor> allCards = [
-    Colors.red,
-    Colors.blue,
-    Colors.green,
-    Colors.pink,
-    Colors.yellow,
-  ];
   late AnimationController animationController;
   List<AnimatedBox> boxes = <AnimatedBox>[];
   static const maxCardsVisible = 4;
   int currentIndex = 0;
   static const incrementsOffset = 300.0;
   static const incrementScale = 0.2;
+  List<VertexDocument> allCards = [];
 
   @override
   void initState() {
     super.initState();
     animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    allCards = List.from(widget.documents);
     setupBoxes();
     animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -79,8 +78,8 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         AnimatedBox(
           controller: animationController,
           offset: _getOffset(i),
-          color: allCards[i],
           scale: _getScale(i),
+          document: allCards[i],
         ),
       );
     }
@@ -111,15 +110,15 @@ class AnimatedBox extends StatelessWidget {
   const AnimatedBox({
     required this.controller,
     required this.offset,
-    required this.color,
     required this.scale,
+    required this.document,
     super.key,
   });
 
   final AnimationController controller;
   final Animation<Offset> offset;
-  final Color color;
   final Animation<double> scale;
+  final VertexDocument document;
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +135,8 @@ class AnimatedBox extends StatelessWidget {
               child: Container(
                 height: 300,
                 width: 300,
-                color: color,
+                color: VertexColors.arctic,
+                child: SourceCard(document: document),
               ),
             ),
           );
@@ -147,16 +147,19 @@ class AnimatedBox extends StatelessWidget {
 }
 
 class SourceCard extends StatelessWidget {
-  const SourceCard({super.key});
+  const SourceCard({required this.document, super.key});
+
+  final VertexDocument document;
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
-        Text('[1]'),
-        Text('Average page title is 45 characters  | Flutter'),
-        Text(
-            'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.'),
+        Text(document.metadata.title),
+        const Text('Average page title is 45 characters  | Flutter'),
+        const Text(
+          'Pressing the back button causes Navigator.pop to be called. On Android, pressing the system back button does the same thing. Using named navigator routes Mobile apps ofter manage a large number of routes and it’s often easiest to refer to them by name.',
+        ),
       ],
     );
   }
