@@ -1,5 +1,6 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:dash_ai_search/home/widgets/carousel_view_2.dart';
 import 'package:dash_ai_search/home/widgets/see_source_answers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +26,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.watch<HomeBloc>().state;
 
-    return const CarouselView();
+    return const CarouselView2();
 
     return Scaffold(
       backgroundColor: VertexColors.arctic,
