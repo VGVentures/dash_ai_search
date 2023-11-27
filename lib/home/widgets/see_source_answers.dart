@@ -14,7 +14,7 @@ class SeeSourceAnswers extends StatelessWidget {
     return ColoredBox(
       color: VertexColors.googleBlue,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
+        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100),
         child: Row(
           children: [
             Expanded(child: _AiResponse(response.summary)),

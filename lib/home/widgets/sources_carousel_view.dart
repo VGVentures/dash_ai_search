@@ -207,7 +207,7 @@ class SourceCard extends StatelessWidget {
                 height: 16,
               ),
               Text(
-                document.metadata.description!,
+                document.metadata.description ?? '',
                 style: textTheme.bodySmall
                     ?.copyWith(color: VertexColors.mediumGrey),
               ),
