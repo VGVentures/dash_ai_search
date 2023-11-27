@@ -14,10 +14,11 @@ class _CarouselView2State extends State<CarouselView2>
     Colors.blue,
     Colors.green,
     Colors.pink,
+    Colors.yellow,
   ];
   late AnimationController animationController;
   List<AnimatedBox> boxes = <AnimatedBox>[];
-  static const maxCardsVisible = 3;
+  static const maxCardsVisible = 4;
   int currentIndex = 0;
   static const incrementsOffset = 300.0;
   static const incrementScale = 0.2;
