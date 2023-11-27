@@ -88,11 +88,19 @@ class _Circles extends Phased<BackgroundPhase> {
   @override
   Widget build(BuildContext context) {
     final size = baseRadius * 2;
-    const duration = Duration(milliseconds: 500);
+    const duration = Duration(seconds: 1);
+    const scaleDuration = Duration(milliseconds: 500);
+    const curve = Curves.decelerate;
     return Stack(
       children: [
         AnimatedPositioned(
-          left: -offset,
+          curve: curve,
+          left: state.phaseValue(
+            values: {
+              BackgroundPhase.circlesOut: -offset * 2,
+            },
+            defaultValue: -offset,
+          ),
           duration: duration,
           top: state.phaseValue(
             values: {
@@ -103,8 +111,14 @@ class _Circles extends Phased<BackgroundPhase> {
           child: Circle(radius: baseRadius),
         ),
         AnimatedPositioned(
+          curve: curve,
           duration: duration,
-          left: size - offset,
+          left: state.phaseValue(
+            values: {
+              BackgroundPhase.circlesOut: -(size * 2 - offset),
+            },
+            defaultValue: size - offset,
+          ),
           top: state.phaseValue(
             values: {
               BackgroundPhase.initial: -size,
@@ -133,6 +147,7 @@ class _Circles extends Phased<BackgroundPhase> {
           ),
         ),
         AnimatedPositioned(
+          curve: curve,
           duration: duration,
           left: size * 2 - offset,
           top: state.phaseValue(
@@ -142,7 +157,7 @@ class _Circles extends Phased<BackgroundPhase> {
             defaultValue: baseContainerHeight / 2 - baseRadius,
           ),
           child: AnimatedScale(
-            duration: duration,
+            duration: scaleDuration,
             scale: state.phaseValue(
               values: {
                 BackgroundPhase.circlesOut: 4,
@@ -153,8 +168,14 @@ class _Circles extends Phased<BackgroundPhase> {
           ),
         ),
         AnimatedPositioned(
+          curve: curve,
           duration: duration,
-          left: size * 3 - offset,
+          left: state.phaseValue(
+            values: {
+              BackgroundPhase.circlesOut: size * 4,
+            },
+            defaultValue: size * 3 - offset,
+          ),
           top: state.phaseValue(
             values: {
               BackgroundPhase.initial: -size,
