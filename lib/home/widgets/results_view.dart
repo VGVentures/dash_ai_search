@@ -27,6 +27,7 @@ class BlueContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
       decoration: const BoxDecoration(
         color: VertexColors.googleBlue,
@@ -40,8 +41,8 @@ class BlueContainer extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Text(
               summary,
-              style: VertexTextStyles.body
-                  .copyWith(color: VertexColors.white, fontSize: 32),
+              style: textTheme.headlineLarge
+                  ?.copyWith(color: VertexColors.white, fontSize: 32),
             ),
           ),
           const Align(

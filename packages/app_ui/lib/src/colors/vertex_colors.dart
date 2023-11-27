@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
 
-/// Defines the color palette for the VertexAI UI.
+//// Defines the color palette for the VertexAI UI.
+//// import 'package:flutter/material.dart';
+
 abstract class VertexColors {
-  /// Navy Color Swatch
-  static const Color navy = Color(0xff020f30);
+  /// flutterNavy Color Swatch
+  static const Color flutterNavy = Color(0xff042a59);
 
-  /// Fluter Navy Color Swatch
-  static const Color flutterNavy = Color(0xff042A59);
+  /// flutterBlue Color Swatch
+  static const Color flutterBlue = Color(0xff0553b1);
 
-  /// Google Blue Color Swatch
+  /// googleBlue Color Swatch
   static const Color googleBlue = Color(0xff3089f1);
 
-  /// Flutter Cyan Color Swatch
-  static const Color flutterCyan = Color(0xff00e3ff);
+  /// flutterCyan Color Swatch
+  static const Color flutterCyan = Color(0xff0ecbfd);
 
-  /// Lilac Color Swatch
+  /// lilac Color Swatch
   static const Color lilac = Color(0xffdde2f6);
 
-  /// Deep Arctic Color Swatch
+  /// deepArctic Color Swatch
   static const Color deepArctic = Color(0xfff3f6ff);
 
-  /// Arctic Color Swatch
+  /// arctic Color Swatch
   static const Color arctic = Color(0xfffafbff);
 
-  /// Medium Grey Color Swatch
+  /// mediumGrey Color Swatch
   static const Color mediumGrey = Color(0xff919191);
 
-  /// Light Grey Color Swatch
+  /// lightGrey Color Swatch
   static const Color lightGrey = Color(0xffe2e2e2);
 
-  /// White Color Swatch
+  /// white Color Swatch
   static const Color white = Color(0xffffffff);
+
+  /// gradient Color Swatch
+  static const List<Color> gradient = <Color>[
+    Color(0xff3089f1),
+    Color(0xff3089f1),
+    Color(0xff0ecbfd),
+  ];
 }

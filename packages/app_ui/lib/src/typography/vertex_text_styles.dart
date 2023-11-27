@@ -1,38 +1,82 @@
 import 'package:flutter/material.dart';
 
-/// {@template vertex_text_styles}
-/// App Text Style Definitions
-/// {@endtemplate}
-class VertexTextStyles {
-  /// {@macro vertex_text_styles}
+//// {@macro vertex_text_styles}
+abstract class VertexTextStyles {
+  /// displayLarge Text Style
+  static const TextStyle displayLarge = TextStyle(
+    fontSize: 72,
+    fontWeight: FontWeight.w700,
+    height: 1.11,
+    letterSpacing: -2,
+    fontFamily: 'Google Sans',
+  );
 
-  static TextStyle get _baseTextStyle => const TextStyle(
-        fontWeight: FontWeight.w400,
-        package: 'app_ui',
-        fontFamily: 'GoogleSans',
-        color: Colors.black,
-      );
+  /// displayMedium Text Style
+  static const TextStyle displayMedium = TextStyle(
+    fontSize: 48,
+    fontWeight: FontWeight.w700,
+    height: 1.17,
+    letterSpacing: -1,
+    fontFamily: 'Google Sans',
+  );
 
-  /// Title Style
-  static TextStyle get display => _baseTextStyle.copyWith(
-        fontSize: 72,
-        fontWeight: FontWeight.bold,
-        height: 1.11,
-        letterSpacing: -2,
-      );
+  /// displaySmall Text Style
+  static const TextStyle displaySmall = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w500,
+    height: 1.25,
+    letterSpacing: -1,
+    fontFamily: 'Google Sans',
+  );
 
-  /// Button Style
-  static TextStyle get body => _baseTextStyle.copyWith(
-        fontSize: 18,
-        height: 1.3,
-        letterSpacing: -0.5,
-      );
+  /// headline Text Style
+  static const TextStyle headline = TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    letterSpacing: -1,
+    fontFamily: 'Google Sans',
+  );
 
-  /// Label Style
-  static TextStyle get label => _baseTextStyle.copyWith(
-        fontSize: 14,
-        fontWeight: FontWeight.bold,
-        height: 1.7,
-        letterSpacing: 2,
-      );
+  /// bodyLargeBold Text Style
+  static const TextStyle bodyLargeBold = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    height: 1.56,
+    fontFamily: 'Google Sans',
+  );
+
+  /// bodyLargeMedium Text Style
+  static const TextStyle bodyLargeMedium = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    height: 1.56,
+    fontFamily: 'Google Sans',
+  );
+
+  /// bodyLargeRegular Text Style
+  static const TextStyle bodyLargeRegular = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    height: 1.56,
+    fontFamily: 'Google Sans',
+  );
+
+  /// buttons&CTA's Text Style
+  static const TextStyle cta = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    height: 1.33,
+    letterSpacing: -0.5,
+    fontFamily: 'Google Sans',
+  );
+
+  /// labelLarge Text Style
+  static const TextStyle labelLarge = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w700,
+    height: 1.71,
+    letterSpacing: 2,
+    fontFamily: 'Google Sans',
+  );
 }

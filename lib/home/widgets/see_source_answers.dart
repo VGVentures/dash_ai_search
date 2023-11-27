@@ -41,13 +41,14 @@ class _AiResponse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       children: [
         Text(
           text,
-          style: VertexTextStyles.body.copyWith(
+          style: textTheme.headlineLarge?.copyWith(
             color: VertexColors.white,
-            fontSize: 32,
           ),
         ),
         const SizedBox(height: 20),
@@ -71,7 +72,7 @@ class _ResponseCarousel extends StatelessWidget {
         Center(
           child: Text(
             '${documents.length}',
-            style: VertexTextStyles.body.copyWith(
+            style: VertexTextStyles.headline.copyWith(
               color: VertexColors.flutterCyan,
               fontSize: 60,
             ),
