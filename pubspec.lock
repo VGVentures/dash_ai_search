@@ -510,6 +510,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.1"
+  phased:
+    dependency: "direct main"
+    description:
+      name: phased
+      sha256: "4dc19d589fd059268b07357767ac96eef2861eb5e8ceedf9d23fb933f0128396"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   pool:
     dependency: transitive
     description:
