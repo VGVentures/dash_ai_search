@@ -20,7 +20,7 @@ class _CarouselView2State extends State<CarouselView2>
   static const maxCardsVisible = 3;
   int currentIndex = 0;
   static const incrementsOffset = 300.0;
-  static const incrementScale = 0.33;
+  static const incrementScale = 0.2;
 
   @override
   void initState() {
@@ -57,14 +57,14 @@ class _CarouselView2State extends State<CarouselView2>
 
   Animation<double> _getScale(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 1 - 0.4).animate(
+      return Tween<double>(begin: 1, end: 1).animate(
         animationController,
       );
     }
-    final startScale = 1 - (0.2 * index);
+    final startScale = 1 - (incrementScale * index);
     return Tween<double>(
       begin: startScale,
-      end: startScale + 0.2,
+      end: startScale + incrementScale,
     ).animate(
       animationController,
     );
