@@ -1,6 +1,5 @@
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
-import 'package:dash_ai_search/home/widgets/transition_screen_mixin.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

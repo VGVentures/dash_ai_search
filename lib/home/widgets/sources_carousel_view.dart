@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CarouselView2 extends StatefulWidget {
-  const CarouselView2({super.key});
+class SourcesCarouselView extends StatefulWidget {
+  const SourcesCarouselView({super.key});
 
   @override
-  State<CarouselView2> createState() => _CarouselView2State();
+  State<SourcesCarouselView> createState() => _SourcesCarouselViewState();
 }
 
-class _CarouselView2State extends State<CarouselView2>
+class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
   List<MaterialColor> allCards = [
     Colors.red,
