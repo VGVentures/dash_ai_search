@@ -63,6 +63,7 @@ class _QuestionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
     final l10n = context.l10n;
 
     return Center(
@@ -73,18 +74,11 @@ class _QuestionView extends StatelessWidget {
             Text(
               l10n.questionScreenTitle,
               textAlign: TextAlign.center,
-              style: theme.textTheme.displayLarge,
+              style: textTheme.displayLarge
+                  ?.copyWith(color: VertexColors.flutterNavy),
             ),
             const SizedBox(height: 40),
-            QuestionInputTextField(
-              icon: vertexIcons.stars.image(),
-              hint: l10n.questionHint,
-              actionText: l10n.ask,
-              onTextUpdated: (String query) =>
-                  context.read<HomeBloc>().add(QueryUpdated(query: query)),
-              onActionPressed: () =>
-                  context.read<HomeBloc>().add(const QuestionAsked()),
-            ),
+            const SearchBox(),
           ],
         ),
       ),

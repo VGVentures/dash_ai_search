@@ -43,6 +43,7 @@ void main() {
           child: Material(child: SeeSourceAnswers()),
         ),
       );
+      expect(find.byType(SearchBox), findsOneWidget);
       expect(find.text(response.summary), findsOneWidget);
       expect(find.text(response.documents.length.toString()), findsOneWidget);
       expect(find.byType(Placeholder), findsOneWidget);

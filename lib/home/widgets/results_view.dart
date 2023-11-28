@@ -12,10 +12,67 @@ class ResultsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-    return Stack(
-      children: [
-        Align(child: BlueContainer(summary: response.summary)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 64),
+          const _SearchBox(),
+          const SizedBox(height: 32),
+          Stack(
+            children: [
+              Align(child: BlueContainer(summary: response.summary)),
+            ],
+          ),
+          const SizedBox(height: 32),
+        ],
+      ),
+    );
+  }
+}
+
+class _SearchBox extends StatefulWidget {
+  const _SearchBox();
+
+  @override
+  State<_SearchBox> createState() => _SearchBoxState();
+}
+
+class _SearchBoxState extends State<_SearchBox>
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<Offset> _offset;
+  late Animation<double> _opacity;
+
+  @override
+  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
+
+  @override
+  void initializeTransitionController() {
+    super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
+        .animate(enterTransitionController);
+    _opacity =
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _offset,
+      child: FadeTransition(
+        opacity: _opacity,
+        child: const SearchBox(),
+      ),
     );
   }
 }
@@ -96,6 +153,8 @@ class _BlueContainerState extends State<BlueContainer>
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     final isSeeSourceAnswersVisible =
         context.select((HomeBloc bloc) => bloc.state.isSeeSourceAnswersVisible);
 
@@ -131,8 +190,8 @@ class _BlueContainerState extends State<BlueContainer>
                       alignment: Alignment.topCenter,
                       child: Text(
                         widget.summary,
-                        style: VertexTextStyles.body
-                            .copyWith(color: VertexColors.white, fontSize: 32),
+                        style: textTheme.headlineLarge
+                            ?.copyWith(color: VertexColors.white, fontSize: 32),
                       ),
                     ),
                     const Align(

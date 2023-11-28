@@ -13,6 +13,7 @@ class QuestionInputTextField extends StatefulWidget {
     required this.actionText,
     required this.onTextUpdated,
     required this.onActionPressed,
+    this.text,
     super.key,
   });
 
@@ -31,6 +32,9 @@ class QuestionInputTextField extends StatefulWidget {
   ///
   final VoidCallback onActionPressed;
 
+  /// Initial text displayed in the text field
+  final String? text;
+
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
 }
@@ -41,7 +45,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controller = TextEditingController(text: widget.text);
     _controller.addListener(() {
       widget.onTextUpdated(_controller.text);
     });
@@ -55,14 +59,17 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 659),
+      constraints: const BoxConstraints(maxWidth: 600),
       child: TextField(
         controller: _controller,
-        style: VertexTextStyles.body.copyWith(
-          color: VertexColors.navy,
+        style: textTheme.bodyMedium?.copyWith(
+          color: VertexColors.flutterNavy,
         ),
         decoration: InputDecoration(
+          filled: true,
+          fillColor: VertexColors.arctic,
           prefixIcon: Padding(
             padding: const EdgeInsets.only(left: 12),
             child: widget.icon,
