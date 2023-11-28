@@ -11,6 +11,7 @@ part 'vertex_document.g.dart';
 class VertexDocument extends Equatable {
   /// {@macro vertex_document}
   const VertexDocument({
+    required this.id,
     required this.metadata,
   });
 
@@ -21,9 +22,12 @@ class VertexDocument extends Equatable {
   /// Converts this object to a map in JSON format.
   Map<String, dynamic> toJson() => _$VertexDocumentToJson(this);
 
+  /// Id.
+  final String id;
+
   /// Metadata.
   final VertexMetadata metadata;
 
   @override
-  List<Object?> get props => [metadata];
+  List<Object?> get props => [metadata, id];
 }
