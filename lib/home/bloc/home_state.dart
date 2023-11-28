@@ -8,6 +8,7 @@ enum Status {
   thinking,
   thinkingToResults,
   results,
+  resultsToSourceAnswers,
   seeSourceAnswers,
 }
 
@@ -27,9 +28,14 @@ class HomeState extends Equatable {
   bool get isQuestionVisible =>
       status == Status.welcomeToAskQuestion || status == Status.askQuestion;
   bool get isThinkingVisible =>
-      status == Status.askQuestionToThinking || status == Status.thinking;
+      status == Status.askQuestionToThinking ||
+      status == Status.thinking ||
+      status == Status.thinkingToResults;
   bool get isResultsVisible =>
-      status == Status.thinkingToResults || status == Status.results;
+      status == Status.thinkingToResults ||
+      status == Status.results ||
+      status == Status.resultsToSourceAnswers ||
+      status == Status.seeSourceAnswers;
   bool get isSeeSourceAnswersVisible => status == Status.seeSourceAnswers;
   bool get isDashVisible => [
         Status.welcome,
@@ -38,6 +44,7 @@ class HomeState extends Equatable {
         Status.askQuestionToThinking,
         Status.thinkingToResults,
         Status.results,
+        Status.resultsToSourceAnswers,
       ].contains(status);
 
   HomeState copyWith({
