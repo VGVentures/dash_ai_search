@@ -78,15 +78,7 @@ class _QuestionView extends StatelessWidget {
                   ?.copyWith(color: VertexColors.flutterNavy),
             ),
             const SizedBox(height: 40),
-            QuestionInputTextField(
-              icon: vertexIcons.stars.image(),
-              hint: l10n.questionHint,
-              actionText: l10n.ask,
-              onTextUpdated: (String query) =>
-                  context.read<HomeBloc>().add(QueryUpdated(query: query)),
-              onActionPressed: () =>
-                  context.read<HomeBloc>().add(const QuestionAsked()),
-            ),
+            const SearchBox(),
           ],
         ),
       ),

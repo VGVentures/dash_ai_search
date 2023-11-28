@@ -11,10 +11,20 @@ class ResultsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-    return Stack(
-      children: [
-        Align(child: BlueContainer(summary: response.summary)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: 64),
+          const SearchBox(),
+          const SizedBox(height: 32),
+          Stack(
+            children: [
+              Align(child: BlueContainer(summary: response.summary)),
+            ],
+          ),
+          const SizedBox(height: 32),
+        ],
+      ),
     );
   }
 }
