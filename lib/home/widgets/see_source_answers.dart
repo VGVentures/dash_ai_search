@@ -1,4 +1,3 @@
-import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -11,26 +10,26 @@ class SeeSourceAnswers extends StatelessWidget {
   Widget build(BuildContext context) {
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-    return ColoredBox(
-      color: VertexColors.googleBlue,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100),
-        child: Row(
-          children: [
-            const SizedBox(height: 64),
-            const SearchBox(),
-            const SizedBox(height: 32),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
+    return SizedBox.expand(
+      child: ColoredBox(
+        color: VertexColors.googleBlue,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 64),
+              const SearchBox(),
+              const SizedBox(height: 32),
+              Row(
                 children: [
                   Expanded(child: _AiResponse(response.summary)),
                   const SizedBox(width: 150),
-                  Expanded(child: _ResponseCarousel(response.documents)),
+                  Expanded(
+                    child: SourcesCarouselView(documents: response.documents),
+                  ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -46,30 +45,20 @@ class _AiResponse extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    return Column(
-      children: [
-        Text(
-          text,
-          style: textTheme.headlineLarge?.copyWith(
-            color: VertexColors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: Column(
+        children: [
+          Text(
+            text,
+            style: textTheme.headlineLarge?.copyWith(
+              color: VertexColors.white,
+            ),
           ),
-        ),
-        const SizedBox(height: 20),
-        const FeedbackButtons(),
-      ],
-    );
-  }
-}
-
-class _ResponseCarousel extends StatelessWidget {
-  const _ResponseCarousel(this.documents);
-
-  final List<VertexDocument> documents;
-
-  @override
-  Widget build(BuildContext context) {
-    return SourcesCarouselView(
-      documents: documents,
+          const SizedBox(height: 20),
+          const FeedbackButtons(),
+        ],
+      ),
     );
   }
 }

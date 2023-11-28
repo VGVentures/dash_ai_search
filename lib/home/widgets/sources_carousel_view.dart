@@ -2,6 +2,9 @@ import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
+const _cardHeight = 600.0;
+const _cardWidth = 450.0;
+
 class SourcesCarouselView extends StatefulWidget {
   const SourcesCarouselView({required this.documents, super.key});
 
@@ -94,18 +97,22 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ...boxes,
-        Align(
-          alignment: Alignment.bottomLeft,
-          child: NextButton(
-            animationController: animationController,
-            current: index(boxes.last.document),
-            total: widget.documents.length,
+    return Container(
+      height: _cardHeight + 100,
+      padding: const EdgeInsets.only(right: 150),
+      child: Stack(
+        children: [
+          ...boxes,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: NextButton(
+              animationController: animationController,
+              current: index(boxes.last.document),
+              total: widget.documents.length,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -129,7 +136,7 @@ class AnimatedBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
+    return Align(
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
@@ -160,8 +167,8 @@ class SourceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      height: 600,
-      width: 420,
+      height: _cardHeight,
+      width: _cardWidth,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 56),
       decoration: BoxDecoration(
         color: VertexColors.arctic,
@@ -249,24 +256,30 @@ class NextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return TextButton(
-      onPressed: () {
-        animationController.forward(from: 0);
-      },
-      child: Row(
-        children: [
-          Text(
-            '$current/$total',
-            style: textTheme.bodyMedium?.copyWith(color: VertexColors.arctic),
-          ),
-          const SizedBox(
-            width: 2,
-          ),
-          const Icon(
-            Icons.arrow_forward,
-            color: VertexColors.arctic,
-          ),
-        ],
+    return Container(
+      alignment: Alignment.centerLeft,
+      width: _cardWidth,
+      height: kMinInteractiveDimension,
+      child: TextButton(
+        onPressed: () {
+          animationController.forward(from: 0);
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '$current/$total',
+              style: textTheme.bodyMedium?.copyWith(color: VertexColors.arctic),
+            ),
+            const SizedBox(
+              width: 2,
+            ),
+            const Icon(
+              Icons.arrow_forward,
+              color: VertexColors.arctic,
+            ),
+          ],
+        ),
       ),
     );
   }
