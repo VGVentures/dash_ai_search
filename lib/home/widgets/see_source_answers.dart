@@ -17,9 +17,19 @@ class SeeSourceAnswers extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 100),
         child: Row(
           children: [
-            Expanded(child: _AiResponse(response.summary)),
-            const SizedBox(width: 150),
-            Expanded(child: _ResponseCarousel(response.documents)),
+            const SizedBox(height: 64),
+            const SearchBox(),
+            const SizedBox(height: 32),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 50),
+              child: Row(
+                children: [
+                  Expanded(child: _AiResponse(response.summary)),
+                  const SizedBox(width: 150),
+                  Expanded(child: _ResponseCarousel(response.documents)),
+                ],
+              ),
+            ),
           ],
         ),
       ),

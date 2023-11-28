@@ -4,7 +4,6 @@ import 'package:path_drawing/path_drawing.dart';
 
 class Circle extends StatelessWidget {
   const Circle({
-    this.offset = Offset.zero,
     this.radius = 303,
     this.borderColor = VertexColors.white,
     this.dotted = false,
@@ -13,7 +12,6 @@ class Circle extends StatelessWidget {
     super.key,
   });
 
-  final Offset offset;
   final double radius;
   final Color borderColor;
   final bool dotted;
@@ -22,15 +20,17 @@ class Circle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      painter: CirclePainter(
-        offset: offset,
-        radius: radius,
-        borderColor: borderColor,
-        dotted: dotted,
-        backgroundColor: backgroundColor,
+    return SizedBox.square(
+      dimension: radius * 2,
+      child: CustomPaint(
+        painter: CirclePainter(
+          radius: radius,
+          borderColor: borderColor,
+          dotted: dotted,
+          backgroundColor: backgroundColor,
+        ),
+        child: child,
       ),
-      child: child,
     );
   }
 }
@@ -38,7 +38,6 @@ class Circle extends StatelessWidget {
 class CirclePainter extends CustomPainter {
   @visibleForTesting
   CirclePainter({
-    required this.offset,
     required this.radius,
     required this.borderColor,
     required this.dotted,
@@ -54,7 +53,6 @@ class CirclePainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
   }
 
-  final Offset offset;
   final double radius;
   final Color borderColor;
   final bool dotted;
@@ -65,11 +63,14 @@ class CirclePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(
-      offset,
-      radius,
-      _paintCircle,
-    );
+    canvas
+      ..save()
+      ..translate(radius, radius)
+      ..drawCircle(
+        Offset.zero,
+        radius,
+        _paintCircle,
+      );
 
     if (dotted) {
       const dashPattern = <double>[4, 4];
@@ -79,23 +80,24 @@ class CirclePainter extends CustomPainter {
         ..addRRect(
           RRect.fromRectAndRadius(
             Rect.fromLTWH(
-              offset.dx - s / 2,
-              offset.dy / 2 - s / 2,
+              -radius,
+              -radius,
               s,
               s,
             ),
-            Radius.circular(s / 2),
+            Radius.circular(radius),
           ),
         );
       path = dashPath(path, dashArray: CircularIntervalList(dashPattern));
       canvas.drawPath(path, _paintBorder);
     } else {
       canvas.drawCircle(
-        offset,
+        Offset.zero,
         radius,
         _paintBorder,
       );
     }
+    canvas.restore();
   }
 
   @override

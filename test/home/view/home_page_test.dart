@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -111,7 +112,12 @@ void main() {
             child: HomeView(),
           ),
         );
-        expect(find.byType(SeeSourceAnswersButton), findsOneWidget);
+        final answersFinder = find.byType(SeeSourceAnswersButton);
+        await tester.dragUntilVisible(
+          answersFinder,
+          find.byType(SingleChildScrollView),
+          const Offset(0, 10),
+        );
         await tester.tap(find.byType(SeeSourceAnswersButton));
         verify(() => homeBloc.add(const SeeSourceAnswersRequested())).called(1);
       });
