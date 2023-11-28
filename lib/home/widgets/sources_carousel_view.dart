@@ -1,6 +1,7 @@
 import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const _cardHeight = 600.0;
 const _cardWidth = 450.0;
@@ -174,14 +175,21 @@ class AnimatedBox extends StatelessWidget {
 
 class SourceCard extends StatelessWidget {
   @visibleForTesting
-  const SourceCard({required this.document, required this.index, super.key});
+  const SourceCard({
+    required this.document,
+    required this.index,
+    this.openLink = launchUrl,
+    super.key,
+  });
 
   final VertexDocument document;
   final int index;
+  final Future<bool> Function(Uri) openLink;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
     return Container(
       height: _cardHeight,
       width: _cardWidth,
@@ -241,13 +249,18 @@ class SourceCard extends StatelessWidget {
               ),
             ],
           ),
-          const Positioned(
+          Positioned(
             left: 0,
             bottom: 0,
             child: CircleAvatar(
               radius: 30,
               backgroundColor: VertexColors.googleBlue,
-              child: Icon(Icons.link_sharp),
+              child: IconButton(
+                onPressed: () {
+                  openLink(Uri.parse(document.metadata.url));
+                },
+                icon: const Icon(Icons.link_sharp),
+              ),
             ),
           ),
         ],
