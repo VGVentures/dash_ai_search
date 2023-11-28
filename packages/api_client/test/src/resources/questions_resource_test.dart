@@ -39,6 +39,7 @@ void main() {
             documents: const [
               VertexDocument(
                 metadata: VertexMetadata(url: '', title: '', description: ''),
+                id: '',
               ),
             ],
           );
