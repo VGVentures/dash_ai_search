@@ -23,6 +23,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   static const incrementsOffset = 300.0;
   static const incrementScale = 0.2;
   List<VertexDocument> allCards = [];
+  bool isAnimating = false;
 
   @override
   void initState() {
@@ -32,6 +33,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     allCards = List.from(widget.documents);
     setupBoxes();
     animationController.addStatusListener((status) {
+      setState(() {
+        isAnimating = status == AnimationStatus.forward ||
+            status == AnimationStatus.reverse;
+      });
       if (status == AnimationStatus.completed) {
         setState(() {
           currentIndex++;
@@ -109,6 +114,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
               animationController: animationController,
               current: index(boxes.last.document),
               total: widget.documents.length,
+              enabled: !isAnimating,
             ),
           ),
         ],
@@ -246,12 +252,18 @@ class NextButton extends StatelessWidget {
     required this.animationController,
     required this.current,
     required this.total,
+    required this.enabled,
     super.key,
   });
 
   final AnimationController animationController;
   final int current;
   final int total;
+  final bool enabled;
+
+  void onTap() {
+    animationController.forward(from: 0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,9 +273,7 @@ class NextButton extends StatelessWidget {
       width: _cardWidth,
       height: kMinInteractiveDimension,
       child: TextButton(
-        onPressed: () {
-          animationController.forward(from: 0);
-        },
+        onPressed: enabled ? onTap : null,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
