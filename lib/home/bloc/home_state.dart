@@ -10,6 +10,7 @@ enum Status {
   results,
   resultsToSourceAnswers,
   seeSourceAnswers,
+  sourceAnswersBackToResults,
 }
 
 class HomeState extends Equatable {
