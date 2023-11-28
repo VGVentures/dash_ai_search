@@ -34,6 +34,14 @@ void main() {
       expect(find.byType(TextArea), findsOneWidget);
     });
 
+    testWidgets('renders correctly when in portrait mode', (tester) async {
+      tester.setViewSize(size: Size(600, 800));
+      await tester.pumpApp(bootstrap());
+
+      expect(find.byType(CirclesAnimation), findsOneWidget);
+      expect(find.byType(TextArea), findsOneWidget);
+    });
+
     testWidgets('animates in when enter', (tester) async {
       await tester.pumpApp(bootstrap());
 

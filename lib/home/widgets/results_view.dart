@@ -8,17 +8,17 @@ class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
   @override
-  State<ResultsView> createState() => _ResultsViewState();
+  State<ResultsView> createState() => ResultsViewState();
 }
 
-class _ResultsViewState extends State<ResultsView>
+class ResultsViewState extends State<ResultsView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
   @override
-  List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
+  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.thinkingToResults];
+  List<Status> get forwardExitStatuses => [Status.results];
 
   @override
   void initializeTransitionController() {
