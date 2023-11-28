@@ -1,5 +1,4 @@
 import 'package:api_client/api_client.dart';
-import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +15,46 @@ void main() {
   group('SeeSourceAnswers', () {
     late HomeBloc homeBloc;
     const response = VertexResponse(
-      summary: 'summary',
+      summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
+          'sed do eiusmod tempor incididunt ut labore et dolore magna '
+          'aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+          'ullamco laboris nisi ut aliquip ex ea commodo consequat. '
+          'Duis aute irure dolor in reprehenderit in voluptate velit '
+          'esse cillum dolore eu fugiat nulla pariatur. Excepteur sint '
+          'occaecat cupidatat non proident, sunt in culpa qui officia'
+          ' deserunt mollit anim id est laborum.',
       documents: [
         VertexDocument(
+          id: '1',
           metadata: VertexMetadata(
             url: 'url',
             title: 'title',
             description: 'description',
           ),
-          id: '',
+        ),
+        VertexDocument(
+          id: '2',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '3',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '4',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
         ),
       ],
     );
@@ -36,7 +66,17 @@ void main() {
       );
     });
 
-    testWidgets('renders the response', (tester) async {
+    testWidgets('renders the response summary', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: Material(child: SeeSourceAnswers()),
+        ),
+      );
+      expect(find.text(response.summary), findsOneWidget);
+    });
+
+    testWidgets('renders SearchBox', (tester) async {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
@@ -44,10 +84,16 @@ void main() {
         ),
       );
       expect(find.byType(SearchBox), findsOneWidget);
-      expect(find.text(response.summary), findsOneWidget);
-      expect(find.text(response.documents.length.toString()), findsOneWidget);
-      expect(find.byType(Placeholder), findsOneWidget);
-      expect(find.byType(FeedbackButtons), findsOneWidget);
+    });
+
+    testWidgets('renders SourcesCarouselView', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: Material(child: SeeSourceAnswers()),
+        ),
+      );
+      expect(find.byType(SourcesCarouselView), findsOneWidget);
     });
   });
 }

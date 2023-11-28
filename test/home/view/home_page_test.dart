@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/widgets.dart';
@@ -126,7 +127,53 @@ void main() {
     testWidgets('renders SeeSourceAnswers if isSeeSourceAnswersVisible',
         (tester) async {
       when(() => homeBloc.state).thenReturn(
-        HomeState(status: Status.seeSourceAnswers),
+        HomeState(
+          status: Status.seeSourceAnswers,
+          vertexResponse: VertexResponse(
+            summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
+                'sed do eiusmod tempor incididunt ut labore et dolore magna '
+                'aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
+                'ullamco laboris nisi ut aliquip ex ea commodo consequat. '
+                'Duis aute irure dolor in reprehenderit in voluptate velit '
+                'esse cillum dolore eu fugiat nulla pariatur. Excepteur sint '
+                'occaecat cupidatat non proident, sunt in culpa qui officia'
+                ' deserunt mollit anim id est laborum.',
+            documents: const [
+              VertexDocument(
+                id: '1',
+                metadata: VertexMetadata(
+                  url: 'url',
+                  title: 'title',
+                  description: 'description',
+                ),
+              ),
+              VertexDocument(
+                id: '2',
+                metadata: VertexMetadata(
+                  url: 'url',
+                  title: 'title',
+                  description: 'description',
+                ),
+              ),
+              VertexDocument(
+                id: '3',
+                metadata: VertexMetadata(
+                  url: 'url',
+                  title: 'title',
+                  description: 'description',
+                ),
+              ),
+              VertexDocument(
+                id: '4',
+                metadata: VertexMetadata(
+                  url: 'url',
+                  title: 'title',
+                  description: 'description',
+                ),
+              ),
+            ],
+          ),
+        ),
       );
       await tester.pumpApp(
         BlocProvider.value(

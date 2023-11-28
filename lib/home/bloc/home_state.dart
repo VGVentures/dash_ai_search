@@ -13,29 +13,9 @@ enum Status {
 
 class HomeState extends Equatable {
   const HomeState({
-    this.status = Status.seeSourceAnswers,
+    this.status = Status.welcome,
     this.query = '',
-    this.vertexResponse = const VertexResponse(
-        summary:
-            "asdsad dsd sad aad sadhksasd jskh dashjkd hjksdadjkh ahjkdsashjk dhjksad asdhjkd",
-        documents: [
-          VertexDocument(
-              id: "1",
-              metadata: VertexMetadata(
-                  url: "url", title: "title", description: "description")),
-          VertexDocument(
-              id: "2",
-              metadata: VertexMetadata(
-                  url: "url", title: "title", description: "description")),
-          VertexDocument(
-              id: "3",
-              metadata: VertexMetadata(
-                  url: "url", title: "title", description: "description")),
-          VertexDocument(
-              id: "4",
-              metadata: VertexMetadata(
-                  url: "url", title: "title", description: "description")),
-        ]),
+    this.vertexResponse = const VertexResponse.empty(),
   });
 
   final Status status;
