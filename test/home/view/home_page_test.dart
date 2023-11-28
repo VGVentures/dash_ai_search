@@ -182,7 +182,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(SeeSourceAnswers), findsOneWidget);
+      expect(find.byType(SeeResultsSourceAnswers), findsOneWidget);
     });
   });
 }

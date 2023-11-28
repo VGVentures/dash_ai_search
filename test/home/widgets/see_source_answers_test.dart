@@ -70,7 +70,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: Material(child: SeeSourceAnswers()),
+          child: Material(child: SeeResultsSourceAnswers()),
         ),
       );
       expect(find.text(response.summary), findsOneWidget);
@@ -80,7 +80,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: Material(child: SeeSourceAnswers()),
+          child: Material(child: SeeResultsSourceAnswers()),
         ),
       );
       expect(find.byType(SearchBox), findsOneWidget);
@@ -90,7 +90,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: Material(child: SeeSourceAnswers()),
+          child: Material(child: SeeResultsSourceAnswers()),
         ),
       );
       expect(find.byType(SourcesCarouselView), findsOneWidget);

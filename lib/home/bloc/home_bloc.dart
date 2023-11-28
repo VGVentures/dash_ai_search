@@ -16,7 +16,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<QuestionAsked>(_questionAsked);
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
-    on<SeeSourceAnswers>(_onSeeSourceAnswers);
+    on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
     on<BackToAnswerRequested>(_onBackToAnswerRequested);
   }
 
@@ -69,7 +69,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onSeeSourceAnswers(
-    SeeSourceAnswers event,
+    SeeResultsSourceAnswers event,
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(status: Status.seeSourceAnswers));

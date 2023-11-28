@@ -35,8 +35,8 @@ class SeeSourceAnswersRequested extends HomeEvent {
   const SeeSourceAnswersRequested();
 }
 
-class SeeSourceAnswers extends HomeEvent {
-  const SeeSourceAnswers();
+class SeeResultsSourceAnswers extends HomeEvent {
+  const SeeResultsSourceAnswers();
 }
 
 class BackToAnswerRequested extends HomeEvent {
