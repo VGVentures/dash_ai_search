@@ -16,22 +16,33 @@ class SourcesCarouselView extends StatefulWidget {
 
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
-  List<AnimatedBox> boxes = <AnimatedBox>[];
   static const maxCardsVisible = 4;
-  int currentIndex = 0;
   static const incrementsOffset = 300.0;
   static const incrementScale = 0.2;
-  List<VertexDocument> allCards = [];
+  late AnimationController animationController;
+  List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
+  List<VertexDocument> documents = [];
   bool isAnimating = false;
 
   @override
   void initState() {
     super.initState();
-    animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    allCards = List.from(widget.documents);
-    setupBoxes();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+    documents = List.from(widget.documents);
+    setupAnimatedBoxes();
+    setupStatusListener();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
+
+  void setupStatusListener() {
     animationController.addStatusListener((status) {
       setState(() {
         isAnimating = status == AnimationStatus.forward ||
@@ -39,10 +50,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       });
       if (status == AnimationStatus.completed) {
         setState(() {
-          currentIndex++;
-          final toTheLast = allCards.removeAt(0);
-          allCards.add(toTheLast);
-          setupBoxes();
+          final toTheLast = documents.removeAt(0);
+          documents.add(toTheLast);
+          setupAnimatedBoxes();
         });
       }
     });
@@ -82,22 +92,22 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     return widget.documents.indexOf(document) + 1;
   }
 
-  void setupBoxes() {
+  void setupAnimatedBoxes() {
     final children = <AnimatedBox>[];
     animationController.reset();
     for (var i = 0; i < maxCardsVisible; i++) {
       children.add(
         AnimatedBox(
-          index: index(allCards[i]),
+          index: index(documents[i]),
           controller: animationController,
           offset: _getOffset(i),
           scale: _getScale(i),
-          document: allCards[i],
+          document: documents[i],
         ),
       );
     }
 
-    boxes = children.reversed.toList();
+    animatedBoxes = children.reversed.toList();
   }
 
   @override
@@ -107,12 +117,12 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       padding: const EdgeInsets.only(right: 150),
       child: Stack(
         children: [
-          ...boxes,
+          ...animatedBoxes,
           Align(
             alignment: Alignment.bottomCenter,
             child: NextButton(
               animationController: animationController,
-              current: index(boxes.last.document),
+              current: index(animatedBoxes.last.document),
               total: widget.documents.length,
               enabled: !isAnimating,
             ),
