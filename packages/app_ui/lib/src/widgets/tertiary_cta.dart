@@ -1,9 +1,7 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template tertiary_cta}
 /// TertiaryCTA
-/// side.
 /// {@endtemplate}
 class TertiaryCTA extends StatelessWidget {
   /// {@macro tertiary_cta}
@@ -30,16 +28,15 @@ class TertiaryCTA extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) icon!,
-          Expanded(
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: icon,
+            ),
+          Flexible(
             child: Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: VertexColors.white,
-              ),
             ),
           ),
         ],

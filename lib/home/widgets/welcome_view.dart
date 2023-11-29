@@ -84,7 +84,13 @@ class _WelcomeView extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               PrimaryCTA(
-                icon: vertexIcons.arrowForward.image(),
+                icon: const CircleAvatar(
+                  backgroundColor: VertexColors.white,
+                  child: Icon(
+                    Icons.arrow_forward,
+                    color: VertexColors.googleBlue,
+                  ),
+                ),
                 label: l10n.startAsking,
                 onPressed: () =>
                     context.read<HomeBloc>().add(const FromWelcomeToQuestion()),

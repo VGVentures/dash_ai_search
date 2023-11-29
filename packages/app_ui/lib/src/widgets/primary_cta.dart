@@ -1,4 +1,3 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template primary_cta}
@@ -14,8 +13,8 @@ class PrimaryCTA extends StatelessWidget {
     super.key,
   });
 
-  /// The image that will be displayed on the left side of the button.
-  final Image? icon;
+  /// The widget that will be displayed on the left side of the button.
+  final Widget? icon;
 
   /// The text that will be displayed on the right side of the button.
   final String label;
@@ -25,32 +24,27 @@ class PrimaryCTA extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        backgroundColor: const MaterialStatePropertyAll(
-          VertexColors.googleBlue,
-        ),
-        padding: MaterialStatePropertyAll(
-          EdgeInsets.only(
-            left: icon != null ? 24 : 32,
-            top: 20,
-            bottom: 20,
-            right: 32,
-          ),
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.only(
+          left: icon != null ? 8 : 32,
+          top: 20,
+          bottom: 20,
+          right: 32,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) icon!,
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: icon,
+            ),
           Text(
             label,
             textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: VertexColors.white,
-            ),
           ),
         ],
       ),
