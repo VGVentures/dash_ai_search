@@ -113,11 +113,14 @@ class DashSpriteAnimation extends StatefulWidget {
 class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   var _waved = false;
   bool _loaded = false;
+  SpriteAnimation? _reaction;
 
   late final images = widget.images ?? Images(prefix: 'assets/animations/');
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation waveAnimation;
+  late final SpriteAnimation happyAnimation;
+  late final SpriteAnimation sadAnimation;
 
   @override
   void initState() {
@@ -127,9 +130,11 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   }
 
   Future<void> _loadAnimations() async {
-    final [idle, wave] = await Future.wait([
+    final [idle, wave, happy, sad] = await Future.wait([
       images.load('dash_idle_animation.png'),
       images.load('dash_wave_animation.png'),
+      images.load('dash_happy_animation.png'),
+      images.load('dash_sad_animation.png'),
     ]);
 
     idleAnimation = SpriteAnimation.fromFrameData(
@@ -153,6 +158,28 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
       ),
     );
 
+    happyAnimation = SpriteAnimation.fromFrameData(
+      happy,
+      SpriteAnimationData.sequenced(
+        amount: 12,
+        amountPerRow: 4,
+        stepTime: 0.07,
+        textureSize: Vector2.all(1500),
+        loop: false,
+      ),
+    );
+
+    sadAnimation = SpriteAnimation.fromFrameData(
+      sad,
+      SpriteAnimationData.sequenced(
+        amount: 12,
+        amountPerRow: 4,
+        stepTime: 0.07,
+        textureSize: Vector2.all(1500),
+        loop: false,
+      ),
+    );
+
     if (mounted) {
       setState(() {
         _loaded = true;
@@ -168,20 +195,55 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
     return SizedBox(
       height: widget.width,
       width: widget.height,
-      child: _waved
-          ? SpriteAnimationWidget(
+      child: BlocListener<HomeBloc, HomeState>(
+        listenWhen: (previous, current) =>
+            previous.answerFeedback != current.answerFeedback,
+        listener: (context, state) {
+          if (state.answerFeedback == AnswerFeedback.good) {
+            setState(() {
+              _reaction = happyAnimation;
+            });
+          } else if (state.answerFeedback == AnswerFeedback.bad) {
+            setState(() {
+              _reaction = sadAnimation;
+            });
+          }
+        },
+        child: Builder(
+          builder: (context) {
+            if (!_waved) {
+              return SpriteAnimationWidget(
+                animation: waveAnimation,
+                animationTicker: waveAnimation.createTicker(),
+                onComplete: () {
+                  setState(() {
+                    _waved = true;
+                  });
+                },
+              );
+            }
+
+            final currentReaction = _reaction;
+
+            if (currentReaction != null) {
+              return SpriteAnimationWidget(
+                animation: currentReaction,
+                animationTicker: currentReaction.createTicker(),
+                onComplete: () {
+                  setState(() {
+                    _reaction = null;
+                  });
+                },
+              );
+            }
+
+            return SpriteAnimationWidget(
               animation: idleAnimation,
               animationTicker: idleAnimation.createTicker(),
-            )
-          : SpriteAnimationWidget(
-              animation: waveAnimation,
-              animationTicker: waveAnimation.createTicker(),
-              onComplete: () {
-                setState(() {
-                  _waved = true;
-                });
-              },
-            ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

@@ -445,10 +445,27 @@ class _AiResponseState extends State<_AiResponse>
                     builder: (context, child) =>
                         SizedBox(height: _bottomPaddingExitOut.value),
                   ),
-                  const Row(
+                  Row(
                     children: [
-                      Expanded(child: FeedbackButtons()),
-                      Expanded(child: SeeSourceAnswersButton()),
+                      Expanded(
+                        child: FeedbackButtons(
+                          onLike: () {
+                            context.read<HomeBloc>().add(
+                                  const AnswerFeedbackUpdated(
+                                    AnswerFeedback.good,
+                                  ),
+                                );
+                          },
+                          onDislike: () {
+                            context.read<HomeBloc>().add(
+                                  const AnswerFeedbackUpdated(
+                                    AnswerFeedback.bad,
+                                  ),
+                                );
+                          },
+                        ),
+                      ),
+                      const Expanded(child: SeeSourceAnswersButton()),
                     ],
                   ),
                 ],

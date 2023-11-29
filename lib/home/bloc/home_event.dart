@@ -47,3 +47,12 @@ class SeeResultsSourceAnswers extends HomeEvent {
 class Restarted extends HomeEvent {
   const Restarted();
 }
+
+class AnswerFeedbackUpdated extends HomeEvent {
+  const AnswerFeedbackUpdated(this.answerFeedback);
+
+  final AnswerFeedback answerFeedback;
+
+  @override
+  List<Object> get props => [answerFeedback];
+}
