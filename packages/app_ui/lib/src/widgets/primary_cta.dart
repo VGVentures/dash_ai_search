@@ -25,6 +25,7 @@ class PrimaryCTA extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
@@ -47,7 +48,7 @@ class PrimaryCTA extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: VertexTextStyles.bodyLargeMedium.copyWith(
+            style: textTheme.bodyMedium?.copyWith(
               color: VertexColors.white,
             ),
           ),
