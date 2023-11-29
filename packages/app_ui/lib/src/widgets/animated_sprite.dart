@@ -56,6 +56,7 @@ class AnimatedSprite extends StatefulWidget {
     this.mode = AnimationMode.loop,
     this.showLoadingIndicator = true,
     this.loadingIndicatorColor = Colors.white,
+    this.onComplete,
   });
 
   /// The collection of sprites which will be animated.
@@ -69,6 +70,10 @@ class AnimatedSprite extends StatefulWidget {
 
   /// Color for loading indicator
   final Color loadingIndicatorColor;
+
+  /// Callback when animation is completed.
+  /// Only called if `mode` is not `loop`.
+  final VoidCallback? onComplete;
 
   @override
   State<AnimatedSprite> createState() => _AnimatedSpriteState();
@@ -98,6 +103,14 @@ class _AnimatedSpriteState extends State<AnimatedSprite> {
   void dispose() {
     _timer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(AnimatedSprite oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.sprites != widget.sprites) {
+      _loadAnimation();
+    }
   }
 
   Future<void> _loadAnimation() async {
@@ -150,6 +163,7 @@ class _AnimatedSpriteState extends State<AnimatedSprite> {
                 animation: _animation,
                 playing: _isPlaying,
                 animationTicker: _spriteAnimationTicker,
+                onComplete: widget.onComplete,
               )
             : const SizedBox(),
       ),

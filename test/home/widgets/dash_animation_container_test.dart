@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -79,5 +80,50 @@ void main() {
 
       expect(state.value, equals(DashAnimationPhase.dashOut));
     });
+  });
+
+  group('DashSpriteAnimation', () {
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpApp(
+        DashSpriteAnimation(width: 100, height: 100),
+      );
+
+      expect(find.byType(AnimatedSprite), findsOneWidget);
+    });
+
+    testWidgets('starts with the waving animation', (tester) async {
+      await tester.pumpApp(
+        DashSpriteAnimation(width: 100, height: 100),
+      );
+
+      final animatedSprite = tester.widget<AnimatedSprite>(
+        find.byType(AnimatedSprite),
+      );
+
+      expect(animatedSprite.sprites.asset, equals('dash_animation.png'));
+    });
+
+    testWidgets(
+      'changes to idle animation when the waving is finished',
+      (tester) async {
+        await tester.pumpApp(
+          DashSpriteAnimation(width: 100, height: 100),
+        );
+
+        var animatedSprite = tester.widget<AnimatedSprite>(
+          find.byType(AnimatedSprite),
+        );
+
+        animatedSprite.onComplete!();
+
+        await tester.pump();
+
+        animatedSprite = tester.widget<AnimatedSprite>(
+          find.byType(AnimatedSprite),
+        );
+
+        expect(animatedSprite.sprites.asset, equals('dash_idle_animation.png'));
+      },
+    );
   });
 }

@@ -54,8 +54,6 @@ class DashAnimation extends Phased<DashAnimationPhase> {
     super.key,
   });
 
-  static const dashSize = Size(800, 800);
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.sizeOf(context);
@@ -83,21 +81,65 @@ class DashAnimation extends Phased<DashAnimationPhase> {
           },
           defaultValue: 0,
         ),
-        child: Container(
-          alignment: Alignment.center,
+        child: DashSpriteAnimation(
           height: screenSize.height / 3,
           width: screenSize.height / 3,
-          child: const AnimatedSprite(
-            showLoadingIndicator: false,
-            sprites: Sprites(
-              asset: 'dash_animation.png',
-              size: dashSize,
-              frames: 34,
-              stepTime: 0.07,
-            ),
-          ),
         ),
       ),
+    );
+  }
+}
+
+class DashSpriteAnimation extends StatefulWidget {
+  const DashSpriteAnimation({
+    required this.width,
+    required this.height,
+    super.key,
+  });
+
+  static const dashSize = Size(800, 800);
+  static const dashIdleSize = Size(1500, 1500);
+  final double width;
+  final double height;
+
+  @override
+  State<DashSpriteAnimation> createState() => _DashSpriteAnimationState();
+}
+
+class _DashSpriteAnimationState extends State<DashSpriteAnimation> {
+  var _waved = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      height: widget.width,
+      width: widget.height,
+      child: _waved
+          ? const AnimatedSprite(
+              showLoadingIndicator: false,
+              sprites: Sprites(
+                asset: 'dash_idle_animation.png',
+                size: DashSpriteAnimation.dashIdleSize,
+                frames: 12,
+                stepTime: 0.07,
+              ),
+            )
+          : AnimatedSprite(
+              showLoadingIndicator: false,
+              sprites: const Sprites(
+                asset: 'dash_animation.png',
+                size: DashSpriteAnimation.dashSize,
+                frames: 34,
+                stepTime: 0.07,
+              ),
+              mode: AnimationMode.oneTime,
+              onComplete: () {
+                setState(() {
+                  _waved = true;
+                });
+              },
+            ),
     );
   }
 }
