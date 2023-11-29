@@ -17,8 +17,8 @@ class SourcesCarouselView extends StatefulWidget {
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
   static const maxCardsVisible = 4;
-  static const incrementsOffset = 300.0;
-  static const decementScale = 0.2;
+  static const incrementsOffset = 180.0;
+  static const decementScale = 0.22;
   static const rotationIncrement = 0.1;
   late AnimationController animationController;
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
@@ -176,21 +176,18 @@ class AnimatedBox extends StatelessWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
-          return Transform.scale(
-            scale: scale.value,
-            child: Transform(
-              alignment: FractionalOffset.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.003)
-                ..rotateY(
-                  rotation.value,
-                )
-                ..translate(offset.value.dx, offset.value.dy)
-                ..scale(scale.value),
-              child: SourceCard(
-                document: document,
-                index: index,
+          return Transform(
+            alignment: FractionalOffset.center,
+            transform: Matrix4.identity()
+              ..translate(offset.value.dx, offset.value.dy)
+              ..scale(scale.value)
+              ..setEntry(3, 2, 0.003)
+              ..rotateY(
+                rotation.value,
               ),
+            child: SourceCard(
+              document: document,
+              index: index,
             ),
           );
         },
