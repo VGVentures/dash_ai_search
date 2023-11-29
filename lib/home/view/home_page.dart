@@ -40,7 +40,6 @@ class HomeView extends StatelessWidget {
           if (state.isQuestionVisible) const QuestionView(),
           if (state.isThinkingVisible) const ThinkingView(),
           if (state.isResultsVisible) const ResultsView(),
-          if (state.isSeeSourceAnswersVisible) const SeeSourceAnswers(),
           if (state.isDashVisible)
             const Positioned(
               bottom: 50,

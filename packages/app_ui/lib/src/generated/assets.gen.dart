@@ -12,6 +12,10 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
+  /// File path: assets/icons/arrow_back.png
+  AssetGenImage get arrowBack =>
+      const AssetGenImage('assets/icons/arrow_back.png');
+
   /// File path: assets/icons/arrow_forward.png
   AssetGenImage get arrowForward =>
       const AssetGenImage('assets/icons/arrow_forward.png');
@@ -24,7 +28,7 @@ class $AssetsIconsGen {
   AssetGenImage get stars => const AssetGenImage('assets/icons/stars.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [arrowForward, asterisk, stars];
+  List<AssetGenImage> get values => [arrowBack, arrowForward, asterisk, stars];
 }
 
 class $AssetsImagesGen {

@@ -35,5 +35,9 @@
     "seeSourceAnswers": "See source answers",
     "@seeSourceAnswers": {
         "description": "Text in see source answers button."
+    },
+    "backToAIAnswer": "Back to AI answer",
+    "@backToAIAnswer": {
+        "description": "Text in back to AI answer button."
     }
 }
