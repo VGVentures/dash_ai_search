@@ -44,7 +44,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     QuestionAsked event,
     Emitter<HomeState> emit,
   ) async {
-    emit(state.copyWith(status: Status.askQuestionToThinking));
+    emit(
+      state.copyWith(
+        status: Status.askQuestionToThinking,
+        submittedQuery: event.submittedQuery,
+      ),
+    );
     final result = await _questionsRepository.getVertexResponse(state.query);
     emit(
       state.copyWith(

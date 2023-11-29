@@ -24,7 +24,12 @@ class QueryUpdated extends HomeEvent {
 }
 
 class QuestionAsked extends HomeEvent {
-  const QuestionAsked();
+  const QuestionAsked(this.submittedQuery);
+
+  final String submittedQuery;
+
+  @override
+  List<Object> get props => [submittedQuery];
 }
 
 class Results extends HomeEvent {

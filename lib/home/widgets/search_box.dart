@@ -10,16 +10,22 @@ class SearchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final searchQuery = context.select((HomeBloc bloc) => bloc.state.query);
-    return QuestionInputTextField(
-      icon: vertexIcons.stars.image(),
-      hint: l10n.questionHint,
-      actionText: l10n.ask,
-      onTextUpdated: (String query) =>
-          context.read<HomeBloc>().add(QueryUpdated(query: query)),
-      onActionPressed: () =>
-          context.read<HomeBloc>().add(const QuestionAsked()),
-      text: searchQuery.isEmpty ? null : searchQuery,
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (BuildContext context, HomeState state) {
+        final searchQuery = state.query;
+        final submittedQuery = state.submittedQuery;
+        return QuestionInputTextField(
+          shouldDisplayClearTextButton: searchQuery == submittedQuery,
+          icon: vertexIcons.stars.image(),
+          hint: l10n.questionHint,
+          actionText: l10n.ask,
+          onTextUpdated: (String query) =>
+              context.read<HomeBloc>().add(QueryUpdated(query: query)),
+          onActionPressed: () =>
+              context.read<HomeBloc>().add(QuestionAsked(searchQuery)),
+          text: searchQuery.isEmpty ? null : searchQuery,
+        );
+      },
     );
   }
 }
