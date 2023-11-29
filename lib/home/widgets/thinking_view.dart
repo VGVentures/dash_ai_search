@@ -40,10 +40,8 @@ class ThinkingViewState extends State<ThinkingView>
   @override
   void initState() {
     super.initState();
-
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
-
     _offset = Tween<Offset>(begin: const Offset(0, 0.7), end: Offset.zero)
         .animate(enterTransitionController);
   }
