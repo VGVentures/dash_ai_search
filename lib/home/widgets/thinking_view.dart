@@ -15,7 +15,6 @@ class ThinkingView extends StatefulWidget {
 class ThinkingViewState extends State<ThinkingView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
-  late Animation<Offset> _offset;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
@@ -42,17 +41,13 @@ class ThinkingViewState extends State<ThinkingView>
     super.initState();
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
-    _offset = Tween<Offset>(begin: const Offset(0, 0.7), end: Offset.zero)
-        .animate(enterTransitionController);
   }
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: ThinkingAnimationView(
-        offset: _offset,
-      ),
+      child: const ThinkingAnimationView(),
     );
   }
 }
@@ -65,13 +60,11 @@ enum ThinkingAnimationPhase {
 
 class ThinkingAnimationView extends StatefulWidget {
   const ThinkingAnimationView({
-    required this.offset,
     super.key,
     @visibleForTesting this.animationState,
   });
 
   final PhasedState<ThinkingAnimationPhase>? animationState;
-  final Animation<Offset> offset;
 
   @override
   State<ThinkingAnimationView> createState() => _ThinkingAnimationViewState();
@@ -94,7 +87,6 @@ class _ThinkingAnimationViewState extends State<ThinkingAnimationView> {
       },
       child: ThinkingAnimation(
         state: _state,
-        offset: widget.offset,
       ),
     );
   }
@@ -103,38 +95,23 @@ class _ThinkingAnimationViewState extends State<ThinkingAnimationView> {
 class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
   const ThinkingAnimation({
     required super.state,
-    required this.offset,
     super.key,
   });
-
-  final Animation<Offset> offset;
 
   @override
   Widget build(BuildContext context) {
     final query = context.select((HomeBloc bloc) => bloc.state.query);
-    const opacityDuration = Duration(milliseconds: 800);
-
-    return AnimatedOpacity(
-      duration: opacityDuration,
-      opacity: state.phaseValue(
-        values: {
-          ThinkingAnimationPhase.initial: .8,
-          ThinkingAnimationPhase.thinkingOut: 0,
-        },
-        defaultValue: 1,
-      ),
-      child: Stack(
-        children: [
-          Align(
-            child: CirclesAnimation(
-              state: state,
-            ),
+    return Stack(
+      children: [
+        Align(
+          child: CirclesAnimation(
+            state: state,
           ),
-          Align(
-            child: TextArea(query: query, state: state),
-          ),
-        ],
-      ),
+        ),
+        Align(
+          child: TextArea(query: query, state: state),
+        ),
+      ],
     );
   }
 }
@@ -150,14 +127,17 @@ class TextArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
+    const slideDuration = Duration(milliseconds: 1200);
+
     return AnimatedSlide(
-      duration: const Duration(seconds: 1),
+      curve: Curves.decelerate,
+      duration: slideDuration,
       offset: state.phaseValue(
         values: {
-          ThinkingAnimationPhase.initial: const Offset(0, 500),
-          ThinkingAnimationPhase.thinkingOut: const Offset(0, 500),
+          ThinkingAnimationPhase.initial: const Offset(0, 1),
+          ThinkingAnimationPhase.thinkingOut: const Offset(0, 50),
         },
-        defaultValue: const Offset(0, 0),
+        defaultValue: Offset.zero,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -197,6 +177,8 @@ class CirclesAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     const backgroundColor = Colors.transparent;
     const borderColor = VertexColors.googleBlue;
+    const opacityDuration = Duration(milliseconds: 800);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final viewport = constraints.maxHeight < constraints.maxWidth
@@ -212,33 +194,43 @@ class CirclesAnimation extends StatelessWidget {
         return SizedBox(
           width: viewport,
           height: viewport,
-          child: AnimatedScale(
-            duration: scaleDuration,
-            curve: Curves.decelerate,
-            scale: state.phaseValue(
+          child: AnimatedOpacity(
+            duration: opacityDuration,
+            opacity: state.phaseValue(
               values: {
-                ThinkingAnimationPhase.initial: .6,
-                ThinkingAnimationPhase.thinkingOut: .6,
+                ThinkingAnimationPhase.initial: .8,
+                ThinkingAnimationPhase.thinkingOut: 0,
               },
-              defaultValue: 1.05,
+              defaultValue: 1,
             ),
-            child: Circle(
-              dotted: true,
-              backgroundColor: backgroundColor,
-              borderColor: borderColor,
-              radius: bigCircleRadius,
-              child: Center(
-                child: Circle(
-                  dotted: true,
-                  backgroundColor: backgroundColor,
-                  borderColor: borderColor,
-                  radius: mediumCircleRadius,
-                  child: Center(
-                    child: Circle(
-                      dotted: true,
-                      backgroundColor: backgroundColor,
-                      borderColor: borderColor,
-                      radius: smallCircleRadius,
+            child: AnimatedScale(
+              duration: scaleDuration,
+              curve: Curves.decelerate,
+              scale: state.phaseValue(
+                values: {
+                  ThinkingAnimationPhase.initial: .6,
+                  ThinkingAnimationPhase.thinkingOut: .6,
+                },
+                defaultValue: 1.05,
+              ),
+              child: Circle(
+                dotted: true,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                radius: bigCircleRadius,
+                child: Center(
+                  child: Circle(
+                    dotted: true,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    radius: mediumCircleRadius,
+                    child: Center(
+                      child: Circle(
+                        dotted: true,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        radius: smallCircleRadius,
+                      ),
                     ),
                   ),
                 ),
