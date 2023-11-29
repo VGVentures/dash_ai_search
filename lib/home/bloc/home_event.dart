@@ -27,6 +27,14 @@ class QuestionAsked extends HomeEvent {
   const QuestionAsked();
 }
 
+class Results extends HomeEvent {
+  const Results();
+}
+
 class SeeSourceAnswersRequested extends HomeEvent {
   const SeeSourceAnswersRequested();
+}
+
+class SeeResultsSourceAnswers extends HomeEvent {
+  const SeeResultsSourceAnswers();
 }

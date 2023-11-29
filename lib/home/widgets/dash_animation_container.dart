@@ -27,7 +27,8 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state.status == Status.askQuestionToThinking) {
+        if (state.status == Status.askQuestionToThinking ||
+            state.status == Status.resultsToSourceAnswers) {
           _state.value = DashAnimationPhase.dashOut;
         } else if (state.status == Status.thinkingToResults) {
           _state.value = DashAnimationPhase.dashIn;

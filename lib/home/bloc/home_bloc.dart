@@ -14,7 +14,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<AskQuestion>(_onQuestion);
     on<QueryUpdated>(_queryUpdated);
     on<QuestionAsked>(_questionAsked);
+    on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
+    on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -51,8 +53,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
+  void _onResults(
+    Results event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(status: Status.results));
+  }
+
   void _onSeeSourceAnswersRequested(
     SeeSourceAnswersRequested event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(status: Status.resultsToSourceAnswers));
+  }
+
+  void _onSeeSourceAnswers(
+    SeeResultsSourceAnswers event,
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(status: Status.seeSourceAnswers));

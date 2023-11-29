@@ -17,7 +17,7 @@ class VertexTheme {
   }
 
   static TextTheme get _textTheme {
-    return const TextTheme(
+    return TextTheme(
       displayLarge: VertexTextStyles.displayLarge,
       displayMedium: VertexTextStyles.displayMedium,
       displaySmall: VertexTextStyles.displaySmall,

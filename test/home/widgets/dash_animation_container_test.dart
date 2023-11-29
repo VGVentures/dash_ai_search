@@ -72,6 +72,13 @@ void main() {
       await tester.pump();
 
       expect(state.value, equals(DashAnimationPhase.dashIn));
+
+      animationController.add(
+        const HomeState(status: Status.resultsToSourceAnswers),
+      );
+      await tester.pump();
+
+      expect(state.value, equals(DashAnimationPhase.dashOut));
     });
   });
 
