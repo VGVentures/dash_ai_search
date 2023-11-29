@@ -25,6 +25,7 @@ dependencies:
   phased: ^0.0.3
   questions_repository:
     path: packages/questions_repository
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   bloc_test: ^9.1.4
