@@ -80,11 +80,33 @@ void main() {
       );
     });
 
+    group('Results', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.results',
+        build: buildBloc,
+        act: (bloc) => bloc.add(Results()),
+        expect: () => [
+          HomeState(status: Status.results),
+        ],
+      );
+    });
+
     group('SeeSourceAnswersRequested', () {
       blocTest<HomeBloc, HomeState>(
         'emits Status.seeSourceAnswers',
         build: buildBloc,
         act: (bloc) => bloc.add(SeeSourceAnswersRequested()),
+        expect: () => [
+          HomeState(status: Status.seeSourceAnswers),
+        ],
+      );
+    });
+
+    group('SeeResultsSourceAnswers', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.seeSourceAnswers',
+        build: buildBloc,
+        act: (bloc) => bloc.add(SeeResultsSourceAnswers()),
         expect: () => [
           HomeState(status: Status.seeSourceAnswers),
         ],

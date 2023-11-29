@@ -232,8 +232,6 @@ class _AiResponseState extends State<_AiResponse>
   late Animation<double> _leftPaddingExitOut;
   late Animation<double> _topPaddingExitOut;
   late Animation<double> _bottomPaddingExitOut;
-  late Animation<Offset> _offsetEnterIn;
-  late Animation<double> _rotationEnterIn;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
@@ -278,21 +276,6 @@ class _AiResponseState extends State<_AiResponse>
     );
 
     _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _offsetEnterIn =
-        Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
         parent: exitTransitionController,
         curve: Curves.decelerate,

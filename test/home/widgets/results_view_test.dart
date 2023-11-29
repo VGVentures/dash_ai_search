@@ -12,7 +12,7 @@ class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
     implements HomeBloc {}
 
 void main() {
-  group('SeeSourceAnswers', () {
+  group('ResultsView', () {
     late HomeBloc homeBloc;
     const response = VertexResponse(
       summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
@@ -70,7 +70,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: Material(child: SeeResultsSourceAnswers()),
+          child: Material(child: ResultsView()),
         ),
       );
       expect(find.text(response.summary), findsOneWidget);
@@ -80,20 +80,10 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: homeBloc,
-          child: Material(child: SeeResultsSourceAnswers()),
+          child: Material(child: ResultsView()),
         ),
       );
       expect(find.byType(SearchBox), findsOneWidget);
-    });
-
-    testWidgets('renders SourcesCarouselView', (tester) async {
-      await tester.pumpApp(
-        BlocProvider.value(
-          value: homeBloc,
-          child: Material(child: SeeResultsSourceAnswers()),
-        ),
-      );
-      expect(find.byType(SourcesCarouselView), findsOneWidget);
     });
   });
 }
