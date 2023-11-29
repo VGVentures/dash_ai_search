@@ -43,7 +43,7 @@ class QuestionsResource {
       await Future<void>.delayed(const Duration(seconds: 2));
 
       body = switch (query) {
-        'What is Flutter?' => FakeResponses.whatIsFlutterResponse,
+        'What is flutter?' => FakeResponses.whatIsFlutterResponse,
         'What platforms does flutter support today?' =>
           FakeResponses.platformsResponse,
         'What language do you use to write flutter apps?' =>
