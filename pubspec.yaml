@@ -25,10 +25,11 @@ dependencies:
   phased: ^0.0.3
   questions_repository:
     path: packages/questions_repository
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   bloc_test: ^9.1.4
-  build_runner: ^2.4.6
+  build_runner: ^2.4.7
   flutter_gen_runner: ^5.3.2
   flutter_test:
     sdk: flutter

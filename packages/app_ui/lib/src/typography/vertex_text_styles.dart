@@ -2,8 +2,16 @@ import 'package:flutter/material.dart';
 
 //// {@macro vertex_text_styles}
 abstract class VertexTextStyles {
+  /// Package name
+  static const package = 'app_ui';
+
+  static const TextStyle _commonStyle = TextStyle(
+    fontFamily: 'Google Sans',
+    package: package,
+  );
+
   /// displayLarge Text Style
-  static const TextStyle displayLarge = TextStyle(
+  static TextStyle displayLarge = _commonStyle.copyWith(
     fontSize: 72,
     fontWeight: FontWeight.w700,
     height: 1.11,
@@ -12,7 +20,7 @@ abstract class VertexTextStyles {
   );
 
   /// displayMedium Text Style
-  static const TextStyle displayMedium = TextStyle(
+  static TextStyle displayMedium = _commonStyle.copyWith(
     fontSize: 48,
     fontWeight: FontWeight.w700,
     height: 1.17,
@@ -21,7 +29,7 @@ abstract class VertexTextStyles {
   );
 
   /// displaySmall Text Style
-  static const TextStyle displaySmall = TextStyle(
+  static TextStyle displaySmall = _commonStyle.copyWith(
     fontSize: 32,
     fontWeight: FontWeight.w500,
     height: 1.25,
@@ -30,7 +38,7 @@ abstract class VertexTextStyles {
   );
 
   /// headline Text Style
-  static const TextStyle headline = TextStyle(
+  static TextStyle headline = _commonStyle.copyWith(
     fontSize: 32,
     fontWeight: FontWeight.w400,
     height: 1.5,
@@ -39,7 +47,7 @@ abstract class VertexTextStyles {
   );
 
   /// bodyLargeBold Text Style
-  static const TextStyle bodyLargeBold = TextStyle(
+  static TextStyle bodyLargeBold = _commonStyle.copyWith(
     fontSize: 18,
     fontWeight: FontWeight.w700,
     height: 1.56,
@@ -47,7 +55,7 @@ abstract class VertexTextStyles {
   );
 
   /// bodyLargeMedium Text Style
-  static const TextStyle bodyLargeMedium = TextStyle(
+  static TextStyle bodyLargeMedium = _commonStyle.copyWith(
     fontSize: 18,
     fontWeight: FontWeight.w500,
     height: 1.56,
@@ -55,24 +63,15 @@ abstract class VertexTextStyles {
   );
 
   /// bodyLargeRegular Text Style
-  static const TextStyle bodyLargeRegular = TextStyle(
+  static TextStyle bodyLargeRegular = _commonStyle.copyWith(
     fontSize: 18,
     fontWeight: FontWeight.w400,
     height: 1.56,
     fontFamily: 'Google Sans',
   );
 
-  /// buttons&CTA's Text Style
-  static const TextStyle cta = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    height: 1.33,
-    letterSpacing: -0.5,
-    fontFamily: 'Google Sans',
-  );
-
   /// labelLarge Text Style
-  static const TextStyle labelLarge = TextStyle(
+  static TextStyle labelLarge = _commonStyle.copyWith(
     fontSize: 14,
     fontWeight: FontWeight.w700,
     height: 1.71,

@@ -96,5 +96,39 @@ void main() {
         expect(widget.playing, isTrue);
       });
     });
+
+    testWidgets('renders animation 2 times', (tester) async {
+      await tester.runAsync(() async {
+        final images = __MockImages();
+        var asset = 'test.png';
+        when(() => images.load(any())).thenAnswer((_) async => image);
+        Flame.images = images;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: StatefulBuilder(
+              builder: (_, setState) {
+                return Scaffold(
+                  body: AnimatedSprite(
+                    sprites: Sprites(asset: asset, size: Size(1, 1), frames: 1),
+                    mode: AnimationMode.oneTime,
+                  ),
+                  floatingActionButton: FloatingActionButton(
+                    onPressed: () {
+                      setState(() {
+                        asset = 'test2.png';
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+        verify(() => images.load('test.png')).called(1);
+        await tester.tap(find.byType(FloatingActionButton));
+        await tester.pump();
+        verify(() => images.load('test2.png')).called(1);
+      });
+    });
   });
 }
