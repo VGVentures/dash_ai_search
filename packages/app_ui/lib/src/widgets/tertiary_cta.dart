@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// {@template tertiary_cta}
 /// TertiaryCTA
 /// {@endtemplate}
-class TertiaryCTA extends StatelessWidget {
+class TertiaryCTA extends StatefulWidget {
   /// {@macro tertiary_cta}
   const TertiaryCTA({
     required this.label,
@@ -22,21 +22,47 @@ class TertiaryCTA extends StatelessWidget {
   final VoidCallback? onPressed;
 
   @override
+  State<TertiaryCTA> createState() => _TertiaryCTAState();
+}
+
+class _TertiaryCTAState extends State<TertiaryCTA> {
+  bool hovered = false;
+  @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: widget.onPressed,
+      style: const ButtonStyle(
+        overlayColor: MaterialStatePropertyAll(Colors.transparent),
+      ),
+      onHover: (newHovered) {
+        setState(() {
+          hovered = newHovered;
+        });
+      },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null)
+          if (widget.icon != null)
             Padding(
               padding: const EdgeInsets.only(right: 4),
-              child: icon,
+              child: widget.icon,
             ),
           Flexible(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: hovered
+                    ? const Border(
+                        bottom: BorderSide(color: Colors.white, width: 2),
+                      )
+                    : null,
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: Text(
+                  widget.label,
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
           ),
         ],
