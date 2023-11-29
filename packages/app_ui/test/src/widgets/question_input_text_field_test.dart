@@ -68,7 +68,6 @@ void main() {
     group('when shouldDisplayClearTextButton is true', () {
       testWidgets('should display a clear button that clears the text field',
           (tester) async {
-        var called = false;
         await tester.pumpApp(
           Material(
             child: QuestionInputTextField(
@@ -77,9 +76,7 @@ void main() {
               icon: SizedBox.shrink(),
               hint: 'hint',
               actionText: 'actionText',
-              onActionPressed: () {
-                called = true;
-              },
+              onActionPressed: () {},
               onTextUpdated: (_) {},
             ),
           ),
