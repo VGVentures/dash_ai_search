@@ -135,7 +135,7 @@ class TextArea extends StatelessWidget {
       offset: state.phaseValue(
         values: {
           ThinkingAnimationPhase.initial: const Offset(0, 1),
-          ThinkingAnimationPhase.thinkingOut: const Offset(0, 50),
+          ThinkingAnimationPhase.thinkingOut: const Offset(0, 1),
         },
         defaultValue: Offset.zero,
       ),
@@ -156,7 +156,8 @@ class TextArea extends StatelessWidget {
             child: Text(
               query,
               textAlign: TextAlign.center,
-              style: textTheme.displayLarge,
+              style: textTheme.displayLarge
+                  ?.copyWith(color: VertexColors.flutterNavy),
             ),
           ),
         ],
