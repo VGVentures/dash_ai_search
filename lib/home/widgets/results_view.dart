@@ -18,7 +18,7 @@ class ResultsView extends StatelessWidget {
           left: 0,
           right: 0,
           child: Align(
-            child: _SearchBox(),
+            child: SearchBoxView(),
           ),
         ),
       ],
@@ -26,14 +26,15 @@ class ResultsView extends StatelessWidget {
   }
 }
 
-class _SearchBox extends StatefulWidget {
-  const _SearchBox();
+class SearchBoxView extends StatefulWidget {
+  @visibleForTesting
+  const SearchBoxView({super.key});
 
   @override
-  State<_SearchBox> createState() => _SearchBoxState();
+  State<SearchBoxView> createState() => SearchBoxViewState();
 }
 
-class _SearchBoxState extends State<_SearchBox>
+class SearchBoxViewState extends State<SearchBoxView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<Offset> _offset;
   late Animation<double> _opacity;
@@ -83,10 +84,10 @@ class BlueContainer extends StatefulWidget {
   const BlueContainer({super.key});
 
   @override
-  State<BlueContainer> createState() => _BlueContainerState();
+  State<BlueContainer> createState() => BlueContainerState();
 }
 
-class _BlueContainerState extends State<BlueContainer>
+class BlueContainerState extends State<BlueContainer>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<Offset> _offsetEnterIn;
   late Animation<double> _rotationEnterIn;
@@ -100,9 +101,6 @@ class _BlueContainerState extends State<BlueContainer>
 
   @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
-
-  @override
-  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
 
   @override
   void initializeTransitionController() {
@@ -127,12 +125,6 @@ class _BlueContainerState extends State<BlueContainer>
             state.status == Status.resultsToSourceAnswers) {
           context.read<HomeBloc>().add(const SeeResultsSourceAnswers());
         }
-        /*
-        if (status == AnimationStatus.completed &&
-            state.status == Status.sourceAnswersBackToResults) {
-          context.read<HomeBloc>().add(const Results());
-        }
-        */
       });
   }
 
@@ -320,7 +312,7 @@ class _AiResponseState extends State<_AiResponse>
                       parent: exitTransitionController,
                       curve: Curves.decelerate,
                     ),
-                    child: const BackToAnswerButton(),
+                    child: const Expanded(child: BackToAnswerButton()),
                   ),
                   Flexible(
                     child: Expanded(
@@ -340,7 +332,7 @@ class _AiResponseState extends State<_AiResponse>
                   ),
                   const Row(
                     children: [
-                      FeedbackButtons(),
+                      Expanded(child: FeedbackButtons()),
                       Expanded(child: SeeSourceAnswersButton()),
                     ],
                   ),
@@ -372,10 +364,10 @@ class CarouselView extends StatefulWidget {
   final List<VertexDocument> documents;
 
   @override
-  State<CarouselView> createState() => _CarouselViewState();
+  State<CarouselView> createState() => CarouselViewState();
 }
 
-class _CarouselViewState extends State<CarouselView>
+class CarouselViewState extends State<CarouselView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<Offset> _offsetEnterIn;
   late Animation<double> _rotationEnterIn;
@@ -429,6 +421,7 @@ class _CarouselViewState extends State<CarouselView>
 }
 
 class BackToAnswerButton extends StatefulWidget {
+  @visibleForTesting
   const BackToAnswerButton({super.key});
 
   @override
@@ -487,8 +480,6 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
           child: TertiaryCTA(
             label: l10n.backToAIAnswer,
             icon: vertexIcons.arrowBack.image(color: VertexColors.white),
-            /*onPressed: () =>
-            context.read<HomeBloc>().add(const BackToAnswerRequested()),*/
           ),
         ),
       ),
@@ -497,6 +488,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
 }
 
 class SeeSourceAnswersButton extends StatefulWidget {
+  @visibleForTesting
   const SeeSourceAnswersButton({super.key});
 
   @override

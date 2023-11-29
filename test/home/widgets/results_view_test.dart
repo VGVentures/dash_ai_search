@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
@@ -66,34 +68,112 @@ void main() {
       );
     });
 
-    testWidgets('renders the response summary', (tester) async {
-      await tester.pumpApp(
-        BlocProvider.value(
+    Widget bootstrap() => BlocProvider.value(
           value: homeBloc,
           child: Material(child: ResultsView()),
-        ),
-      );
+        );
+
+    testWidgets('renders the response summary', (tester) async {
+      await tester.pumpApp(bootstrap());
       expect(find.text(response.summary), findsOneWidget);
     });
 
     testWidgets('renders SearchBox', (tester) async {
-      await tester.pumpApp(
-        BlocProvider.value(
-          value: homeBloc,
-          child: Material(child: ResultsView()),
-        ),
-      );
+      await tester.pumpApp(bootstrap());
       expect(find.byType(SearchBox), findsOneWidget);
     });
 
     testWidgets('renders CarouselView', (tester) async {
-      await tester.pumpApp(
-        BlocProvider.value(
-          value: homeBloc,
-          child: Material(child: ResultsView()),
+      await tester.pumpApp(bootstrap());
+      expect(find.byType(ResultsView), findsOneWidget);
+    });
+
+    testWidgets('animates in search box when enter', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      final forwardEnterStatuses = tester
+          .state<SearchBoxViewState>(find.byType(SearchBoxView))
+          .forwardEnterStatuses;
+
+      expect(forwardEnterStatuses, equals([Status.thinkingToResults]));
+    });
+
+    testWidgets('animates in BlueContainer when enter', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      final forwardEnterStatuses = tester
+          .state<BlueContainerState>(find.byType(BlueContainer))
+          .forwardEnterStatuses;
+
+      expect(forwardEnterStatuses, equals([Status.thinkingToResults]));
+    });
+
+    testWidgets('animates out BlueContainer when exits forward',
+        (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      final forwardExitStatuses = tester
+          .state<BlueContainerState>(find.byType(BlueContainer))
+          .forwardEnterStatuses;
+
+      expect(forwardExitStatuses, equals([Status.resultsToSourceAnswers]));
+    });
+
+    testWidgets(
+      'calls Results on enter',
+      (WidgetTester tester) async {
+        await tester.pumpApp(bootstrap());
+        await tester.pumpAndSettle();
+        verify(() => homeBloc.add(Results())).called(1);
+      },
+    );
+
+    testWidgets(
+      'calls SeeResultsSourceAnswers on exit',
+      (WidgetTester tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          homeBloc,
+          controller.stream,
+          initialState: const HomeState(),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pumpAndSettle();
+
+        controller.add(const HomeState(status: Status.resultsToSourceAnswers));
+        await tester.pumpAndSettle();
+
+        verify(() => homeBloc.add(SeeResultsSourceAnswers())).called(1);
+      },
+    );
+
+    testWidgets('animates in CarouselView when enter', (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(
+          vertexResponse: response,
+          status: Status.seeSourceAnswers,
         ),
       );
-      expect(find.byType(ResultsView), findsOneWidget);
+
+      await tester.pumpApp(bootstrap());
+
+      final forwardEnterStatuses = tester
+          .state<CarouselViewState>(find.byType(CarouselView))
+          .forwardEnterStatuses;
+
+      expect(forwardEnterStatuses, equals([Status.resultsToSourceAnswers]));
+    });
+
+    testWidgets(
+        'calls SeeSourceAnswersRequested on SeeSourceAnswersButton tapped',
+        (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SeeSourceAnswersButton));
+
+      verify(() => homeBloc.add(const SeeSourceAnswersRequested())).called(1);
     });
   });
 }

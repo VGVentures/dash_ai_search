@@ -93,11 +93,11 @@ void main() {
 
     group('SeeSourceAnswersRequested', () {
       blocTest<HomeBloc, HomeState>(
-        'emits Status.seeSourceAnswers',
+        'emits Status.resultsToSourceAnswers',
         build: buildBloc,
         act: (bloc) => bloc.add(SeeSourceAnswersRequested()),
         expect: () => [
-          HomeState(status: Status.seeSourceAnswers),
+          HomeState(status: Status.resultsToSourceAnswers),
         ],
       );
     });
