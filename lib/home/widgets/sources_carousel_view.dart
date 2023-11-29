@@ -19,6 +19,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   static const maxCardsVisible = 4;
   static const incrementsOffset = 300.0;
   static const incrementScale = 0.2;
+  static const rotationIncrement = 0.1;
   late AnimationController animationController;
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
   List<VertexDocument> documents = [];
@@ -92,6 +93,21 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     return widget.documents.indexOf(document) + 1;
   }
 
+  Animation<double> _getRotation(int index) {
+    if (index == 0) {
+      return Tween<double>(begin: 0, end: 0).animate(
+        animationController,
+      );
+    }
+    final startRotation = rotationIncrement * index;
+    return Tween<double>(
+      begin: startRotation,
+      end: startRotation - rotationIncrement,
+    ).animate(
+      animationController,
+    );
+  }
+
   void setupAnimatedBoxes() {
     final children = <AnimatedBox>[];
     animationController.reset();
@@ -103,6 +119,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
           offset: _getOffset(i),
           scale: _getScale(i),
           document: documents[i],
+          rotation: _getRotation(i),
         ),
       );
     }
@@ -141,6 +158,7 @@ class AnimatedBox extends StatelessWidget {
     required this.scale,
     required this.document,
     required this.index,
+    required this.rotation,
     super.key,
   });
 
@@ -149,6 +167,7 @@ class AnimatedBox extends StatelessWidget {
   final Animation<double> scale;
   final VertexDocument document;
   final int index;
+  final Animation<double> rotation;
 
   @override
   Widget build(BuildContext context) {
@@ -156,13 +175,22 @@ class AnimatedBox extends StatelessWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
-          return Transform.scale(
-            scale: scale.value,
-            child: Transform.translate(
-              offset: offset.value,
-              child: SourceCard(
-                document: document,
-                index: index,
+          print(rotation.value);
+          return Transform(
+            alignment: FractionalOffset.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.003)
+              ..rotateY(
+                rotation.value,
+              ),
+            child: Transform.scale(
+              scale: scale.value,
+              child: Transform.translate(
+                offset: offset.value,
+                child: SourceCard(
+                  document: document,
+                  index: index,
+                ),
               ),
             ),
           );
