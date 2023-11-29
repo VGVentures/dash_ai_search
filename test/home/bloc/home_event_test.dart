@@ -31,10 +31,31 @@ void main() {
       );
     });
 
+    test('Results supports value equality', () {
+      expect(
+        Results(),
+        equals(Results()),
+      );
+    });
+
     test('SeeSourceAnswersRequested supports value equality', () {
       expect(
         SeeSourceAnswersRequested(),
         equals(SeeSourceAnswersRequested()),
+      );
+    });
+
+    test('SeeResultsSourceAnswers supports value equality', () {
+      expect(
+        SeeResultsSourceAnswers(),
+        equals(SeeResultsSourceAnswers()),
+      );
+    });
+
+    test('Restarted supports value equality', () {
+      expect(
+        Restarted(),
+        equals(Restarted()),
       );
     });
   });
