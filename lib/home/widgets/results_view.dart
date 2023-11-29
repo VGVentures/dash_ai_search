@@ -9,12 +9,10 @@ class ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-    return Stack(
+    return const Stack(
       children: [
-        BlueContainer(summary: response.summary),
-        const Positioned(
+        BlueContainer(),
+        Positioned(
           top: 90,
           left: 0,
           right: 0,
@@ -81,9 +79,7 @@ class _SearchBoxState extends State<_SearchBox>
 
 class BlueContainer extends StatefulWidget {
   @visibleForTesting
-  const BlueContainer({required this.summary, super.key});
-
-  final String summary;
+  const BlueContainer({super.key});
 
   @override
   State<BlueContainer> createState() => _BlueContainerState();
@@ -192,8 +188,6 @@ class _BlueContainerState extends State<BlueContainer>
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     return PositionedTransition(
       rect: _positionExitOut,
       child: Align(
@@ -214,35 +208,165 @@ class _BlueContainerState extends State<BlueContainer>
                         Radius.circular(_borderRadiusExitOut.value),
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 48,
-                      vertical: 64,
-                    ),
-                    child: Stack(
-                      children: [
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Text(
-                            widget.summary,
-                            style: textTheme.headlineLarge?.copyWith(
-                              color: VertexColors.white,
-                              fontSize: 32,
-                            ),
-                          ),
-                        ),
-                        const BackToAnswerButton(),
-                        const Align(
-                          alignment: Alignment.bottomLeft,
-                          child: FeedbackButtons(),
-                        ),
-                        const SeeSourceAnswersButton(),
-                      ],
-                    ),
+                    child: const _AiResponse(),
                   ),
                 );
               },
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AiResponse extends StatefulWidget {
+  const _AiResponse();
+
+  @override
+  State<_AiResponse> createState() => _AiResponseState();
+}
+
+class _AiResponseState extends State<_AiResponse>
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<double> _leftPaddingExitOut;
+  late Animation<double> _topPaddingExitOut;
+  late Animation<double> _bottomPaddingExitOut;
+  late Animation<Offset> _offsetEnterIn;
+  late Animation<double> _rotationEnterIn;
+
+  @override
+  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
+
+  @override
+  List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
+
+  @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
+
+  @override
+  void initializeTransitionController() {
+    super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _leftPaddingExitOut = Tween<double>(begin: 48, end: 165).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _offsetEnterIn =
+        Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    final response =
+        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
+
+    return AnimatedBuilder(
+      animation: _leftPaddingExitOut,
+      builder: (context, child) => Padding(
+        padding: EdgeInsets.fromLTRB(_leftPaddingExitOut.value, 64, 48, 64),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  AnimatedBuilder(
+                    animation: _topPaddingExitOut,
+                    builder: (context, child) =>
+                        SizedBox(height: _topPaddingExitOut.value),
+                  ),
+                  SizeTransition(
+                    sizeFactor: CurvedAnimation(
+                      parent: exitTransitionController,
+                      curve: Curves.decelerate,
+                    ),
+                    child: const BackToAnswerButton(),
+                  ),
+                  Flexible(
+                    child: Expanded(
+                      child: Text(
+                        response.summary,
+                        style: textTheme.headlineLarge?.copyWith(
+                          color: VertexColors.white,
+                          fontSize: 32,
+                        ),
+                      ),
+                    ),
+                  ),
+                  AnimatedBuilder(
+                    animation: _bottomPaddingExitOut,
+                    builder: (context, child) =>
+                        SizedBox(height: _bottomPaddingExitOut.value),
+                  ),
+                  const Row(
+                    children: [
+                      FeedbackButtons(),
+                      Expanded(child: SeeSourceAnswersButton()),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            /*
+            SlideTransition(
+                position: _offsetEnterIn,
+                child: RotationTransition(
+                  turns: _rotationEnterIn,
+                  child: Expanded(
+                    child: SourcesCarouselView(
+                      documents: response.documents,
+                    ),
+                  ),
+                ),
+              ),
+            */
+          ],
         ),
       ),
     );
