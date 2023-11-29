@@ -171,12 +171,13 @@ class FakeResponses {
    ]
 }
 ''';
+
   static String platformsResponse = '''
 {
-   "summary":"Flutter is a free and open source software development kit (SDK) from Google [1]. It's used to create beautiful, fast user experiences for mobile, web, and desktop applications [1]. Flutter works with existing code and is used by developers and organizations around the world [1]. [3]. Flutter is a fully open source project [3].",
+   "summary":"Flutter is a free and open source SDK that allows developers to create beautiful, fast user experiences for mobile, web, and desktop from a single codebase [2].",
    "total_size":694,
-   "attribution_token":"Z_BmCgwIm4iYqwYQ1r7FvwMSJDY1NjAyMmJhLTAwMDAtMjgwZi04NGIwLWQ0ZjU0N2ZhYjdhMCIHR0VORVJJQyoowZWMIqKGjiKmi-8XxcvzF9SynRWcho4iwvCeFaOAlyKOvp0VvpWMIg",
-   "next_page_token":"ATY3IWYmdDN1YGNk1CMiRDOtYGM4ITLwADMw0SOiJjMwYTN2QiGDEMs5jJEGs6pxvJCMIBMxIgC",
+   "attribution_token":"X_BeCgwI6omdqwYQzqXR6gESJDY1NjQ3YTdjLTAwMDAtMmU5ZS1iOTU4LTE0YzE0ZWViNzU2YyIHR0VORVJJQyogooaOIo6-nRXC8J4VnIaOIqOAlyLUsp0VpovvF8XL8xc",
+   "next_page_token":"MmN1cjYlVGNxMGNx0CO1kjYtUWOlJTLwADMw0iY3E2N0YTN2QiGBs--y7OEGsKryrOCMIBMxIgC",
    "documents":[
       {
          "id":"49e63c23-8376-440a-ac6e-98675fdd023e",
@@ -185,13 +186,29 @@ class FakeResponses {
             "title":"Flutter - Dart API docs",
             "tags":"missing",
             "keywords":null,
-            "description":"Flutter is <b>Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single codebase</b>. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
+            "description":"Among the thousands of packages, you&#39;ll find support for Firebase, Google Fonts, hardware services like Bluetooth and camera, new widgets and animations, and integration with other popular web services.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/index.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-index-html.html",
          "snippets":[
-            "inspector. dart:math Mathematical constants and functions, plus a random number generator. dart:typed_data Lists that efficiently handle fixed sized data (for&nbsp;..."
+            "where the name to call <b>is</b> not known at runtime. platform_integration Android <b>Flutter platform</b> ... <b>service</b> extension that <b>is</b> required for tests that use package&nbsp;..."
+         ]
+      },
+      {
+         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/",
+            "title":"Flutter Reference",
+            "tags":"mock",
+            "keywords":null,
+            "description":"Flutter Reference Flutter Docs (94% documented) View on GitHub Install in Dash Flutter Reference Flutter Reference Classes FlutterAppDelegate FlutterBasicMessageChannel FlutterBinaryCodec FlutterCallbackCache FlutterCallbackInformation FlutterDartProject FlutterEngine FlutterEngineGroup FlutterEngineGroupOptions FlutterError FlutterEventChannel FlutterHeadlessDartRunner FlutterJSONMessageCodec FlutterJSONMethodCodec FlutterMethodCall FlutterMethodChannel FlutterPluginAppLifeCycleDelegate FlutterStandardBigInteger FlutterStandardMessageCodec FlutterStandardMethodCodec FlutterStandardReader FlutterStandardReaderWriter FlutterStandardTypedData FlutterStandardWriter FlutterStringCodec FlutterViewController Constants FlutterDefaultDartEntrypoint FlutterDefaultInitialRoute FlutterEndOfEventStream FlutterMethodNotImplemented FlutterSemanticsUpdateNotification Enumerations FlutterStandardDataType Protocols FlutterAppLifeCycleProvider FlutterApplicationLifeCycleDelegate FlutterBinaryMessenger FlutterMessageCodec FlutterMethodCodec FlutterPlatformView FlutterPlatformViewFactory FlutterPlugin FlutterPluginRegistrar FlutterPluginRegistry FlutterStreamHandler FlutterTexture FlutterTextureRegistry Type Definitions FlutterBinaryMessageHandler FlutterBinaryMessengerConnection FlutterBinaryReply FlutterEventSink FlutterHeadlessDartRunnerCallback FlutterMessageHandler FlutterMethodCallHandler FlutterPlatformViewGestureRecognizersBlockingPolicy FlutterPluginRegistrantCallback FlutterReply FlutterResult Flutter Engine Flutter is Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single codebase. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
+         "snippets":[
+            "<b>FlutterReply FlutterResult Flutter</b> Engine <b>Flutter is</b> Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single&nbsp;..."
          ]
       },
       {
@@ -207,87 +224,71 @@ class FakeResponses {
          "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-flutterengine-html.html",
          "snippets":[
-            "to be notified of <b>Flutter</b> ... LocalizationPlugin getLocalizationPlugin() The LocalizationPlugin this <b>FlutterEngine</b> created. MouseCursorChannel&nbsp;..."
+            "... <b>FlutterEngine</b>. A new <b>FlutterEngine does</b> not execute any Dart code ... Same as <b>FlutterEngine</b>(Context) with added <b>support</b> for passing Dart VM arguments and&nbsp;..."
          ]
       },
       {
-         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
+         "id":"5f853c5c-de6b-4f6d-8d26-2a4b7c7a0af3",
          "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/",
-            "title":"Flutter Reference",
-            "tags":"mock",
-            "keywords":null,
-            "description":"Flutter is a fully open source project, and we welcome contributions. Information on how to get started can be found at our contributor guide. \u00a9 2023 Flutter. All rights reserved. (Last updated: 2023-10-25) Generated by jazzy \u266a\u266b v0.14.3, a Realm project.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
-         "snippets":[
-            "... <b>FlutterStandardMessageCodec FlutterStandardMethodCodec FlutterStandardReader FlutterStandardReaderWriter FlutterStandardTypedData FlutterStandardWriter</b>&nbsp;..."
-         ]
-      },
-      {
-         "id":"88318aee-2f63-456b-8ea0-1a5dd90b0ef3",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-            "title":"io.flutter.app",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformViewsController.html",
+            "title":"PlatformViewsController",
             "tags":"fake",
             "keywords":null,
-            "description":"FlutterActivityEvents A collection of Android Activity methods that are relevant to the core operation of Flutter applications. Class Summary Class Description FlutterActivity Deprecated. FlutterActivity is the new API that now replaces this class.",
+            "description":"Each FlutterEngine or FlutterPluginRegistry has a single platform views controller. A platform views controller can be attached to at most one Flutter view.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-app-package-summary-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformViewsController.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-plugin-platform-platformviewscontroller-html.html",
          "snippets":[
-            
+            "PlatformViewsAccessibilityDelegate Detaches the <b>current</b> accessibility bridge. Any accessibility events sent by <b>platform</b> views belonging to this delegate <b>will</b> be&nbsp;..."
          ]
       },
       {
-         "id":"140f1ff5-9c62-4e4e-ba47-fcdb7c96de33",
+         "id":"7966ae56-78fd-4057-8b08-3aa16b5176b3",
          "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-            "title":"FlutterEngine Class Reference",
-            "tags":"missing",
-            "keywords":null,
-            "description":"A FlutterEngine can also be used to prewarm the Dart execution environment and reduce the latency of showing the Flutter screen when a FlutterViewController is created and presented. See http://flutter.dev/docs/development/add-to-app/performance for more details on loading performance.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterengine-html.html",
-         "snippets":[
-            "libraryURI: String?, initialRoute: String?) -&gt; Bool Parameters entrypoint The name of a top-level function from a Dart library. If this is&nbsp;..."
-         ]
-      },
-      {
-         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-            "title":"FlutterActivity",
-            "tags":"fake",
-            "keywords":null,
-            "description":"Using a FlutterFragment requires forwarding some calls from an Activity to the FlutterFragment. If Flutter is needed in a location that can only use a View, consider using a FlutterView.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
-         "snippets":[
-            "FlutterFragment. If <b>Flutter</b> ... ACCOUNT_SERVICE, ACTIVITY_SERVICE, ALARM_SERVICE, APP_OPS_SERVICE, APP_SEARCH_SERVICE, APPWIDGET_SERVICE, AUDIO_SERVICE,&nbsp;..."
-         ]
-      },
-      {
-         "id":"f961196f-7a50-4296-9867-20d94d5c92f4",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-            "title":"FlutterViewController Class Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformView.html",
+            "title":"PlatformView",
             "tags":"unknown",
             "keywords":null,
-            "description":"Flutter&#39;s rendering is asynchronous, so the first frame rendered by the Flutter application might not immediately appear when the Flutter view is initially placed in the view hierarchy. The splash screen view will be used as a replacement until the first frame is rendered.",
+            "description":"View getView() Returns the Android view to be embedded in the Flutter hierarchy. default void onFlutterViewAttached\u200b(View flutterView) Called by the FlutterEngine that owns this PlatformView when the Android View responsible for rendering a Flutter UI is associated with the FlutterEngine. default void onFlutterViewDetached() Called by the FlutterEngine that owns this PlatformView when the Android View responsible for rendering a Flutter UI is detached and disassociated from the FlutterEngine. default void onInputConnectionLocked() Callback fired when the platform&#39;s input connection is locked, or should be used. default void onInputConnectionUnlocked() Callback fired when the platform input connection has been unlocked.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterviewcontroller-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformView.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-plugin-platform-platformview-html.html",
          "snippets":[
-            "... Swift init(coder aDecoder: NSCoder) -<b>setFlutterViewDidRenderCallback</b>: Registers a callback that will be invoked when the <b>Flutter</b> view has been rendered."
+            "onInputConnectionLocked default void onInputConnectionLocked() Callback fired when the <b>platform&#39;s</b> input connection <b>is</b> ... <b>Help</b> All Classes JavaScript <b>is</b> disabled&nbsp;..."
+         ]
+      },
+      {
+         "id":"51592adc-b496-42a3-8dba-0aabb152291c",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/package-tree.html",
+            "title":"io.flutter.plugin.platform Class Hierarchy",
+            "tags":"mock",
+            "keywords":null,
+            "description":"Hierarchy For Package io.flutter.plugin.platform Package Hierarchies: All Packages Class Hierarchy java.lang.Object io.flutter.plugin.platform.PlatformPlugin io.flutter.plugin.platform.PlatformViewFactory io.flutter.plugin.platform.PlatformViewsController (implements io.flutter.plugin.platform.PlatformViewsAccessibilityDelegate) android.view.View (implements android.view.accessibility.AccessibilityEventSource, android.graphics.drawable.Drawable.Callback, android.view.KeyEvent.Callback) io.flutter.embedding.android.FlutterImageView (implements io.flutter.embedding.engine.renderer.RenderSurface) io.flutter.plugin.platform.PlatformOverlayView Interface Hierarchy io.flutter.plugin.platform.PlatformPlugin.PlatformPluginDelegate io.flutter.plugin.platform.PlatformView io.flutter.plugin.platform.PlatformViewRegistry io.flutter.plugin.platform.PlatformViewsAccessibilityDelegate Skip navigation links Overview Package Class Tree Deprecated Index Help All Classes JavaScript is disabled on your browser.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/package-tree.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-plugin-platform-package-tree-html.html",
+         "snippets":[
+            "disabled on your browser. Skip navigation links Overview Package Class Tree Deprecated Index <b>Help</b> All Classes SEARCH: JavaScript <b>is</b> disabled on your browser."
+         ]
+      },
+      {
+         "id":"79c17b8d-fccc-4406-9f5e-ae003069646a",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/view/FlutterView.html",
+            "title":"FlutterView",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"Invoked by Android when a generic motion event occurs, eg, joystick movement, mouse hover, track pad touches, scroll wheel movements, etc. Flutter handles all of its own gesture detection and processing, therefore this method forwards all MotionEvent data from Android to Flutter.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/view/FlutterView.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-view-flutterview-html.html",
+         "snippets":[
+            "<b>FlutterView</b> JavaScript <b>is</b> disabled on your browser. Skip navigation links Overview Package Class Tree Deprecated Index <b>Help</b> All Classes SEARCH: JavaScript <b>is</b>&nbsp;..."
          ]
       },
       {
@@ -297,56 +298,57 @@ class FakeResponses {
             "title":"FlutterPlugin",
             "tags":"unknown",
             "keywords":null,
-            "description":"A Flutter plugin allows Flutter developers to interact with a host platform, eg, Android and iOS, via Dart code. It includes platform code, as well as Dart code.",
+            "description":"A Flutter plugin allows Flutter developers to interact with a host platform, eg, <b>Android and iOS</b>, via Dart code.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-plugins-flutterplugin-html.html",
          "snippets":[
-            "your browser. Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method. https api <b>flutter</b> dev javadoc io <b>flutter</b> embedding engine plugins&nbsp;..."
+            "may never be associated with an Activity, e.g., when <b>Flutter is</b> used for ... Deprecated Index <b>Help</b> All Classes JavaScript <b>is</b> disabled on your browser&nbsp;..."
          ]
       },
       {
-         "id":"c3cd5194-8da3-4809-a88a-cc4ad1026871",
+         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
          "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-            "title":"FlutterAppDelegate Class Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+            "title":"FlutterActivity",
             "tags":"fake",
             "keywords":null,
-            "description":"This class implements the following behaviors: Status bar touches are forwarded to the key window&#39;s root view FlutterViewController, in order to trigger scroll to top.",
+            "description":"Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method Package io.flutter.embedding.android Class FlutterActivity java.lang.Object android.content.Context android.content.ContextWrapper android.view.ContextThemeWrapper android.app.Activity io.flutter.embedding.android.FlutterActivity All Implemented Interfaces: ComponentCallbacks, ComponentCallbacks2, KeyEvent.Callback, LayoutInflater.Factory, LayoutInflater.Factory2, View.OnCreateContextMenuListener, Window.Callback, androidx.lifecycle.LifecycleOwner, FlutterEngineConfigurator, FlutterEngineProvider, SplashScreenProvider, PlatformPlugin.PlatformPluginDelegate public class FlutterActivity extends Activity implements androidx.lifecycle.LifecycleOwner Activity which displays a fullscreen Flutter UI. FlutterActivity is the simplest and most direct way to integrate Flutter within an Android app.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterappdelegate-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
          "snippets":[
-            
+            "... <b>Flutter is</b> needed in a location that cannot use an Activity, consider using ... Activity displayed upon loading the app. Prior to <b>Flutter</b> 2.5, FlutterActivity&nbsp;..."
          ]
       },
       {
-         "id":"3821e382-276d-43b7-8368-0f9f9b9268d0",
+         "id":"0050bf1d-ac11-49a3-b394-25f24c7a9eb0",
          "metadata":{
-            "url":"https://api.flutter.dev/flutter/widgets/Navigator-class.html",
-            "title":"Navigator class - widgets library - Dart API",
-            "tags":"unknown",
+            "url":"https://api.flutter.dev/flutter/services/MethodChannel-class.html",
+            "title":"MethodChannel class - services library - Dart API",
+            "tags":"missing",
             "keywords":null,
-            "description":"Navigator class - widgets library - Dart API menu Flutter widgets Navigator class Navigator brightness_4 brightness_5 description Navigator class A widget that manages a set of child widgets with a stack discipline.",
+            "description":"Method calls are encoded into binary before being sent, and binary results received are decoded into Dart values.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/flutter/widgets/Navigator-class.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-flutter-widgets-navigator-class-html.html",
+         "link":"https://api.flutter.dev/flutter/services/MethodChannel-class.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-flutter-services-methodchannel-class-html.html",
          "snippets":[
-            "pushed route&#39;s Future as described above. Callers can await the returned value to take an action when the route is popped, or to discover the route&#39;s value."
+            "... <b>is</b> dynamic, but only values <b>supported</b> by the specified MethodCodec can be ... <b>Flutter services</b> MethodChannel class <b>Flutter</b> 0.0.0. https api <b>flutter</b> dev <b>flutter</b>&nbsp;..."
          ]
       }
    ]
 }
 ''';
+
   static String languageResponse = '''
 {
-   "summary":"Flutter is a free and open source software development kit (SDK) from Google [1]. It's used to create beautiful, fast user experiences for mobile, web, and desktop applications [1]. Flutter works with existing code and is used by developers and organizations around the world [1]. [3]. Flutter is a fully open source project [3].",
+   "summary":"Flutter apps are written in the Dart programming language [1]. The Flutter SDK includes a number of classes and methods that are used to create Flutter apps [3, 4]. For example, the FlutterActivity class includes methods to get the initial route, lifecycle, and metadata for a Flutter app [3]. The FlutterEngine class is the container that allows Dart code to run in an Android application [5].",
    "total_size":694,
-   "attribution_token":"Z_BmCgwIm4iYqwYQ1r7FvwMSJDY1NjAyMmJhLTAwMDAtMjgwZi04NGIwLWQ0ZjU0N2ZhYjdhMCIHR0VORVJJQyoowZWMIqKGjiKmi-8XxcvzF9SynRWcho4iwvCeFaOAlyKOvp0VvpWMIg",
-   "next_page_token":"ATY3IWYmdDN1YGNk1CMiRDOtYGM4ITLwADMw0SOiJjMwYTN2QiGDEMs5jJEGs6pxvJCMIBMxIgC",
+   "attribution_token":"X_BeCgwI74udqwYQxJ3TjAESJDY1NWZjMGVhLTAwMDAtMjU4My05N2EwLTE0YzE0ZWYxMmRhYyIHR0VORVJJQyognIaOItSynRXFy_MXpovvF6OAlyLC8J4VooaOIo6-nRU",
+   "next_page_token":"MWYkJTMmVGNxMGNx0CMhdTOtMDO1ITLwADMw0SOlBzYmVTN2QiGDcZoyOLEGsKr0DPCMIBMxIgC",
    "documents":[
       {
          "id":"49e63c23-8376-440a-ac6e-98675fdd023e",
@@ -355,13 +357,61 @@ class FakeResponses {
             "title":"Flutter - Dart API docs",
             "tags":"missing",
             "keywords":null,
-            "description":"Flutter is <b>Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single codebase</b>. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
+            "description":"Dart dart:ui Built-in types and core primitives for a Flutter application. dart:ui_web Core dart:async Support for asynchronous programming, with classes such as Future and Stream. dart:collection Classes and utilities that supplement the collection support in dart:core. dart:convert Encoders and decoders for converting between different data representations, including JSON and UTF-8. dart:core Built-in types, collections, and other core functionality for every Dart program. dart:developer Interact with developer tools such as the debugger and inspector. dart:math Mathematical constants and functions, plus a random number generator. dart:typed_data Lists that efficiently handle fixed sized data (for example, unsigned 8 byte integers) and SIMD numeric types.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/index.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-index-html.html",
          "snippets":[
-            "inspector. dart:math Mathematical constants and functions, plus a random number generator. dart:typed_data Lists that efficiently handle fixed sized data (for&nbsp;..."
+            ":io File, socket, HTTP, and other <b>I</b>/O support for non-web <b>applications</b>. dart:isolate Concurrent programming <b>using</b> isolates: independent workers that <b>are</b> similar&nbsp;..."
+         ]
+      },
+      {
+         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/",
+            "title":"Flutter Reference",
+            "tags":"mock",
+            "keywords":null,
+            "description":"It implements Flutter&#39;s core libraries, including animation and graphics, file and network I/O, accessibility support, plugin architecture, and a Dart runtime and compile toolchain.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
+         "snippets":[
+            "engine, more tooling <b>can</b> be found at felt. This is a tool written to <b>make</b> web engine development experience easy. If <b>you are</b> new to <b>Flutter</b>, then <b>you will</b>&nbsp;..."
+         ]
+      },
+      {
+         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+            "title":"FlutterActivity",
+            "tags":"fake",
+            "keywords":null,
+            "description":"String getInitialRoute() The initial route that a Flutter app will render upon loading and executing its Dart code. androidx.lifecycle.Lifecycle getLifecycle() FlutterActivityAndFragmentDelegate.Host method that is used by FlutterActivityAndFragmentDelegate to obtain a Lifecycle reference as needed. protected Bundle getMetaData() Retrieves the meta data specified in the AndroidManifest.xml.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
+         "snippets":[
+            "situation. When <b>you are</b> unsure when/if <b>you will need</b> to display a <b>Flutter</b> ... <b>Flutter app</b> renders, <b>use</b> platform channels to instruct Android to <b>do</b> so at the&nbsp;..."
+         ]
+      },
+      {
+         "id":"3762b98b-db06-4134-8dc9-48a3799d0df0",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/Classes.html",
+            "title":"Classes Reference",
+            "tags":"fake",
+            "keywords":null,
+            "description":"These parts of the Flutter SDK are evolved synchronously. Declaration Objective-C @interface FlutterStringCodec : NSObject &lt;FlutterMessageCodec&gt; Swift class FlutterStringCodec : NSObject, FlutterMessageCodec FlutterJSONMessageCodec A FlutterMessageCodec using UTF-8 encoded JSON messages.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/Classes.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-html.html",
+         "snippets":[
+            "... <b>FlutterStandardReaderWriter</b> A factory of compatible reader/<b>writer</b> instances <b>using</b> the <b>Flutter</b> standard ... a large file). A <b>FlutterEngine can</b> also <b>be used</b> to&nbsp;..."
          ]
       },
       {
@@ -377,39 +427,7 @@ class FakeResponses {
          "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-flutterengine-html.html",
          "snippets":[
-            "to be notified of <b>Flutter</b> ... LocalizationPlugin getLocalizationPlugin() The LocalizationPlugin this <b>FlutterEngine</b> created. MouseCursorChannel&nbsp;..."
-         ]
-      },
-      {
-         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/",
-            "title":"Flutter Reference",
-            "tags":"mock",
-            "keywords":null,
-            "description":"Flutter is a fully open source project, and we welcome contributions. Information on how to get started can be found at our contributor guide. \u00a9 2023 Flutter. All rights reserved. (Last updated: 2023-10-25) Generated by jazzy \u266a\u266b v0.14.3, a Realm project.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
-         "snippets":[
-            "... <b>FlutterStandardMessageCodec FlutterStandardMethodCodec FlutterStandardReader FlutterStandardReaderWriter FlutterStandardTypedData FlutterStandardWriter</b>&nbsp;..."
-         ]
-      },
-      {
-         "id":"88318aee-2f63-456b-8ea0-1a5dd90b0ef3",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-            "title":"io.flutter.app",
-            "tags":"fake",
-            "keywords":null,
-            "description":"FlutterActivityEvents A collection of Android Activity methods that are relevant to the core operation of Flutter applications. Class Summary Class Description FlutterActivity Deprecated. FlutterActivity is the new API that now replaces this class.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-app-package-summary-html.html",
-         "snippets":[
-            
+            "arguments <b>will have</b> no effect. <b>FlutterEngine</b> public <b>FlutterEngine</b>\u200b(@NonNull Context ... <b>be used</b> to start executing Dart code from a given entrypoint. See&nbsp;..."
          ]
       },
       {
@@ -419,29 +437,13 @@ class FakeResponses {
             "title":"FlutterEngine Class Reference",
             "tags":"missing",
             "keywords":null,
-            "description":"A FlutterEngine can also be used to prewarm the Dart execution environment and reduce the latency of showing the Flutter screen when a FlutterViewController is created and presented. See http://flutter.dev/docs/development/add-to-app/performance for more details on loading performance.",
+            "description":"-run Runs a Dart program on an Isolate from the main Dart library (ie the library that contains main()), using main() as the entrypoint (the default for Flutter projects), and using \u201c/\u201d (the default route) as the initial route. The first call to this method will create a new Isolate.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterengine-html.html",
          "snippets":[
-            "libraryURI: String?, initialRoute: String?) -&gt; Bool Parameters entrypoint The name of a top-level function from a Dart library. If this is&nbsp;..."
-         ]
-      },
-      {
-         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-            "title":"FlutterActivity",
-            "tags":"fake",
-            "keywords":null,
-            "description":"Using a FlutterFragment requires forwarding some calls from an Activity to the FlutterFragment. If Flutter is needed in a location that can only use a View, consider using a FlutterView.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
-         "snippets":[
-            "FlutterFragment. If <b>Flutter</b> ... ACCOUNT_SERVICE, ACTIVITY_SERVICE, ALARM_SERVICE, APP_OPS_SERVICE, APP_SEARCH_SERVICE, APPWIDGET_SERVICE, AUDIO_SERVICE,&nbsp;..."
+            "... large file). A <b>FlutterEngine can</b> also <b>be used</b> to prewarm the Dart execution environment and reduce the latency of showing the <b>Flutter</b> screen when a&nbsp;..."
          ]
       },
       {
@@ -451,45 +453,13 @@ class FakeResponses {
             "title":"FlutterViewController Class Reference",
             "tags":"unknown",
             "keywords":null,
-            "description":"Flutter&#39;s rendering is asynchronous, so the first frame rendered by the Flutter application might not immediately appear when the Flutter view is initially placed in the view hierarchy. The splash screen view will be used as a replacement until the first frame is rendered.",
+            "description":"-initWithCoder: Initializer that is called from loading a FlutterViewController from a XIB. See also: https://developer.apple.com/documentation/foundation/nscoding/1416145-initwithcoder?language=objc Declaration Objective-C - (nonnull instancetype)initWithCoder:(nonnull NSCoder *)aDecoder; Swift init(coder aDecoder: NSCoder) -setFlutterViewDidRenderCallback: Registers a callback that will be invoked when the Flutter view has been rendered.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterviewcontroller-html.html",
          "snippets":[
-            "... Swift init(coder aDecoder: NSCoder) -<b>setFlutterViewDidRenderCallback</b>: Registers a callback that will be invoked when the <b>Flutter</b> view has been rendered."
-         ]
-      },
-      {
-         "id":"70177a4a-78fd-4540-91d1-165f918cd4f4",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-            "title":"FlutterPlugin",
-            "tags":"unknown",
-            "keywords":null,
-            "description":"A Flutter plugin allows Flutter developers to interact with a host platform, eg, Android and iOS, via Dart code. It includes platform code, as well as Dart code.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-plugins-flutterplugin-html.html",
-         "snippets":[
-            "your browser. Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method. https api <b>flutter</b> dev javadoc io <b>flutter</b> embedding engine plugins&nbsp;..."
-         ]
-      },
-      {
-         "id":"c3cd5194-8da3-4809-a88a-cc4ad1026871",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-            "title":"FlutterAppDelegate Class Reference",
-            "tags":"fake",
-            "keywords":null,
-            "description":"This class implements the following behaviors: Status bar touches are forwarded to the key window&#39;s root view FlutterViewController, in order to trigger scroll to top.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterappdelegate-html.html",
-         "snippets":[
-            
+            "... <b>can be used</b> to access the asset in the <b>application&#39;s</b> * main bundle. * ... splashScreenView Specifies the view to <b>use</b> as a splash screen. <b>Flutter&#39;s</b> rendering is&nbsp;..."
          ]
       },
       {
@@ -499,39 +469,88 @@ class FakeResponses {
             "title":"Navigator class - widgets library - Dart API",
             "tags":"unknown",
             "keywords":null,
-            "description":"Navigator class - widgets library - Dart API menu Flutter widgets Navigator class Navigator brightness_4 brightness_5 description Navigator class A widget that manages a set of child widgets with a stack discipline.",
+            "description":"That&#39;s why we&#39;ve used MaterialPageRoute&lt;bool&gt; instead of MaterialPageRoute&lt;void&gt; or just MaterialPageRoute. (If you prefer to not specify the types, though, that&#39;s fine too.) Popup routes Routes don&#39;t have to obscure the entire screen.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/flutter/widgets/Navigator-class.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-flutter-widgets-navigator-class-html.html",
          "snippets":[
-            "pushed route&#39;s Future as described above. Callers can await the returned value to take an action when the route is popped, or to discover the route&#39;s value."
+            "... <b>type</b> for the route, because it <b>does</b> not return a value.) Nesting Navigators An <b>app can use</b> more than one Navigator. Nesting one Navigator below another&nbsp;..."
+         ]
+      },
+      {
+         "id":"f9fa1730-3c65-43a4-8bfd-3a2d8d8254c2",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/app/FlutterPlayStoreSplitApplication.html",
+            "title":"FlutterPlayStoreSplitApplication",
+            "tags":"mock",
+            "keywords":null,
+            "description":"FlutterPlayStoreSplitApplication JavaScript is disabled on your browser.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/app/FlutterPlayStoreSplitApplication.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-app-flutterplaystoresplitapplication-html.html",
+         "snippets":[
+            "... <b>be used</b> with the Google Play store. Custom non-play store <b>applications do</b> ... <b>flutter</b> dev javadoc io <b>flutter app flutterplaystoresplitapplication</b> html."
+         ]
+      },
+      {
+         "id":"1f30b64b-c995-4457-8d68-ec49ca4f5cdd",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragmentActivity.html",
+            "title":"FlutterFragmentActivity",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method Package io.flutter.embedding.android Class FlutterFragmentActivity java.lang.Object android.content.Context android.content.ContextWrapper android.view.ContextThemeWrapper android.app.Activity androidx.core.app.ComponentActivity androidx.activity.ComponentActivity androidx.fragment.app.FragmentActivity io.flutter.embedding.android.FlutterFragmentActivity All Implemented Interfaces: ComponentCallbacks, ComponentCallbacks2, KeyEvent.Callback, LayoutInflater.Factory, LayoutInflater.Factory2, View.OnCreateContextMenuListener, Window.Callback, androidx.activity.OnBackPressedDispatcherOwner, androidx.core.app.ActivityCompat.OnRequestPermissionsResultCallback, androidx.core.app.ActivityCompat.RequestPermissionsRequestCodeValidator, androidx.core.view.KeyEventDispatcher.Component, androidx.lifecycle.LifecycleOwner, androidx.lifecycle.ViewModelStoreOwner, androidx.savedstate.SavedStateRegistryOwner, FlutterEngineConfigurator, FlutterEngineProvider, SplashScreenProvider public class FlutterFragmentActivity extends androidx.fragment.app.FragmentActivity implements SplashScreenProvider, FlutterEngineProvider, FlutterEngineConfigurator A Flutter Activity that is based upon FragmentActivity.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragmentActivity.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutterfragmentactivity-html.html",
+         "snippets":[
+            "... <b>can be used</b> to configure an Intent to launch a FlutterFragmentActivity that internally <b>uses</b> an existing FlutterEngine that is cached in FlutterEngineCache&nbsp;..."
          ]
       }
    ]
-}
+}  
 ''';
+
   static String hotReloadResponse = '''
 {
-   "summary":"Flutter is a free and open source software development kit (SDK) from Google [1]. It's used to create beautiful, fast user experiences for mobile, web, and desktop applications [1]. Flutter works with existing code and is used by developers and organizations around the world [1]. [3]. Flutter is a fully open source project [3].",
+   "summary":"Hot reload in Flutter is a feature that allows you to make changes to your code and see the results immediately without having to restart the app [3]. This can save time when debugging or developing your app [3]. When you make a change to your code, the Flutter engine will recompile the code and send a message to the framework [1]. The framework will then update the UI with the new code [1].",
    "total_size":694,
-   "attribution_token":"Z_BmCgwIm4iYqwYQ1r7FvwMSJDY1NjAyMmJhLTAwMDAtMjgwZi04NGIwLWQ0ZjU0N2ZhYjdhMCIHR0VORVJJQyoowZWMIqKGjiKmi-8XxcvzF9SynRWcho4iwvCeFaOAlyKOvp0VvpWMIg",
-   "next_page_token":"ATY3IWYmdDN1YGNk1CMiRDOtYGM4ITLwADMw0SOiJjMwYTN2QiGDEMs5jJEGs6pxvJCMIBMxIgC",
+   "attribution_token":"X_BeCgwI546dqwYQy9mcngMSJDY1NWZkMTNjLTAwMDAtMjE0MS04YmU1LWQ0ZjU0N2Y2MWMzNCIHR0VORVJJQyogjr6dFcLwnhWcho4i1LKdFcXL8xemi-8Xo4CXIqKGjiI",
+   "next_page_token":"QzMjFjNmdDN1YGNk1SNlJGOtEDNxITLwADMw0iYzEDZmVTN2QiGCQt8AOLEGsKr3vOCMIBMxIgC",
    "documents":[
       {
-         "id":"49e63c23-8376-440a-ac6e-98675fdd023e",
+         "id":"7b6d34ab-61d2-4cfb-961d-9ddf65eb77e8",
          "metadata":{
-            "url":"https://api.flutter.dev/index.html",
-            "title":"Flutter - Dart API docs",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/RestorationChannel.html",
+            "title":"RestorationChannel",
             "tags":"missing",
             "keywords":null,
-            "description":"Flutter is <b>Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single codebase</b>. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
+            "description":"The engine can obtain the current restoration data from the framework via this channel to store it on disk and - when the app is relaunched - provide the stored data back to the framework to recreate the original state of the app.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/index.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-index-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/RestorationChannel.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-systemchannels-restorationchannel-html.html",
          "snippets":[
-            "inspector. dart:math Mathematical constants and functions, plus a random number generator. dart:typed_data Lists that efficiently handle fixed sized data (for&nbsp;..."
+            "extra <b>work</b>. Constructor Detail RestorationChannel public RestorationChannel\u200b(@NonNull ... restart the state prior to the <b>hot restart</b> will get restored. Skip&nbsp;..."
+         ]
+      },
+      {
+         "id":"f57ddcb9-3299-4e30-98a7-a79988734c35",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/Protocols/FlutterStreamHandler.html",
+            "title":"FlutterStreamHandler Protocol Reference",
+            "tags":"mock",
+            "keywords":null,
+            "description":"Invoked when the last listener is deregistered from the Stream associated to this channel on the Flutter side. The channel implementation may call this method with nil arguments to separate a pair of two consecutive set up requests. Such request pairs may occur during Flutter hot restart.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/Protocols/FlutterStreamHandler.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-protocols-flutterstreamhandler-html.html",
+         "snippets":[
+            "occur during <b>Flutter hot restart</b>. Declaration Objective-C - (<b>FlutterError</b> *_Nullable)onCancelWithArguments:(id _Nullable)arguments; Swift func onCancel&nbsp;..."
          ]
       },
       {
@@ -541,125 +560,45 @@ class FakeResponses {
             "title":"FlutterEngine",
             "tags":"missing",
             "keywords":null,
-            "description":"The FlutterEngine is the container through which Dart code can be run in an Android application. Dart code in a FlutterEngine can execute in the background, or it can be render to the screen by using the accompanying FlutterRenderer and Dart code using the Flutter framework on the Dart side.",
+            "description":"Instatiating the first FlutterEngine per process will also load the Flutter engine&#39;s native library and start the Dart VM. Subsequent FlutterEngines will run on the same VM instance but will have their own Dart Isolate when the DartExecutor is run.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-flutterengine-html.html",
          "snippets":[
-            "to be notified of <b>Flutter</b> ... LocalizationPlugin getLocalizationPlugin() The LocalizationPlugin this <b>FlutterEngine</b> created. MouseCursorChannel&nbsp;..."
+            "... <b>FlutterEngine</b>. A new <b>FlutterEngine does</b> not execute any Dart code ... avoids this extra <b>work</b> by delaying initialization until the data is available. When&nbsp;..."
          ]
       },
       {
-         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
+         "id":"cd45dc86-00d5-42c5-b53e-f33aed48e870",
          "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/",
-            "title":"Flutter Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.StreamHandler.html",
+            "title":"EventChannel.StreamHandler",
             "tags":"mock",
             "keywords":null,
-            "description":"Flutter is a fully open source project, and we welcome contributions. Information on how to get started can be found at our contributor guide. \u00a9 2023 Flutter. All rights reserved. (Last updated: 2023-10-25) Generated by jazzy \u266a\u266b v0.14.3, a Realm project.",
+            "description":"Such request pairs may occur during Flutter hot restart. Any uncaught exception thrown in this situation will be logged without notifying Flutter. Parameters: arguments - stream configuration arguments, possibly null.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/plugin/common/EventChannel.StreamHandler.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-plugin-common-eventchannel-streamhandler-html.html",
          "snippets":[
-            "... <b>FlutterStandardMessageCodec FlutterStandardMethodCodec FlutterStandardReader FlutterStandardReaderWriter FlutterStandardTypedData FlutterStandardWriter</b>&nbsp;..."
+            "... <b>Flutter hot restart</b>. Any uncaught exception thrown in this situation will be logged without notifying <b>Flutter</b>. Parameters: arguments - stream configuration&nbsp;..."
          ]
       },
       {
-         "id":"88318aee-2f63-456b-8ea0-1a5dd90b0ef3",
+         "id":"343de37c-d781-44ba-9ce7-a1337d33641b",
          "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-            "title":"io.flutter.app",
-            "tags":"fake",
-            "keywords":null,
-            "description":"FlutterActivityEvents A collection of Android Activity methods that are relevant to the core operation of Flutter applications. Class Summary Class Description FlutterActivity Deprecated. FlutterActivity is the new API that now replaces this class.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-app-package-summary-html.html",
-         "snippets":[
-            
-         ]
-      },
-      {
-         "id":"140f1ff5-9c62-4e4e-ba47-fcdb7c96de33",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-            "title":"FlutterEngine Class Reference",
-            "tags":"missing",
-            "keywords":null,
-            "description":"A FlutterEngine can also be used to prewarm the Dart execution environment and reduce the latency of showing the Flutter screen when a FlutterViewController is created and presented. See http://flutter.dev/docs/development/add-to-app/performance for more details on loading performance.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterengine-html.html",
-         "snippets":[
-            "libraryURI: String?, initialRoute: String?) -&gt; Bool Parameters entrypoint The name of a top-level function from a Dart library. If this is&nbsp;..."
-         ]
-      },
-      {
-         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-            "title":"FlutterActivity",
-            "tags":"fake",
-            "keywords":null,
-            "description":"Using a FlutterFragment requires forwarding some calls from an Activity to the FlutterFragment. If Flutter is needed in a location that can only use a View, consider using a FlutterView.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
-         "snippets":[
-            "FlutterFragment. If <b>Flutter</b> ... ACCOUNT_SERVICE, ACTIVITY_SERVICE, ALARM_SERVICE, APP_OPS_SERVICE, APP_SEARCH_SERVICE, APPWIDGET_SERVICE, AUDIO_SERVICE,&nbsp;..."
-         ]
-      },
-      {
-         "id":"f961196f-7a50-4296-9867-20d94d5c92f4",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-            "title":"FlutterViewController Class Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.EngineLifecycleListener.html",
+            "title":"FlutterEngine.EngineLifecycleListener",
             "tags":"unknown",
             "keywords":null,
-            "description":"Flutter&#39;s rendering is asynchronous, so the first frame rendered by the Flutter application might not immediately appear when the Flutter view is initially placed in the view hierarchy. The splash screen view will be used as a replacement until the first frame is rendered.",
+            "description":"Method Detail onPreEngineRestart void onPreEngineRestart() Lifecycle callback invoked before a hot restart of the Flutter engine. onEngineWillDestroy void onEngineWillDestroy() Lifecycle callback invoked before the Flutter engine is destroyed. For the duration of the call, the Flutter engine is still valid.",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterviewcontroller-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.EngineLifecycleListener.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-flutterengine-enginelifecyclelistener-html.html",
          "snippets":[
-            "... Swift init(coder aDecoder: NSCoder) -<b>setFlutterViewDidRenderCallback</b>: Registers a callback that will be invoked when the <b>Flutter</b> view has been rendered."
-         ]
-      },
-      {
-         "id":"70177a4a-78fd-4540-91d1-165f918cd4f4",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-            "title":"FlutterPlugin",
-            "tags":"unknown",
-            "keywords":null,
-            "description":"A Flutter plugin allows Flutter developers to interact with a host platform, eg, Android and iOS, via Dart code. It includes platform code, as well as Dart code.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-plugins-flutterplugin-html.html",
-         "snippets":[
-            "your browser. Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method. https api <b>flutter</b> dev javadoc io <b>flutter</b> embedding engine plugins&nbsp;..."
-         ]
-      },
-      {
-         "id":"c3cd5194-8da3-4809-a88a-cc4ad1026871",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-            "title":"FlutterAppDelegate Class Reference",
-            "tags":"fake",
-            "keywords":null,
-            "description":"This class implements the following behaviors: Status bar touches are forwarded to the key window&#39;s root view FlutterViewController, in order to trigger scroll to top.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterappdelegate-html.html",
-         "snippets":[
-            
+            "... <b>hot restart</b> of the <b>Flutter</b> engine. onEngineWillDestroy void onEngineWillDestroy() Lifecycle callback invoked before the <b>Flutter</b> engine is destroyed. For the&nbsp;..."
          ]
       },
       {
@@ -669,13 +608,77 @@ class FakeResponses {
             "title":"Navigator class - widgets library - Dart API",
             "tags":"unknown",
             "keywords":null,
-            "description":"Navigator class - widgets library - Dart API menu Flutter widgets Navigator class Navigator brightness_4 brightness_5 description Navigator class A widget that manages a set of child widgets with a stack discipline.",
+            "description":"Replace the current route of the navigator that most tightly encloses the given context by pushing the route named routeName and then disposing the previous route once the new route has finished animating in. removeRoute(BuildContext context, Route route) \u2192 void Immediately remove route from the navigator that most tightly encloses the given context, and Route.dispose it. removeRouteBelow(BuildContext context, Route anchorRoute) \u2192 void Immediately remove a route from the navigator that most tightly encloses the given context, and Route.dispose it.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/flutter/widgets/Navigator-class.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-flutter-widgets-navigator-class-html.html",
          "snippets":[
-            "pushed route&#39;s Future as described above. Callers can await the returned value to take an action when the route is popped, or to discover the route&#39;s value."
+            "... <b>does</b> the same thing. Using named navigator routes Mobile apps often manage a ... <b>Flutter</b> 0.0.0. https api <b>flutter</b> dev <b>flutter</b> widgets navigator class html."
+         ]
+      },
+      {
+         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+            "title":"FlutterActivity",
+            "tags":"fake",
+            "keywords":null,
+            "description":"If a launch screen is specified, it will automatically persist for as long as it takes Flutter to initialize and render its first frame. Use Android themes to display a launch screen. Create two themes: a launch theme and a normal theme.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
+         "snippets":[
+            "void setFrameworkHandlesBack\u200b(boolean frameworkHandlesBack) The <b>Flutter</b> application <b>would</b> or <b>would</b> not like to handle navigation pop events itself. boolean&nbsp;..."
+         ]
+      },
+      {
+         "id":"140f1ff5-9c62-4e4e-ba47-fcdb7c96de33",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
+            "title":"FlutterEngine Class Reference",
+            "tags":"missing",
+            "keywords":null,
+            "description":"The first call to this method will create a new Isolate. Subsequent calls will return immediately and have no effect. Declaration Objective-C - (BOOL)run; Swift func run() -&gt; Bool Return Value YES if the call succeeds in creating and running a Flutter Engine instance; NO otherwise.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterengine-html.html",
+         "snippets":[
+            "function in the Dart program. initialRoute The name of the initial <b>Flutter</b> Navigator Route to load. If this is <b>FlutterDefaultInitialRoute</b> (or nil), it will&nbsp;..."
+         ]
+      },
+      {
+         "id":"3a822448-b764-4762-b2f0-54bc20897f9d",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterView.html",
+            "title":"FlutterView",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"Overrides: dispatchKeyEvent in class ViewGroup onTouchEvent public boolean onTouchEvent\u200b(@NonNull MotionEvent event) Invoked by Android when a user touch event occurs. Flutter handles all of its own gesture detection and processing, therefore this method forwards all MotionEvent data from Android to Flutter.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterView.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutterview-html.html",
+         "snippets":[
+            "... <b>work</b> with a InputMethodManager. protected void onDetachedFromWindow() ... <b>does</b> not use a standard View hierarchy and therefore <b>Flutter</b> is unaware of these insets&nbsp;..."
+         ]
+      },
+      {
+         "id":"70177a4a-78fd-4540-91d1-165f918cd4f4",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
+            "title":"FlutterPlugin",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"The binding passed to this method is the same instance that was passed in onAttachedToEngine(FlutterPluginBinding). It is provided again in this method as a convenience. The binding may be referenced during the execution of this method, but it must not be cached or referenced after this method returns.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-plugins-flutterplugin-html.html",
+         "snippets":[
+            "... <b>do</b> this, obtain a PluginRegistry with <b>FlutterEngine</b>.getPlugins(), then call ... https api <b>flutter</b> dev javadoc io <b>flutter</b> embedding engine plugins <b>flutterplugin</b>&nbsp;..."
          ]
       }
    ]
@@ -683,153 +686,41 @@ class FakeResponses {
 ''';
   static String invalidResponse = '''
 {
-   "summary":"Flutter is a free and open source software development kit (SDK) from Google [1]. It's used to create beautiful, fast user experiences for mobile, web, and desktop applications [1]. Flutter works with existing code and is used by developers and organizations around the world [1]. [3]. Flutter is a fully open source project [3].",
+   "summary":"A summary could not be generated for your search query. Here are some search results.",
    "total_size":694,
-   "attribution_token":"Z_BmCgwIm4iYqwYQ1r7FvwMSJDY1NjAyMmJhLTAwMDAtMjgwZi04NGIwLWQ0ZjU0N2ZhYjdhMCIHR0VORVJJQyoowZWMIqKGjiKmi-8XxcvzF9SynRWcho4iwvCeFaOAlyKOvp0VvpWMIg",
-   "next_page_token":"ATY3IWYmdDN1YGNk1CMiRDOtYGM4ITLwADMw0SOiJjMwYTN2QiGDEMs5jJEGs6pxvJCMIBMxIgC",
+   "attribution_token":"X_BeCgwIh5CdqwYQqPakzAMSJDY1NWY4YWJlLTAwMDAtMmJhZC1hYWJiLTU4MjQyOWFiZTFjNCIHR0VORVJJQyognIaOIo6-nRWjgJciooaOIsLwnhWmi-8XxcvzF9SynRU",
+   "next_page_token":"QzYxUmYhljM0IDO10iYiFWYtQWYiJTLwADMw0CZiFGOmVTN2QiGD4c9PLPEGsKr5fICMIBMxIgC",
    "documents":[
       {
-         "id":"49e63c23-8376-440a-ac6e-98675fdd023e",
+         "id":"f1d6b274-4839-4e52-8759-8335cd9ea450",
          "metadata":{
-            "url":"https://api.flutter.dev/index.html",
-            "title":"Flutter - Dart API docs",
-            "tags":"missing",
-            "keywords":null,
-            "description":"Flutter is <b>Google&#39;s SDK for crafting beautiful, fast user experiences for mobile, web, and desktop from a single codebase</b>. Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/index.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-index-html.html",
-         "snippets":[
-            "inspector. dart:math Mathematical constants and functions, plus a random number generator. dart:typed_data Lists that efficiently handle fixed sized data (for&nbsp;..."
-         ]
-      },
-      {
-         "id":"af6dcbfb-f11b-443f-8af0-5bdcfcdd8102",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.html",
-            "title":"FlutterEngine",
-            "tags":"missing",
-            "keywords":null,
-            "description":"The FlutterEngine is the container through which Dart code can be run in an Android application. Dart code in a FlutterEngine can execute in the background, or it can be render to the screen by using the accompanying FlutterRenderer and Dart code using the Flutter framework on the Dart side.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/FlutterEngine.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-flutterengine-html.html",
-         "snippets":[
-            "to be notified of <b>Flutter</b> ... LocalizationPlugin getLocalizationPlugin() The LocalizationPlugin this <b>FlutterEngine</b> created. MouseCursorChannel&nbsp;..."
-         ]
-      },
-      {
-         "id":"2746919b-8bf2-4c5b-8289-742b533da9fa",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/",
-            "title":"Flutter Reference",
-            "tags":"mock",
-            "keywords":null,
-            "description":"Flutter is a fully open source project, and we welcome contributions. Information on how to get started can be found at our contributor guide. \u00a9 2023 Flutter. All rights reserved. (Last updated: 2023-10-25) Generated by jazzy \u266a\u266b v0.14.3, a Realm project.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc.html",
-         "snippets":[
-            "... <b>FlutterStandardMessageCodec FlutterStandardMethodCodec FlutterStandardReader FlutterStandardReaderWriter FlutterStandardTypedData FlutterStandardWriter</b>&nbsp;..."
-         ]
-      },
-      {
-         "id":"88318aee-2f63-456b-8ea0-1a5dd90b0ef3",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-            "title":"io.flutter.app",
-            "tags":"fake",
-            "keywords":null,
-            "description":"FlutterActivityEvents A collection of Android Activity methods that are relevant to the core operation of Flutter applications. Class Summary Class Description FlutterActivity Deprecated. FlutterActivity is the new API that now replaces this class.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/app/package-summary.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-app-package-summary-html.html",
-         "snippets":[
-            
-         ]
-      },
-      {
-         "id":"140f1ff5-9c62-4e4e-ba47-fcdb7c96de33",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-            "title":"FlutterEngine Class Reference",
-            "tags":"missing",
-            "keywords":null,
-            "description":"A FlutterEngine can also be used to prewarm the Dart execution environment and reduce the latency of showing the Flutter screen when a FlutterViewController is created and presented. See http://flutter.dev/docs/development/add-to-app/performance for more details on loading performance.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterEngine.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterengine-html.html",
-         "snippets":[
-            "libraryURI: String?, initialRoute: String?) -&gt; Bool Parameters entrypoint The name of a top-level function from a Dart library. If this is&nbsp;..."
-         ]
-      },
-      {
-         "id":"57980044-93db-430a-a0dd-caacb6e0830c",
-         "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-            "title":"FlutterActivity",
-            "tags":"fake",
-            "keywords":null,
-            "description":"Using a FlutterFragment requires forwarding some calls from an Activity to the FlutterFragment. If Flutter is needed in a location that can only use a View, consider using a FlutterView.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterActivity.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutteractivity-html.html",
-         "snippets":[
-            "FlutterFragment. If <b>Flutter</b> ... ACCOUNT_SERVICE, ACTIVITY_SERVICE, ALARM_SERVICE, APP_OPS_SERVICE, APP_SEARCH_SERVICE, APPWIDGET_SERVICE, AUDIO_SERVICE,&nbsp;..."
-         ]
-      },
-      {
-         "id":"f961196f-7a50-4296-9867-20d94d5c92f4",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-            "title":"FlutterViewController Class Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragment.NewEngineInGroupFragmentBuilder.html",
+            "title":"FlutterFragment.NewEngineInGroupFragmentBuilder",
             "tags":"unknown",
             "keywords":null,
-            "description":"Flutter&#39;s rendering is asynchronous, so the first frame rendered by the Flutter application might not immediately appear when the Flutter view is initially placed in the view hierarchy. The splash screen view will be used as a replacement until the first frame is rendered.",
+            "description":"If enabled, do not invoke FlutterFragment.onBackPressed() manually. This behavior relies on the implementation of FlutterFragment.popSystemNavigator().",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterViewController.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterviewcontroller-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragment.NewEngineInGroupFragmentBuilder.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutterfragment-newengineingroupfragmentbuilder-html.html",
          "snippets":[
-            "... Swift init(coder aDecoder: NSCoder) -<b>setFlutterViewDidRenderCallback</b>: Registers a callback that will be invoked when the <b>Flutter</b> view has been rendered."
+            "<b>You should</b> use surface unless <b>you</b> have a specific reason to use texture. ... <b>do</b>, <b>you should</b> always fall back to calling super.popSystemNavigator() when not&nbsp;..."
          ]
       },
       {
-         "id":"70177a4a-78fd-4540-91d1-165f918cd4f4",
+         "id":"a7590280-51ad-4aff-acca-541729031168",
          "metadata":{
-            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-            "title":"FlutterPlugin",
-            "tags":"unknown",
-            "keywords":null,
-            "description":"A Flutter plugin allows Flutter developers to interact with a host platform, eg, Android and iOS, via Dart code. It includes platform code, as well as Dart code.",
-            "image_uri":null
-         },
-         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/plugins/FlutterPlugin.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-plugins-flutterplugin-html.html",
-         "snippets":[
-            "your browser. Summary: Nested | Field | Constr | Method Detail: Field | Constr | Method. https api <b>flutter</b> dev javadoc io <b>flutter</b> embedding engine plugins&nbsp;..."
-         ]
-      },
-      {
-         "id":"c3cd5194-8da3-4809-a88a-cc4ad1026871",
-         "metadata":{
-            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-            "title":"FlutterAppDelegate Class Reference",
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/PlatformChannel.PlatformMessageHandler.html",
+            "title":"PlatformChannel.PlatformMessageHandler",
             "tags":"fake",
             "keywords":null,
-            "description":"This class implements the following behaviors: Status bar touches are forwarded to the key window&#39;s root view FlutterViewController, in order to trigger scroll to top.",
+            "description":"To register a PlatformMessageHandler with a PlatformChannel, see PlatformChannel.setPlatformMessageHandler(PlatformMessageHandler).",
             "image_uri":null
          },
-         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterAppDelegate.html",
-         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-flutterappdelegate-html.html",
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/PlatformChannel.PlatformMessageHandler.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-systemchannels-platformchannel-platformmessagehandler-html.html",
          "snippets":[
-            
+            "SystemUiMode mode) The Flutter application <b>would like</b> the Android system to display the given mode. PlatformChannel.SystemUiMode.LEAN_BACK refers to a&nbsp;..."
          ]
       },
       {
@@ -839,13 +730,125 @@ class FakeResponses {
             "title":"Navigator class - widgets library - Dart API",
             "tags":"unknown",
             "keywords":null,
-            "description":"Navigator class - widgets library - Dart API menu Flutter widgets Navigator class Navigator brightness_4 brightness_5 description Navigator class A widget that manages a set of child widgets with a stack discipline.",
+            "description":"Replace the current route of the navigator that most tightly encloses the given context by pushing the route named routeName and then disposing the previous route once the new route has finished animating in. removeRoute(BuildContext context, Route route) \u2192 void Immediately remove route from the navigator that most tightly encloses the given context, and Route.dispose it. removeRouteBelow(BuildContext context, Route anchorRoute) \u2192 void Immediately remove a route from the navigator that most tightly encloses the given context, and Route.dispose it.",
             "image_uri":null
          },
          "link":"https://api.flutter.dev/flutter/widgets/Navigator-class.html",
          "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-flutter-widgets-navigator-class-html.html",
          "snippets":[
-            "pushed route&#39;s Future as described above. Callers can await the returned value to take an action when the route is popped, or to discover the route&#39;s value."
+            "... <b>you prefer</b> to not specify the types, though, that&#39;s fine too.) Popup routes ... <b>do</b> not need to be explicitly created or managed. The following example&nbsp;..."
+         ]
+      },
+      {
+         "id":"49e63c23-8376-440a-ac6e-98675fdd023e",
+         "metadata":{
+            "url":"https://api.flutter.dev/index.html",
+            "title":"Flutter - Dart API docs",
+            "tags":"missing",
+            "keywords":null,
+            "description":"Flutter flutter_localizations flutter_localizations Localizations for the Flutter library. flutter_web_plugins flutter_web_plugins The platform channels and plugin registry implementations for the web implementations of Flutter plugins. url_strategy async async Utilities that expand on the asynchronous features of the dart:async library. boolean_selector boolean_selector characters characters String operations based on characters (Unicode grapheme clusters). clock clock collection collection dart.pkg.collection.algorithms Import collection.dart instead. dart.pkg.collection.equality Import collection.dart instead. dart.pkg.collection.iterable_zip Import collection.dart instead. dart.pkg.collection.priority_queue Import collection.dart instead. dart.pkg.collection.wrappers Import collection.dart instead. crypto crypto fake_async fake_async file chroot A file system that provides a view into another FileSystem via a path. file Core interfaces containing the abstract FileSystem interface definition and all associated types used by FileSystem. local A local file system implementation.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/index.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-index-html.html",
+         "snippets":[
+            "Bidirectional text. intl_standalone This provides facilities for Internationalization that are only available when running standalone. <b>You should</b> import only&nbsp;..."
+         ]
+      },
+      {
+         "id":"b785a2c0-10d1-42b1-aafe-43740cf3ba85",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/DrawableSplashScreen.html",
+            "title":"DrawableSplashScreen",
+            "tags":"mock",
+            "keywords":null,
+            "description":"Returns: The splash screen view. transitionToFlutter public void transitionToFlutter\u200b(@NonNull Runnable onTransitionComplete) Deprecated.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/DrawableSplashScreen.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-drawablesplashscreen-html.html",
+         "snippets":[
+            "... <b>would like</b> the splashView to disappear. Methods inherited from class java.lang.Object clone, equals, finalize, getClass, hashCode, notify, notifyAll&nbsp;..."
+         ]
+      },
+      {
+         "id":"b78dfdf0-aa58-4b8f-9e1e-4e64f8875089",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/PlatformViewsChannel.PlatformViewsHandler.html",
+            "title":"PlatformViewsChannel.PlatformViewsHandler",
+            "tags":"fake",
+            "keywords":null,
+            "description":"The Android View is added to the view hierarchy. This view is rendered in the Flutter framework by a PlatformViewLayer.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/engine/systemchannels/PlatformViewsChannel.PlatformViewsHandler.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-engine-systemchannels-platformviewschannel-platformviewshandler-html.html",
+         "snippets":[
+            "... <b>would like</b> to resize an existing Android View. void setDirection\u200b(int viewId, int direction) The Flutter application <b>would like</b> to change the layout&nbsp;..."
+         ]
+      },
+      {
+         "id":"dd29e13c-af5a-4144-bdbb-99b395f1be04",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragmentActivity.NewEngineInGroupIntentBuilder.html",
+            "title":"FlutterFragmentActivity.NewEngineInGroupIntentBuilder",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"Intent build\u200b(Context context) Creates and returns an Intent that will launch a FlutterFragmentActivity with the desired configuration.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragmentActivity.NewEngineInGroupIntentBuilder.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutterfragmentactivity-newengineingroupintentbuilder-html.html",
+         "snippets":[
+            "Subclasses of FlutterFragmentActivity <b>should</b> provide ... A transparent background <b>should</b> only be used if it is necessary for the app design being implemented."
+         ]
+      },
+      {
+         "id":"3fd14132-6406-4ba2-9e3b-1766549e2039",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragment.NewEngineFragmentBuilder.html",
+            "title":"FlutterFragment.NewEngineFragmentBuilder",
+            "tags":"missing",
+            "keywords":null,
+            "description":"MyFlutterFragment f = new FlutterFragment.NewEngineFragmentBuilder(MyFlutterFragment.class) .someProperty(...)",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/embedding/android/FlutterFragment.NewEngineFragmentBuilder.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-embedding-android-flutterfragment-newenginefragmentbuilder-html.html",
+         "snippets":[
+            "... <b>do</b> not introduce any new arguments can use this NewEngineFragmentBuilder to ... <b>you do</b>, <b>you should</b> always fall back to calling super.popSystemNavigator&nbsp;..."
+         ]
+      },
+      {
+         "id":"e13f56ef-6969-463c-a336-7ef84b40ab4d",
+         "metadata":{
+            "url":"https://api.flutter.dev/objcdoc/Classes/FlutterError.html",
+            "title":"FlutterError Class Reference",
+            "tags":"unknown",
+            "keywords":null,
+            "description":"Parameters code An error code string for programmatic use. message A human-readable error message. details Custom error details. code The error code.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/objcdoc/Classes/FlutterError.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-objcdoc-classes-fluttererror-html.html",
+         "snippets":[
+            
+         ]
+      },
+      {
+         "id":"b98cc71c-ea15-4a63-8fe3-6dec7b771322",
+         "metadata":{
+            "url":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformPlugin.PlatformPluginDelegate.html",
+            "title":"PlatformPlugin.PlatformPluginDelegate",
+            "tags":"fake",
+            "keywords":null,
+            "description":"Relevant for registering and unregistering the app&#39;s OnBackInvokedCallback for the Predictive Back feature, for example as in FlutterActivity.",
+            "image_uri":null
+         },
+         "link":"https://api.flutter.dev/javadoc/io/flutter/plugin/platform/PlatformPlugin.PlatformPluginDelegate.html",
+         "doc_link":"gs://flutter-vertex-ai-demo-docs-v1/api-flutter-dev-javadoc-io-flutter-plugin-platform-platformplugin-platformplugindelegate-html.html",
+         "snippets":[
+            "... <b>would</b> or <b>would</b> not <b>like</b> to handle navigation pop events itself. Method Detail popSystemNavigator boolean popSystemNavigator() Allow implementer to customize&nbsp;..."
          ]
       }
    ]
