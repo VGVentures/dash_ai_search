@@ -1,8 +1,9 @@
 import 'dart:async';
 
-import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:flame/cache.dart';
+import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -83,46 +84,79 @@ void main() {
   });
 
   group('DashSpriteAnimation', () {
+    final images = Images(prefix: 'assets/animations/');
+
+    setUpAll(() async {
+      await Future.wait([
+        images.load('dash_idle_animation.png'),
+        images.load('dash_wave_animation.png'),
+      ]);
+    });
+
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
-        DashSpriteAnimation(width: 100, height: 100),
+        DashSpriteAnimation(
+          width: 100,
+          height: 100,
+          images: images,
+        ),
       );
+      await tester.pump();
 
-      expect(find.byType(AnimatedSprite), findsOneWidget);
+      expect(find.byType(SpriteAnimationWidget), findsOneWidget);
     });
 
     testWidgets('starts with the waving animation', (tester) async {
       await tester.pumpApp(
-        DashSpriteAnimation(width: 100, height: 100),
+        DashSpriteAnimation(
+          width: 100,
+          height: 100,
+          images: images,
+        ),
+      );
+      await tester.pump();
+
+      final image = images.fromCache('dash_wave_animation.png');
+
+      final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+        find.byType(InternalSpriteAnimationWidget),
       );
 
-      final animatedSprite = tester.widget<AnimatedSprite>(
-        find.byType(AnimatedSprite),
+      expect(
+        currentAnimaton.animation.frames.first.sprite.image,
+        equals(image),
       );
-
-      expect(animatedSprite.sprites.asset, equals('dash_animation.png'));
     });
 
     testWidgets(
       'changes to idle animation when the waving is finished',
       (tester) async {
         await tester.pumpApp(
-          DashSpriteAnimation(width: 100, height: 100),
+          DashSpriteAnimation(
+            width: 100,
+            height: 100,
+            images: images,
+          ),
+        );
+        await tester.pump();
+
+        final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
         );
 
-        var animatedSprite = tester.widget<AnimatedSprite>(
-          find.byType(AnimatedSprite),
-        );
-
-        animatedSprite.onComplete!();
+        spriteAnimationWidget.onComplete!();
 
         await tester.pump();
 
-        animatedSprite = tester.widget<AnimatedSprite>(
-          find.byType(AnimatedSprite),
+        final image = images.fromCache('dash_idle_animation.png');
+        final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+          find.byType(InternalSpriteAnimationWidget),
         );
 
-        expect(animatedSprite.sprites.asset, equals('dash_idle_animation.png'));
+        expect(
+          currentAnimaton.animation.frames.first.sprite.image,
+          equals(image),
+        );
       },
     );
   });
