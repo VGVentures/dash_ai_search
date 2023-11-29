@@ -356,13 +356,11 @@ class _AiResponseState extends State<_AiResponse>
                     child: const BackToAnswerButton(),
                   ),
                   Flexible(
-                    child: Expanded(
-                      child: Text(
-                        response.summary,
-                        style: textTheme.headlineLarge?.copyWith(
-                          color: VertexColors.white,
-                          fontSize: 32,
-                        ),
+                    child: Text(
+                      response.summary,
+                      style: textTheme.headlineLarge?.copyWith(
+                        color: VertexColors.white,
+                        fontSize: 32,
                       ),
                     ),
                   ),

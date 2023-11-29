@@ -85,7 +85,7 @@ void main() {
 
     testWidgets('renders CarouselView', (tester) async {
       await tester.pumpApp(bootstrap());
-      expect(find.byType(ResultsView), findsOneWidget);
+      expect(find.byType(CarouselView), findsOneWidget);
     });
 
     testWidgets('animates in search box when enter', (tester) async {
@@ -114,7 +114,7 @@ void main() {
 
       final forwardExitStatuses = tester
           .state<BlueContainerState>(find.byType(BlueContainer))
-          .forwardEnterStatuses;
+          .forwardExitStatuses;
 
       expect(forwardExitStatuses, equals([Status.resultsToSourceAnswers]));
     });
