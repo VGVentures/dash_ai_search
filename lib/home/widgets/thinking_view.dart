@@ -15,6 +15,7 @@ class ThinkingView extends StatefulWidget {
 class ThinkingViewState extends State<ThinkingView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacity;
+  late Animation<Offset> _offset;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
@@ -42,13 +43,18 @@ class ThinkingViewState extends State<ThinkingView>
 
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+
+    _offset = Tween<Offset>(begin: const Offset(0, 0.7), end: Offset.zero)
+        .animate(enterTransitionController);
   }
 
   @override
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: const ThinkingAnimationView(),
+      child: ThinkingAnimationView(
+        offset: _offset,
+      ),
     );
   }
 }
@@ -61,11 +67,13 @@ enum ThinkingAnimationPhase {
 
 class ThinkingAnimationView extends StatefulWidget {
   const ThinkingAnimationView({
+    required this.offset,
     super.key,
     @visibleForTesting this.animationState,
   });
 
   final PhasedState<ThinkingAnimationPhase>? animationState;
+  final Animation<Offset> offset;
 
   @override
   State<ThinkingAnimationView> createState() => _ThinkingAnimationViewState();
@@ -88,6 +96,7 @@ class _ThinkingAnimationViewState extends State<ThinkingAnimationView> {
       },
       child: ThinkingAnimation(
         state: _state,
+        offset: widget.offset,
       ),
     );
   }
@@ -96,8 +105,11 @@ class _ThinkingAnimationViewState extends State<ThinkingAnimationView> {
 class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
   const ThinkingAnimation({
     required super.state,
+    required this.offset,
     super.key,
   });
+
+  final Animation<Offset> offset;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +133,7 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
             ),
           ),
           Align(
-            child: TextArea(query: query),
+            child: TextArea(query: query, offset: offset),
           ),
         ],
       ),
@@ -131,35 +143,39 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
 
 class TextArea extends StatelessWidget {
   @visibleForTesting
-  const TextArea({required this.query, super.key});
+  const TextArea({required this.query, required this.offset, super.key});
 
   final String query;
+  final Animation<Offset> offset;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          l10n.thinkingHeadline,
-          textAlign: TextAlign.center,
-          style:
-              textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
-        ),
-        const SizedBox(
-          height: 40,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 300),
-          child: Text(
-            query,
+    return SlideTransition(
+      position: offset,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            l10n.thinkingHeadline,
             textAlign: TextAlign.center,
-            style: textTheme.displayLarge,
+            style:
+                textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 30,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 300),
+            child: Text(
+              query,
+              textAlign: TextAlign.center,
+              style: textTheme.displayLarge,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
