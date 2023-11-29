@@ -128,39 +128,48 @@ class TextArea extends StatelessWidget {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
     const slideDuration = Duration(milliseconds: 1200);
+    const opacityDuration = Duration(milliseconds: 800);
 
-    return AnimatedSlide(
-      curve: Curves.decelerate,
-      duration: slideDuration,
-      offset: state.phaseValue(
+    return AnimatedOpacity(
+      duration: opacityDuration,
+      opacity: state.phaseValue(
         values: {
-          ThinkingAnimationPhase.initial: const Offset(0, 1),
-          ThinkingAnimationPhase.thinkingOut: const Offset(0, 1),
+          ThinkingAnimationPhase.thinkingOut: 0,
         },
-        defaultValue: Offset.zero,
+        defaultValue: 1,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            l10n.thinkingHeadline,
-            textAlign: TextAlign.center,
-            style:
-                textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 300),
-            child: Text(
-              query,
+      child: AnimatedSlide(
+        curve: Curves.decelerate,
+        duration: slideDuration,
+        offset: state.phaseValue(
+          values: {
+            ThinkingAnimationPhase.initial: const Offset(0, 1),
+          },
+          defaultValue: Offset.zero,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.thinkingHeadline,
               textAlign: TextAlign.center,
-              style: textTheme.displayLarge
+              style: textTheme.bodyMedium
                   ?.copyWith(color: VertexColors.flutterNavy),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 300),
+              child: Text(
+                query,
+                textAlign: TextAlign.center,
+                style: textTheme.displayLarge
+                    ?.copyWith(color: VertexColors.flutterNavy),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
