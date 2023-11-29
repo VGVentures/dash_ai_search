@@ -26,8 +26,8 @@ void main() {
 
     test('QuestionAsked supports value equality', () {
       expect(
-        QuestionAsked(),
-        equals(QuestionAsked()),
+        QuestionAsked('query'),
+        equals(QuestionAsked('query')),
       );
     });
 

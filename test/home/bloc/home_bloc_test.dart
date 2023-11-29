@@ -69,12 +69,13 @@ void main() {
               .thenAnswer((_) async => VertexResponse.empty());
         },
         build: buildBloc,
-        act: (bloc) => bloc.add(QuestionAsked()),
+        act: (bloc) => bloc.add(QuestionAsked('query')),
         expect: () => [
           HomeState(status: Status.askQuestionToThinking),
           HomeState(
             status: Status.thinkingToResults,
             vertexResponse: VertexResponse.empty(),
+            submittedQuery: 'query',
           ),
         ],
       );
