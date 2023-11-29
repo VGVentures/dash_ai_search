@@ -41,7 +41,17 @@ class QuestionsResource {
       body = response.body;
     } else {
       await Future<void>.delayed(const Duration(seconds: 2));
-      body = FakeResponses.whatIsFlutterResponse;
+
+      body = switch (query) {
+        'What is Flutter?' => FakeResponses.whatIsFlutterResponse,
+        'What platforms does flutter support today?' =>
+          FakeResponses.platformsResponse,
+        'What language do you use to write flutter apps?' =>
+          FakeResponses.languageResponse,
+        'How does hot reload work in flutter?' =>
+          FakeResponses.hotReloadResponse,
+        _ => FakeResponses.invalidResponse,
+      };
     }
 
     try {
