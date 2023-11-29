@@ -1,4 +1,4 @@
-import 'package:api_client/src/models/vertex_document.dart';
+import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
@@ -139,7 +139,6 @@ class BlueContainerState extends State<BlueContainer>
   late Animation<Offset> _offsetEnterIn;
   late Animation<double> _rotationEnterIn;
   late Animation<RelativeRect> _positionExitOut;
-  late Animation<double> _sizeExitIn;
   late Animation<double> _borderRadiusExitOut;
   late Animation<Size> _sizeIn;
 
@@ -193,11 +192,6 @@ class BlueContainerState extends State<BlueContainer>
       ),
     );
 
-    _sizeExitIn = CurvedAnimation(
-      parent: exitTransitionController,
-      curve: Curves.decelerate,
-    );
-
     _positionExitOut = RelativeRectTween(
       begin: const RelativeRect.fromLTRB(0, 230, 0, 0),
       end: RelativeRect.fill,
@@ -236,7 +230,7 @@ class BlueContainerState extends State<BlueContainer>
           child: RotationTransition(
             turns: _rotationEnterIn,
             child: AnimatedBuilder(
-              animation: _sizeExitIn,
+              animation: _sizeIn,
               builder: (context, child) {
                 return Center(
                   child: Container(
@@ -359,7 +353,7 @@ class _AiResponseState extends State<_AiResponse>
                       parent: exitTransitionController,
                       curve: Curves.decelerate,
                     ),
-                    child: const Expanded(child: BackToAnswerButton()),
+                    child: const BackToAnswerButton(),
                   ),
                   Flexible(
                     child: Expanded(
