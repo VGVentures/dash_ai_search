@@ -18,7 +18,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
   static const maxCardsVisible = 4;
   static const incrementsOffset = 300.0;
-  static const incrementScale = 0.2;
+  static const decementScale = 0.2;
   static const rotationIncrement = 0.1;
   late AnimationController animationController;
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
@@ -80,10 +80,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         animationController,
       );
     }
-    final startScale = 1 - (incrementScale * index);
+    final startScale = 1 - (decementScale * index);
     return Tween<double>(
       begin: startScale,
-      end: startScale + incrementScale,
+      end: startScale + decementScale,
     ).animate(
       animationController,
     );
