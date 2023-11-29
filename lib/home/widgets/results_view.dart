@@ -5,78 +5,6 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/*
-class ResultsView extends StatelessWidget {
-  const ResultsView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final l10n = context.l10n;
-
-    final state = context.watch<HomeBloc>().state;
-
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 90),
-      child: Column(
-        children: [
-          const SearchBox(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(48, 64, 48, 64),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            response.summary,
-                            style: textTheme.headlineLarge?.copyWith(
-                              color: VertexColors.flutterNavy,
-                              fontSize: 32,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const Expanded(child: FeedbackButtons()),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: SizedBox(
-                                  height: 64,
-                                  child: TertiaryCTA(
-                                    label: l10n.seeSourceAnswers,
-                                    icon: vertexIcons.arrowForward.image(),
-                                    onPressed: () => context
-                                        .read<HomeBloc>()
-                                        .add(const SeeSourceAnswersRequested()),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state.isSeeSourceAnswersVisible) ...[
-                    CarouselView(documents: response.documents),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -101,10 +29,6 @@ class ResultsViewState extends State<ResultsView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    exitTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
   }
 
   @override
@@ -112,7 +36,7 @@ class ResultsViewState extends State<ResultsView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
   }
 
   @override
@@ -169,10 +93,6 @@ class SearchBoxViewState extends State<SearchBoxView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    exitTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
   }
 
   @override
@@ -180,9 +100,10 @@ class SearchBoxViewState extends State<SearchBoxView>
     super.initState();
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
-        .animate(enterTransitionController);
+        .animate(enterTransitionController!);
+
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
   }
 
   @override
@@ -257,13 +178,14 @@ class BlueContainerState extends State<BlueContainer>
     _offsetEnterIn =
         Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
+        parent: enterTransitionController!,
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
+        parent: enterTransitionController!,
         curve: Curves.decelerate,
       ),
     );
@@ -273,14 +195,14 @@ class BlueContainerState extends State<BlueContainer>
       end: RelativeRect.fill,
     ).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
+        parent: enterTransitionController!,
         curve: Curves.decelerate,
       ),
     );
@@ -290,7 +212,7 @@ class BlueContainerState extends State<BlueContainer>
       end: Size.infinite,
     ).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
@@ -357,11 +279,6 @@ class _AiResponseState extends State<_AiResponse>
   void initializeTransitionController() {
     super.initializeTransitionController();
 
-    enterTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -374,28 +291,28 @@ class _AiResponseState extends State<_AiResponse>
 
     _leftPaddingExitOut = Tween<double>(begin: 48, end: 165).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
 
     _rightPaddingExitOut = Tween<double>(begin: 0, end: 150).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
 
     _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
 
     _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
       CurvedAnimation(
-        parent: exitTransitionController,
+        parent: exitTransitionController!,
         curve: Curves.decelerate,
       ),
     );
@@ -426,7 +343,7 @@ class _AiResponseState extends State<_AiResponse>
                   ),
                   SizeTransition(
                     sizeFactor: CurvedAnimation(
-                      parent: exitTransitionController,
+                      parent: exitTransitionController!,
                       curve: Curves.decelerate,
                     ),
                     child: const BackToAnswerButton(),
@@ -498,11 +415,6 @@ class CarouselViewState extends State<CarouselView>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
-
-    exitTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
   }
 
   @override
@@ -512,13 +424,14 @@ class CarouselViewState extends State<CarouselView>
     _offsetEnterIn =
         Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
+        parent: enterTransitionController!,
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
+        parent: enterTransitionController!,
         curve: Curves.decelerate,
       ),
     );
@@ -563,11 +476,6 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
   void initializeTransitionController() {
     super.initializeTransitionController();
 
-    enterTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -579,7 +487,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
     super.initState();
 
     _sizeExitIn = CurvedAnimation(
-      parent: exitTransitionController,
+      parent: exitTransitionController!,
       curve: Curves.decelerate,
     );
   }
@@ -594,6 +502,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       child: Align(
         alignment: Alignment.topLeft,
         child: SizedBox(
+          width: 250,
           height: 64,
           child: TertiaryCTA(
             label: l10n.backToAIAnswer,
@@ -630,11 +539,6 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   void initializeTransitionController() {
     super.initializeTransitionController();
 
-    enterTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2),
-    );
-
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -645,7 +549,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   void initState() {
     super.initState();
     _opacityExitOut =
-        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
+        Tween<double>(begin: 1, end: 0).animate(exitTransitionController!);
   }
 
   @override
@@ -657,6 +561,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
       child: Align(
         alignment: Alignment.bottomRight,
         child: SizedBox(
+          width: 260,
           height: 64,
           child: TertiaryCTA(
             label: l10n.seeSourceAnswers,

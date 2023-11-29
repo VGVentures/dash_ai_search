@@ -30,10 +30,6 @@ class ThinkingViewState extends State<ThinkingView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
-    exitTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
   }
 
   @override
@@ -41,7 +37,7 @@ class ThinkingViewState extends State<ThinkingView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
   }
 
   @override

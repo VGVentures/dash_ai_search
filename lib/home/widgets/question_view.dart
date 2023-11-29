@@ -33,10 +33,6 @@ class QuestionViewState extends State<QuestionView>
           context.read<HomeBloc>().add(const AskQuestion());
         }
       });
-    exitTransitionController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 1),
-    );
   }
 
   @override
@@ -44,7 +40,7 @@ class QuestionViewState extends State<QuestionView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
   }
 
   @override

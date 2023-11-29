@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   /// The [AnimationController] for the enter transition.
   @protected
-  late AnimationController enterTransitionController;
+  AnimationController? enterTransitionController;
 
   /// The [AnimationController] for the exit transition.
   @protected
-  late AnimationController exitTransitionController;
+  AnimationController? exitTransitionController;
 
   /// The [Status]es that trigger the forward enter transition.
   @protected
@@ -58,24 +58,32 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    enterTransitionController.dispose();
-    exitTransitionController.dispose();
+    enterTransitionController?.dispose();
+    exitTransitionController?.dispose();
     super.dispose();
   }
 
   void _enterAnimation() {
-    enterTransitionController.forward();
+    if (mounted) {
+      enterTransitionController?.forward();
+    }
   }
 
   void _exitAnimation() {
-    exitTransitionController.forward();
+    if (mounted) {
+      exitTransitionController?.forward();
+    }
   }
 
   void _popEnterAnimation() {
-    exitTransitionController.reverse();
+    if (mounted) {
+      exitTransitionController?.reverse();
+    }
   }
 
   void _popExitAnimation() {
-    enterTransitionController.reverse();
+    if (mounted) {
+      enterTransitionController?.reverse();
+    }
   }
 }
