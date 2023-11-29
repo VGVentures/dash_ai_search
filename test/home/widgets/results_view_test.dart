@@ -84,6 +84,9 @@ void main() {
     });
 
     testWidgets('renders CarouselView', (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(vertexResponse: response, status: Status.seeSourceAnswers),
+      );
       await tester.pumpApp(bootstrap());
       expect(find.byType(CarouselView), findsOneWidget);
     });

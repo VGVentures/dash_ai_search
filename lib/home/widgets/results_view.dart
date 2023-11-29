@@ -5,6 +5,78 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+/*
+class ResultsView extends StatelessWidget {
+  const ResultsView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final l10n = context.l10n;
+
+    final state = context.watch<HomeBloc>().state;
+
+    final response =
+        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 90),
+      child: Column(
+        children: [
+          const SearchBox(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(48, 64, 48, 64),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            response.summary,
+                            style: textTheme.headlineLarge?.copyWith(
+                              color: VertexColors.flutterNavy,
+                              fontSize: 32,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const Expanded(child: FeedbackButtons()),
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: SizedBox(
+                                  height: 64,
+                                  child: TertiaryCTA(
+                                    label: l10n.seeSourceAnswers,
+                                    icon: vertexIcons.arrowForward.image(),
+                                    onPressed: () => context
+                                        .read<HomeBloc>()
+                                        .add(const SeeSourceAnswersRequested()),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (state.isSeeSourceAnswersVisible) ...[
+                    CarouselView(documents: response.documents),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+*/
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -94,6 +166,10 @@ class SearchBoxViewState extends State<SearchBoxView>
     super.initializeTransitionController();
 
     enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
@@ -422,6 +498,11 @@ class CarouselViewState extends State<CarouselView>
       vsync: this,
       duration: const Duration(seconds: 2),
     );
+
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
   }
 
   @override
@@ -449,10 +530,8 @@ class CarouselViewState extends State<CarouselView>
       position: _offsetEnterIn,
       child: RotationTransition(
         turns: _rotationEnterIn,
-        child: Expanded(
-          child: SourcesCarouselView(
-            documents: widget.documents,
-          ),
+        child: SourcesCarouselView(
+          documents: widget.documents,
         ),
       ),
     );
