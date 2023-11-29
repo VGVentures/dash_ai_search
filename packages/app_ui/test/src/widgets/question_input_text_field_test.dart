@@ -42,24 +42,50 @@ void main() {
       expect(text, equals('test'));
     });
 
-    testWidgets('calls onActionPressed clicking on PrimaryCTA', (tester) async {
-      var called = false;
-      await tester.pumpApp(
-        Material(
-          child: QuestionInputTextField(
-            icon: SizedBox.shrink(),
-            hint: 'hint',
-            actionText: 'actionText',
-            onActionPressed: () {
-              called = true;
-            },
-            onTextUpdated: (_) {},
+    group('when shouldDisplayClearTextButton is false', () {
+      testWidgets('calls onActionPressed clicking on PrimaryCTA',
+          (tester) async {
+        var called = false;
+        await tester.pumpApp(
+          Material(
+            child: QuestionInputTextField(
+              icon: SizedBox.shrink(),
+              hint: 'hint',
+              actionText: 'actionText',
+              onActionPressed: () {
+                called = true;
+              },
+              onTextUpdated: (_) {},
+            ),
           ),
-        ),
-      );
-      await tester.tap(find.byType(PrimaryCTA));
+        );
+        await tester.tap(find.byType(PrimaryCTA));
 
-      expect(called, equals(true));
+        expect(called, equals(true));
+      });
+    });
+
+    group('when shouldDisplayClearTextButton is true', () {
+      testWidgets('should display a clear button that clears the text field',
+          (tester) async {
+        await tester.pumpApp(
+          Material(
+            child: QuestionInputTextField(
+              text: 'hello world',
+              shouldDisplayClearTextButton: true,
+              icon: SizedBox.shrink(),
+              hint: 'hint',
+              actionText: 'actionText',
+              onActionPressed: () {},
+              onTextUpdated: (_) {},
+            ),
+          ),
+        );
+        expect(find.text('actionText'), findsNothing);
+        await tester.tap(find.byIcon(Icons.close));
+        await tester.pumpAndSettle();
+        expect(find.text('hello world'), findsNothing);
+      });
     });
   });
 }

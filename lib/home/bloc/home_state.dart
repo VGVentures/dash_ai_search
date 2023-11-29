@@ -18,11 +18,13 @@ class HomeState extends Equatable {
     this.status = Status.welcome,
     this.query = '',
     this.vertexResponse = const VertexResponse.empty(),
+    this.submittedQuery,
   });
 
   final Status status;
   final String query;
   final VertexResponse vertexResponse;
+  final String? submittedQuery;
 
   bool get isWelcomeVisible =>
       status == Status.welcome || status == Status.welcomeToAskQuestion;
@@ -52,11 +54,13 @@ class HomeState extends Equatable {
     Status? status,
     String? query,
     VertexResponse? vertexResponse,
+    String? submittedQuery,
   }) {
     return HomeState(
       status: status ?? this.status,
       query: query ?? this.query,
       vertexResponse: vertexResponse ?? this.vertexResponse,
+      submittedQuery: submittedQuery ?? this.submittedQuery,
     );
   }
 
