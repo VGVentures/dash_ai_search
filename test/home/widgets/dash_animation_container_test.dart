@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flame/cache.dart';
