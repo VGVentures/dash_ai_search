@@ -175,7 +175,6 @@ class AnimatedBox extends StatelessWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
-          print(rotation.value);
           return Transform(
             alignment: FractionalOffset.center,
             transform: Matrix4.identity()
