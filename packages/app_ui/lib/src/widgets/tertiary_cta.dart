@@ -31,13 +31,15 @@ class TertiaryCTA extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (icon != null) icon!,
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: VertexColors.white,
+          Expanded(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: VertexColors.white,
+              ),
             ),
           ),
         ],
