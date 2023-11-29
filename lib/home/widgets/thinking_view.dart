@@ -131,7 +131,7 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
             ),
           ),
           Align(
-            child: TextArea(query: query, offset: offset),
+            child: TextArea(query: query, state: state),
           ),
         ],
       ),
@@ -141,17 +141,24 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
 
 class TextArea extends StatelessWidget {
   @visibleForTesting
-  const TextArea({required this.query, required this.offset, super.key});
+  const TextArea({required this.query, required this.state, super.key});
 
   final String query;
-  final Animation<Offset> offset;
+  final PhasedState<ThinkingAnimationPhase> state;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
-    return SlideTransition(
-      position: offset,
+    return AnimatedSlide(
+      duration: const Duration(seconds: 1),
+      offset: state.phaseValue(
+        values: {
+          ThinkingAnimationPhase.initial: const Offset(0, 500),
+          ThinkingAnimationPhase.thinkingOut: const Offset(0, 500),
+        },
+        defaultValue: const Offset(0, 0),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
