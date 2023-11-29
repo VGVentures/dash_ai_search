@@ -70,15 +70,6 @@ abstract class VertexTextStyles {
     fontFamily: 'Google Sans',
   );
 
-  /// buttons&CTA's Text Style
-  static TextStyle cta = _commonStyle.copyWith(
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    height: 1.33,
-    letterSpacing: -0.5,
-    fontFamily: 'Google Sans',
-  );
-
   /// labelLarge Text Style
   static TextStyle labelLarge = _commonStyle.copyWith(
     fontSize: 14,
