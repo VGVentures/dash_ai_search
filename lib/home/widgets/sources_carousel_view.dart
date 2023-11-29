@@ -175,21 +175,20 @@ class AnimatedBox extends StatelessWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
-          return Transform(
-            alignment: FractionalOffset.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, 0.003)
-              ..rotateY(
-                rotation.value,
-              ),
-            child: Transform.scale(
-              scale: scale.value,
-              child: Transform.translate(
-                offset: offset.value,
-                child: SourceCard(
-                  document: document,
-                  index: index,
-                ),
+          return Transform.scale(
+            scale: scale.value,
+            child: Transform(
+              alignment: FractionalOffset.center,
+              transform: Matrix4.identity()
+                ..setEntry(3, 2, 0.003)
+                ..rotateY(
+                  rotation.value,
+                )
+                ..scale(scale.value)
+                ..translate(offset.value.dx, offset.value.dy),
+              child: SourceCard(
+                document: document,
+                index: index,
               ),
             ),
           );
