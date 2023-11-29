@@ -47,9 +47,7 @@ class PrimaryCTA extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
+            style: VertexTextStyles.bodyLargeMedium.copyWith(
               color: VertexColors.white,
             ),
           ),
