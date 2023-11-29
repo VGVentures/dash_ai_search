@@ -73,4 +73,54 @@ void main() {
       },
     );
   });
+
+  group('SourceCard', () {
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpApp(
+        const SourceCard(
+          document: VertexDocument(
+            id: '1',
+            metadata: VertexMetadata(
+              url: 'url',
+              title: 'title',
+              description: 'description',
+            ),
+          ),
+          index: 0,
+        ),
+      );
+
+      expect(find.text('title'), findsOneWidget);
+      expect(find.text('description'), findsOneWidget);
+    });
+
+    testWidgets(
+      'opens the link when clicking in the link button',
+      (tester) async {
+        Uri? link;
+        await tester.pumpApp(
+          SourceCard(
+            openLink: (value) async {
+              link = value;
+              return true;
+            },
+            document: VertexDocument(
+              id: '1',
+              metadata: VertexMetadata(
+                url: 'https://url.com',
+                title: 'title',
+                description: 'description',
+              ),
+            ),
+            index: 0,
+          ),
+        );
+
+        await tester.tap(find.byType(IconButton));
+        await tester.pump();
+
+        expect(link, equals(Uri.parse('https://url.com')));
+      },
+    );
+  });
 }

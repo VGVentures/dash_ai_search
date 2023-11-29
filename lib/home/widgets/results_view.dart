@@ -4,8 +4,55 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ResultsView extends StatelessWidget {
+class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
+
+  @override
+  State<ResultsView> createState() => ResultsViewState();
+}
+
+class ResultsViewState extends State<ResultsView>
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<double> _opacity;
+  @override
+  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
+
+  @override
+  List<Status> get forwardExitStatuses => [Status.results];
+
+  @override
+  void initializeTransitionController() {
+    super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _opacity =
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _opacity,
+      child: const _ResultsView(),
+    );
+  }
+}
+
+class _ResultsView extends StatelessWidget {
+  const _ResultsView();
 
   @override
   Widget build(BuildContext context) {
