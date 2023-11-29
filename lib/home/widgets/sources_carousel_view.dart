@@ -66,6 +66,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         animationController,
       );
     }
+
     return Tween<Offset>(
       begin: Offset(incrementsOffset * index, 0),
       end: Offset((incrementsOffset * index) - incrementsOffset, 0),
@@ -184,8 +185,8 @@ class AnimatedBox extends StatelessWidget {
                 ..rotateY(
                   rotation.value,
                 )
-                ..scale(scale.value)
-                ..translate(offset.value.dx, offset.value.dy),
+                ..translate(offset.value.dx, offset.value.dy)
+                ..scale(scale.value),
               child: SourceCard(
                 document: document,
                 index: index,
