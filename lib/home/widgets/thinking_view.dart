@@ -3,6 +3,7 @@ import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:phased/phased.dart';
 
 class ThinkingView extends StatefulWidget {
   const ThinkingView({super.key});
@@ -47,25 +48,83 @@ class ThinkingViewState extends State<ThinkingView>
   Widget build(BuildContext context) {
     return FadeTransition(
       opacity: _opacity,
-      child: const _ThinkingView(),
+      child: const ThinkingAnimationView(),
     );
   }
 }
 
-class _ThinkingView extends StatelessWidget {
-  const _ThinkingView();
+enum ThinkingAnimationPhase {
+  initial,
+  thinkingIn,
+  thinkingOut,
+}
+
+class ThinkingAnimationView extends StatefulWidget {
+  const ThinkingAnimationView({
+    super.key,
+    @visibleForTesting this.animationState,
+  });
+
+  final PhasedState<ThinkingAnimationPhase>? animationState;
+
+  @override
+  State<ThinkingAnimationView> createState() => _ThinkingAnimationViewState();
+}
+
+class _ThinkingAnimationViewState extends State<ThinkingAnimationView> {
+  late final _state = widget.animationState ??
+      PhasedState<ThinkingAnimationPhase>(
+        values: ThinkingAnimationPhase.values,
+        initialValue: ThinkingAnimationPhase.initial,
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<HomeBloc, HomeState>(
+      listener: (context, state) {
+        if (state.status == Status.thinkingToResults) {
+          _state.value = ThinkingAnimationPhase.thinkingOut;
+        }
+      },
+      child: ThinkingAnimation(
+        state: _state,
+      ),
+    );
+  }
+}
+
+class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
+  const ThinkingAnimation({
+    required super.state,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final query = context.select((HomeBloc bloc) => bloc.state.query);
+    const opacityDuration = Duration(milliseconds: 800);
 
-    return Stack(
-      children: [
-        const Align(child: Circles()),
-        Align(
-          child: TextArea(query: query),
-        ),
-      ],
+    return AnimatedOpacity(
+      duration: opacityDuration,
+      opacity: state.phaseValue(
+        values: {
+          ThinkingAnimationPhase.initial: .8,
+          ThinkingAnimationPhase.thinkingOut: 0,
+        },
+        defaultValue: 1,
+      ),
+      child: Stack(
+        children: [
+          Align(
+            child: CirclesAnimation(
+              state: state,
+            ),
+          ),
+          Align(
+            child: TextArea(query: query),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -105,34 +164,68 @@ class TextArea extends StatelessWidget {
   }
 }
 
-class Circles extends StatelessWidget {
-  const Circles({super.key});
+class CirclesAnimation extends StatelessWidget {
+  const CirclesAnimation({
+    required this.state,
+    super.key,
+  });
+
+  final PhasedState<ThinkingAnimationPhase> state;
 
   @override
   Widget build(BuildContext context) {
     const backgroundColor = Colors.transparent;
     const borderColor = VertexColors.googleBlue;
-    return const Stack(
-      children: [
-        Circle(
-          dotted: true,
-          backgroundColor: backgroundColor,
-          borderColor: borderColor,
-          radius: 162,
-        ),
-        Circle(
-          dotted: true,
-          backgroundColor: backgroundColor,
-          borderColor: borderColor,
-          radius: 353,
-        ),
-        Circle(
-          dotted: true,
-          backgroundColor: backgroundColor,
-          borderColor: borderColor,
-          radius: 590,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final viewport = constraints.maxHeight < constraints.maxWidth
+            ? constraints.maxHeight
+            : constraints.maxWidth;
+
+        final bigCircleRadius = viewport / 2;
+        final mediumCircleRadius = bigCircleRadius * .59;
+        final smallCircleRadius = bigCircleRadius * .27;
+
+        const scaleDuration = Duration(seconds: 2);
+
+        return SizedBox(
+          width: viewport,
+          height: viewport,
+          child: AnimatedScale(
+            duration: scaleDuration,
+            curve: Curves.decelerate,
+            scale: state.phaseValue(
+              values: {
+                ThinkingAnimationPhase.initial: .6,
+                ThinkingAnimationPhase.thinkingOut: .6,
+              },
+              defaultValue: 1.05,
+            ),
+            child: Circle(
+              dotted: true,
+              backgroundColor: backgroundColor,
+              borderColor: borderColor,
+              radius: bigCircleRadius,
+              child: Center(
+                child: Circle(
+                  dotted: true,
+                  backgroundColor: backgroundColor,
+                  borderColor: borderColor,
+                  radius: mediumCircleRadius,
+                  child: Center(
+                    child: Circle(
+                      dotted: true,
+                      backgroundColor: backgroundColor,
+                      borderColor: borderColor,
+                      radius: smallCircleRadius,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
