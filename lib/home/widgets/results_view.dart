@@ -1,3 +1,4 @@
+import 'package:api_client/src/models/vertex_document.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
@@ -230,6 +231,7 @@ class _AiResponse extends StatefulWidget {
 class _AiResponseState extends State<_AiResponse>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _leftPaddingExitOut;
+  late Animation<double> _rightPaddingExitOut;
   late Animation<double> _topPaddingExitOut;
   late Animation<double> _bottomPaddingExitOut;
 
@@ -268,6 +270,13 @@ class _AiResponseState extends State<_AiResponse>
       ),
     );
 
+    _rightPaddingExitOut = Tween<double>(begin: 0, end: 150).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
     _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
       CurvedAnimation(
         parent: exitTransitionController,
@@ -286,6 +295,8 @@ class _AiResponseState extends State<_AiResponse>
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+
+    final state = context.watch<HomeBloc>().state;
 
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
@@ -336,20 +347,81 @@ class _AiResponseState extends State<_AiResponse>
                 ],
               ),
             ),
-            /*
-            SlideTransition(
-                position: _offsetEnterIn,
-                child: RotationTransition(
-                  turns: _rotationEnterIn,
-                  child: Expanded(
-                    child: SourcesCarouselView(
-                      documents: response.documents,
-                    ),
-                  ),
-                ),
+            if (state.isSeeSourceAnswersVisible) ...[
+              AnimatedBuilder(
+                animation: _bottomPaddingExitOut,
+                builder: (context, child) =>
+                    SizedBox(width: _rightPaddingExitOut.value),
               ),
-            */
+              CarouselView(documents: response.documents),
+            ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CarouselView extends StatefulWidget {
+  @visibleForTesting
+  const CarouselView({
+    required this.documents,
+    super.key,
+  });
+
+  final List<VertexDocument> documents;
+
+  @override
+  State<CarouselView> createState() => _CarouselViewState();
+}
+
+class _CarouselViewState extends State<CarouselView>
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<Offset> _offsetEnterIn;
+  late Animation<double> _rotationEnterIn;
+
+  @override
+  List<Status> get forwardEnterStatuses => [Status.resultsToSourceAnswers];
+
+  @override
+  void initializeTransitionController() {
+    super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _offsetEnterIn =
+        Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: enterTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+    _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
+      CurvedAnimation(
+        parent: enterTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SlideTransition(
+      position: _offsetEnterIn,
+      child: RotationTransition(
+        turns: _rotationEnterIn,
+        child: Expanded(
+          child: SourcesCarouselView(
+            documents: widget.documents,
+          ),
         ),
       ),
     );

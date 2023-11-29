@@ -85,5 +85,15 @@ void main() {
       );
       expect(find.byType(SearchBox), findsOneWidget);
     });
+
+    testWidgets('renders CarouselView', (tester) async {
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: homeBloc,
+          child: Material(child: ResultsView()),
+        ),
+      );
+      expect(find.byType(ResultsView), findsOneWidget);
+    });
   });
 }
