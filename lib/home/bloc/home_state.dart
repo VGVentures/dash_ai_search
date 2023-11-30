@@ -1,5 +1,21 @@
 part of 'home_bloc.dart';
 
+class SummaryElement {
+  SummaryElement({
+    required this.text,
+    required this.isLink,
+  });
+  final String text;
+  final bool isLink;
+}
+
+class ParsedSummary {
+  ParsedSummary({
+    required this.elements,
+  });
+  final List<SummaryElement> elements;
+}
+
 enum Status {
   welcome,
   welcomeToAskQuestion,
@@ -26,6 +42,26 @@ class HomeState extends Equatable {
   final String query;
   final VertexResponse vertexResponse;
   final String? submittedQuery;
+
+  ParsedSummary get parsedSummary {
+    final textToParse = vertexResponse.summary;
+    final pattern = RegExp(r'\[[1-9]]');
+    final elements = <SummaryElement>[];
+
+    textToParse.splitMapJoin(
+      pattern,
+      onMatch: (Match match) {
+        elements.add(SummaryElement(text: match.group(0)!, isLink: true));
+        return '';
+      },
+      onNonMatch: (String nonMatch) {
+        elements.add(SummaryElement(text: nonMatch, isLink: false));
+        return '';
+      },
+    );
+
+    return ParsedSummary(elements: elements);
+  }
 
   bool get isWelcomeVisible =>
       status == Status.welcome || status == Status.welcomeToAskQuestion;
