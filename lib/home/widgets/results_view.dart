@@ -19,9 +19,6 @@ class ResultsViewState extends State<ResultsView>
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.results];
-
-  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -36,7 +33,7 @@ class ResultsViewState extends State<ResultsView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
 
   @override
@@ -100,10 +97,10 @@ class SearchBoxViewState extends State<SearchBoxView>
     super.initState();
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
-        .animate(enterTransitionController!);
+        .animate(enterTransitionController);
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
 
   @override
@@ -116,7 +113,9 @@ class SearchBoxViewState extends State<SearchBoxView>
         position: _offset,
         child: FadeTransition(
           opacity: _opacity,
-          child: const SearchBox(),
+          child: const SearchBox(
+            askAgain: true,
+          ),
         ),
       ),
     );
@@ -178,14 +177,14 @@ class BlueContainerState extends State<BlueContainer>
     _offsetEnterIn =
         Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
       CurvedAnimation(
-        parent: enterTransitionController!,
+        parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController!,
+        parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
@@ -195,14 +194,14 @@ class BlueContainerState extends State<BlueContainer>
       end: RelativeRect.fill,
     ).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController!,
+        parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
@@ -212,7 +211,7 @@ class BlueContainerState extends State<BlueContainer>
       end: Size.infinite,
     ).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
@@ -267,9 +266,6 @@ class _AiResponseState extends State<_AiResponse>
   late Animation<double> _bottomPaddingExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -278,6 +274,11 @@ class _AiResponseState extends State<_AiResponse>
   @override
   void initializeTransitionController() {
     super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
 
     exitTransitionController = AnimationController(
       vsync: this,
@@ -291,28 +292,28 @@ class _AiResponseState extends State<_AiResponse>
 
     _leftPaddingExitOut = Tween<double>(begin: 48, end: 165).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _rightPaddingExitOut = Tween<double>(begin: 0, end: 150).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
       CurvedAnimation(
-        parent: exitTransitionController!,
+        parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
@@ -343,7 +344,7 @@ class _AiResponseState extends State<_AiResponse>
                   ),
                   SizeTransition(
                     sizeFactor: CurvedAnimation(
-                      parent: exitTransitionController!,
+                      parent: exitTransitionController,
                       curve: Curves.decelerate,
                     ),
                     child: const BackToAnswerButton(),
@@ -424,14 +425,14 @@ class CarouselViewState extends State<CarouselView>
     _offsetEnterIn =
         Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
       CurvedAnimation(
-        parent: enterTransitionController!,
+        parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController!,
+        parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
@@ -464,9 +465,6 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
   late Animation<double> _sizeExitIn;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -475,6 +473,11 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
   @override
   void initializeTransitionController() {
     super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
 
     exitTransitionController = AnimationController(
       vsync: this,
@@ -487,7 +490,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
     super.initState();
 
     _sizeExitIn = CurvedAnimation(
-      parent: exitTransitionController!,
+      parent: exitTransitionController,
       curve: Curves.decelerate,
     );
   }
@@ -527,9 +530,6 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   late Animation<double> _opacityExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -538,6 +538,11 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   @override
   void initializeTransitionController() {
     super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
 
     exitTransitionController = AnimationController(
       vsync: this,
@@ -549,7 +554,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   void initState() {
     super.initState();
     _opacityExitOut =
-        Tween<double>(begin: 1, end: 0).animate(exitTransitionController!);
+        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +8,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   /// The [AnimationController] for the enter transition.
   @protected
-  AnimationController? enterTransitionController;
+  late AnimationController enterTransitionController;
 
   /// The [AnimationController] for the exit transition.
   @protected
-  AnimationController? exitTransitionController;
+  late AnimationController exitTransitionController;
 
   /// The [Status]es that trigger the forward enter transition.
   @protected
@@ -28,6 +30,10 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   @protected
   List<Status> backExitStatuses = [];
 
+  StreamSubscription<HomeState>? _streamSubscripton;
+
+  Status? _previousStatus;
+
   /// Initialize the [AnimationController]s.
   @protected
   void initializeTransitionController() {}
@@ -40,7 +46,11 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
 
     _enterAnimation();
 
-    context.read<HomeBloc>().stream.listen((state) {
+    _streamSubscripton = context.read<HomeBloc>().stream.listen((state) {
+      if (_previousStatus == state.status) {
+        return;
+      }
+
       if (forwardEnterStatuses.contains(state.status)) {
         _enterAnimation();
       }
@@ -53,37 +63,32 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
       if (backExitStatuses.contains(state.status)) {
         _popExitAnimation();
       }
+
+      _previousStatus = state.status;
     });
   }
 
   @override
   void dispose() {
-    enterTransitionController?.dispose();
-    exitTransitionController?.dispose();
+    enterTransitionController.dispose();
+    exitTransitionController.dispose();
+    _streamSubscripton?.cancel();
     super.dispose();
   }
 
   void _enterAnimation() {
-    if (mounted) {
-      enterTransitionController?.forward();
-    }
+    enterTransitionController.forward();
   }
 
   void _exitAnimation() {
-    if (mounted) {
-      exitTransitionController?.forward();
-    }
+    exitTransitionController.forward();
   }
 
   void _popEnterAnimation() {
-    if (mounted) {
-      exitTransitionController?.reverse();
-    }
+    exitTransitionController.reverse();
   }
 
   void _popExitAnimation() {
-    if (mounted) {
-      enterTransitionController?.reverse();
-    }
+    enterTransitionController.reverse();
   }
 }

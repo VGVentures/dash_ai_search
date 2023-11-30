@@ -19,9 +19,6 @@ class QuestionViewState extends State<QuestionView>
   List<Status> get forwardEnterStatuses => [Status.welcomeToAskQuestion];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.askQuestionToThinking];
-
-  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -40,7 +37,7 @@ class QuestionViewState extends State<QuestionView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
 
   @override

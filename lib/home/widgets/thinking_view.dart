@@ -17,10 +17,8 @@ class ThinkingViewState extends State<ThinkingView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
-
-  @override
-  List<Status> get forwardExitStatuses => [Status.thinkingToResults];
+  List<Status> get forwardEnterStatuses =>
+      [Status.askQuestionToThinking, Status.resultsToThinking];
 
   @override
   void initializeTransitionController() {
@@ -37,7 +35,7 @@ class ThinkingViewState extends State<ThinkingView>
     super.initState();
 
     _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController!);
+        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
 
   @override

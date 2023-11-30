@@ -42,10 +42,10 @@ class WelcomeViewState extends State<WelcomeView>
     super.initState();
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
-        .animate(enterTransitionController!);
+        .animate(enterTransitionController);
 
     _opacity =
-        Tween<double>(begin: 1, end: 0).animate(exitTransitionController!);
+        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
   }
 
   @override
