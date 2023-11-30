@@ -17,10 +17,8 @@ class ThinkingViewState extends State<ThinkingView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
-
-  @override
-  List<Status> get forwardExitStatuses => [Status.thinkingToResults];
+  List<Status> get forwardEnterStatuses =>
+      [Status.askQuestionToThinking, Status.resultsToThinking];
 
   @override
   void initializeTransitionController() {
@@ -30,6 +28,7 @@ class ThinkingViewState extends State<ThinkingView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -39,7 +38,6 @@ class ThinkingViewState extends State<ThinkingView>
   @override
   void initState() {
     super.initState();
-
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
@@ -102,64 +100,76 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
   @override
   Widget build(BuildContext context) {
     final query = context.select((HomeBloc bloc) => bloc.state.query);
-    const opacityDuration = Duration(milliseconds: 800);
-
-    return AnimatedOpacity(
-      duration: opacityDuration,
-      opacity: state.phaseValue(
-        values: {
-          ThinkingAnimationPhase.initial: .8,
-          ThinkingAnimationPhase.thinkingOut: 0,
-        },
-        defaultValue: 1,
-      ),
-      child: Stack(
-        children: [
-          Align(
-            child: CirclesAnimation(
-              state: state,
-            ),
+    return Stack(
+      children: [
+        Align(
+          child: CirclesAnimation(
+            state: state,
           ),
-          Align(
-            child: TextArea(query: query),
-          ),
-        ],
-      ),
+        ),
+        Align(
+          child: TextArea(query: query, state: state),
+        ),
+      ],
     );
   }
 }
 
 class TextArea extends StatelessWidget {
   @visibleForTesting
-  const TextArea({required this.query, super.key});
+  const TextArea({required this.query, required this.state, super.key});
 
   final String query;
+  final PhasedState<ThinkingAnimationPhase> state;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          l10n.thinkingHeadline,
-          textAlign: TextAlign.center,
-          style:
-              textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
+    const slideDuration = Duration(milliseconds: 1200);
+    const opacityDuration = Duration(milliseconds: 800);
+
+    return AnimatedOpacity(
+      duration: opacityDuration,
+      opacity: state.phaseValue(
+        values: {
+          ThinkingAnimationPhase.thinkingOut: 0,
+        },
+        defaultValue: 1,
+      ),
+      child: AnimatedSlide(
+        curve: Curves.decelerate,
+        duration: slideDuration,
+        offset: state.phaseValue(
+          values: {
+            ThinkingAnimationPhase.initial: const Offset(0, 1),
+          },
+          defaultValue: Offset.zero,
         ),
-        const SizedBox(
-          height: 40,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.thinkingHeadline,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium
+                  ?.copyWith(color: VertexColors.flutterNavy),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 300),
+              child: Text(
+                query,
+                textAlign: TextAlign.center,
+                style: textTheme.displayLarge
+                    ?.copyWith(color: VertexColors.flutterNavy),
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 300),
-          child: Text(
-            query,
-            textAlign: TextAlign.center,
-            style: textTheme.displayLarge,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -176,6 +186,8 @@ class CirclesAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     const backgroundColor = Colors.transparent;
     const borderColor = VertexColors.googleBlue;
+    const opacityDuration = Duration(milliseconds: 800);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final viewport = constraints.maxHeight < constraints.maxWidth
@@ -191,33 +203,43 @@ class CirclesAnimation extends StatelessWidget {
         return SizedBox(
           width: viewport,
           height: viewport,
-          child: AnimatedScale(
-            duration: scaleDuration,
-            curve: Curves.decelerate,
-            scale: state.phaseValue(
+          child: AnimatedOpacity(
+            duration: opacityDuration,
+            opacity: state.phaseValue(
               values: {
-                ThinkingAnimationPhase.initial: .6,
-                ThinkingAnimationPhase.thinkingOut: .6,
+                ThinkingAnimationPhase.initial: .8,
+                ThinkingAnimationPhase.thinkingOut: 0,
               },
-              defaultValue: 1.05,
+              defaultValue: 1,
             ),
-            child: Circle(
-              dotted: true,
-              backgroundColor: backgroundColor,
-              borderColor: borderColor,
-              radius: bigCircleRadius,
-              child: Center(
-                child: Circle(
-                  dotted: true,
-                  backgroundColor: backgroundColor,
-                  borderColor: borderColor,
-                  radius: mediumCircleRadius,
-                  child: Center(
-                    child: Circle(
-                      dotted: true,
-                      backgroundColor: backgroundColor,
-                      borderColor: borderColor,
-                      radius: smallCircleRadius,
+            child: AnimatedScale(
+              duration: scaleDuration,
+              curve: Curves.decelerate,
+              scale: state.phaseValue(
+                values: {
+                  ThinkingAnimationPhase.initial: .6,
+                  ThinkingAnimationPhase.thinkingOut: .6,
+                },
+                defaultValue: 1.05,
+              ),
+              child: Circle(
+                dotted: true,
+                backgroundColor: backgroundColor,
+                borderColor: borderColor,
+                radius: bigCircleRadius,
+                child: Center(
+                  child: Circle(
+                    dotted: true,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
+                    radius: mediumCircleRadius,
+                    child: Center(
+                      child: Circle(
+                        dotted: true,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        radius: smallCircleRadius,
+                      ),
                     ),
                   ),
                 ),

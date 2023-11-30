@@ -18,8 +18,9 @@ class SourcesCarouselView extends StatefulWidget {
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with SingleTickerProviderStateMixin {
   static const maxCardsVisible = 4;
-  static const incrementsOffset = 300.0;
-  static const incrementScale = 0.2;
+  static const incrementsOffset = 180.0;
+  static const decementScale = 0.22;
+  static const rotationIncrement = 0.1;
   late AnimationController animationController;
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
   List<VertexDocument> documents = [];
@@ -61,11 +62,12 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<Offset> _getOffset(int index) {
     if (index == 0) {
-      return Tween<Offset>(begin: Offset.zero, end: const Offset(5000, 0))
+      return Tween<Offset>(begin: Offset.zero, end: const Offset(1000, 0))
           .animate(
         animationController,
       );
     }
+
     return Tween<Offset>(
       begin: Offset(incrementsOffset * index, 0),
       end: Offset((incrementsOffset * index) - incrementsOffset, 0),
@@ -76,14 +78,14 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getScale(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 1).animate(
+      return Tween<double>(begin: 1, end: 2).animate(
         animationController,
       );
     }
-    final startScale = 1 - (incrementScale * index);
+    final startScale = 1 - (decementScale * index);
     return Tween<double>(
       begin: startScale,
-      end: startScale + incrementScale,
+      end: startScale + decementScale,
     ).animate(
       animationController,
     );
@@ -91,6 +93,21 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   int index(VertexDocument document) {
     return widget.documents.indexOf(document) + 1;
+  }
+
+  Animation<double> _getRotation(int index) {
+    if (index == 0) {
+      return Tween<double>(begin: 0, end: -1).animate(
+        animationController,
+      );
+    }
+    final startRotation = rotationIncrement * index;
+    return Tween<double>(
+      begin: startRotation,
+      end: startRotation - rotationIncrement,
+    ).animate(
+      animationController,
+    );
   }
 
   void setupAnimatedBoxes() {
@@ -104,6 +121,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
           offset: _getOffset(i),
           scale: _getScale(i),
           document: documents[i],
+          rotation: _getRotation(i),
         ),
       );
     }
@@ -142,6 +160,7 @@ class AnimatedBox extends StatelessWidget {
     required this.scale,
     required this.document,
     required this.index,
+    required this.rotation,
     super.key,
   });
 
@@ -150,6 +169,7 @@ class AnimatedBox extends StatelessWidget {
   final Animation<double> scale;
   final VertexDocument document;
   final int index;
+  final Animation<double> rotation;
 
   @override
   Widget build(BuildContext context) {
@@ -157,14 +177,18 @@ class AnimatedBox extends StatelessWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (_, __) {
-          return Transform.scale(
-            scale: scale.value,
-            child: Transform.translate(
-              offset: offset.value,
-              child: SourceCard(
-                document: document,
-                index: index,
+          return Transform(
+            alignment: FractionalOffset.center,
+            transform: Matrix4.identity()
+              ..translate(offset.value.dx, offset.value.dy)
+              ..scale(scale.value)
+              ..setEntry(3, 2, 0.003)
+              ..rotateY(
+                rotation.value,
               ),
+            child: SourceCard(
+              document: document,
+              index: index,
             ),
           );
         },

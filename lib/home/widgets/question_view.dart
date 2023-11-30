@@ -19,9 +19,6 @@ class QuestionViewState extends State<QuestionView>
   List<Status> get forwardEnterStatuses => [Status.welcomeToAskQuestion];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.askQuestionToThinking];
-
-  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -33,6 +30,7 @@ class QuestionViewState extends State<QuestionView>
           context.read<HomeBloc>().add(const AskQuestion());
         }
       });
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
