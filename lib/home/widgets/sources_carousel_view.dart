@@ -62,7 +62,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<Offset> _getOffset(int index) {
     if (index == 0) {
-      return Tween<Offset>(begin: Offset.zero, end: const Offset(5000, 0))
+      return Tween<Offset>(begin: Offset.zero, end: const Offset(1000, 0))
           .animate(
         animationController,
       );
@@ -78,7 +78,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getScale(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 1).animate(
+      return Tween<double>(begin: 1, end: 2).animate(
         animationController,
       );
     }
@@ -97,7 +97,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getRotation(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 0, end: 0).animate(
+      return Tween<double>(begin: 0, end: -1).animate(
         animationController,
       );
     }
