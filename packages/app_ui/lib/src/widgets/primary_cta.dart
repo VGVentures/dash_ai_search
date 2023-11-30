@@ -14,8 +14,8 @@ class PrimaryCTA extends StatelessWidget {
     super.key,
   });
 
-  /// The image that will be displayed on the left side of the button.
-  final Image? icon;
+  /// The widget that will be displayed on the left side of the button.
+  final Widget? icon;
 
   /// The text that will be displayed on the right side of the button.
   final String label;
@@ -27,31 +27,28 @@ class PrimaryCTA extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        backgroundColor: const MaterialStatePropertyAll(
-          VertexColors.googleBlue,
-        ),
-        padding: MaterialStatePropertyAll(
-          EdgeInsets.only(
-            left: icon != null ? 24 : 32,
-            top: 20,
-            bottom: 20,
-            right: 32,
-          ),
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.only(
+          left: icon != null ? 8 : 32,
+          top: 20,
+          bottom: 20,
+          right: 32,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) icon!,
+          if (icon != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: CircleAvatar(
+                backgroundColor: VertexColors.white,
+                child: SizedBox.square(dimension: 24, child: icon),
+              ),
+            ),
           Text(
             label,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: VertexColors.white,
-            ),
           ),
         ],
       ),

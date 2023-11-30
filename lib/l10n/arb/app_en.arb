@@ -1,6 +1,6 @@
 {
     "@@locale": "en",
-    "vertexAI": "Vertex AI",
+    "vertexAI": "Vertex AI Search",
     "@vertexAI": {
         "description": "Vertex AI text on logo"
     },

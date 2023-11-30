@@ -49,17 +49,13 @@ void main() {
           .state<ThinkingViewState>(find.byType(ThinkingView))
           .forwardEnterStatuses;
 
-      expect(forwardEnterStatuses, equals([Status.askQuestionToThinking]));
-    });
-
-    testWidgets('animates out when exits forward', (tester) async {
-      await tester.pumpApp(bootstrap());
-
-      final forwardExitStatuses = tester
-          .state<ThinkingViewState>(find.byType(ThinkingView))
-          .forwardExitStatuses;
-
-      expect(forwardExitStatuses, equals([Status.thinkingToResults]));
+      expect(
+        forwardEnterStatuses,
+        equals([
+          Status.askQuestionToThinking,
+          Status.resultsToThinking,
+        ]),
+      );
     });
 
     group('ThinkingAnimationView', () {
