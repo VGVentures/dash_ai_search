@@ -43,7 +43,3 @@ class SeeSourceAnswersRequested extends HomeEvent {
 class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
 }
-
-class Restarted extends HomeEvent {
-  const Restarted();
-}

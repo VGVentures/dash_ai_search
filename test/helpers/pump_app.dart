@@ -8,7 +8,7 @@ extension PumpApp on WidgetTester {
       MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: widget,
+        home: Scaffold(body: widget),
       ),
     );
   }
