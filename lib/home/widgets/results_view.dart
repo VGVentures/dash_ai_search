@@ -55,18 +55,22 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        BlueContainer(),
-        Positioned(
-          top: 90,
-          left: 0,
-          right: 0,
-          child: Align(
-            child: SearchBoxView(),
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            BlueContainer(constraints: constraints),
+            const Positioned(
+              top: 90,
+              left: 0,
+              right: 0,
+              child: Align(
+                child: SearchBoxView(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -134,7 +138,12 @@ class SearchBoxViewState extends State<SearchBoxView>
 
 class BlueContainer extends StatefulWidget {
   @visibleForTesting
-  const BlueContainer({super.key});
+  const BlueContainer({
+    required this.constraints,
+    super.key,
+  });
+
+  final BoxConstraints constraints;
 
   @override
   State<BlueContainer> createState() => BlueContainerState();
@@ -146,7 +155,8 @@ class BlueContainerState extends State<BlueContainer>
   late Animation<double> _rotationEnterIn;
   late Animation<RelativeRect> _positionExitOut;
   late Animation<double> _borderRadiusExitOut;
-  late Animation<Size> _sizeIn;
+  @visibleForTesting
+  late Animation<Size> sizeIn;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
@@ -169,7 +179,7 @@ class BlueContainerState extends State<BlueContainer>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 800),
     )..addStatusListener((status) {
         final state = context.read<HomeBloc>().state;
 
@@ -211,14 +221,28 @@ class BlueContainerState extends State<BlueContainer>
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
-        curve: Curves.decelerate,
+        parent: exitTransitionController,
+        curve: Curves.easeInExpo,
       ),
     );
 
-    _sizeIn = Tween<Size>(
+    _initSizeIn();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlueContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _initSizeIn();
+  }
+
+  void _initSizeIn() {
+    sizeIn = Tween<Size>(
       begin: const Size(600, 700),
-      end: Size.infinite,
+      end: Size(
+        widget.constraints.maxWidth,
+        widget.constraints.maxHeight,
+      ),
     ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
@@ -237,12 +261,12 @@ class BlueContainerState extends State<BlueContainer>
           child: RotationTransition(
             turns: _rotationEnterIn,
             child: AnimatedBuilder(
-              animation: _sizeIn,
+              animation: sizeIn,
               builder: (context, child) {
                 return Center(
                   child: Container(
-                    width: _sizeIn.value.width,
-                    height: _sizeIn.value.height,
+                    width: sizeIn.value.width,
+                    height: sizeIn.value.height,
                     decoration: BoxDecoration(
                       color: VertexColors.googleBlue,
                       borderRadius: BorderRadius.all(
