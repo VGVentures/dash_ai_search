@@ -147,7 +147,8 @@ void main() {
     );
 
     testWidgets(
-      'navigates if previouslySelectedIndex gets updated in only both directions',
+      'navigates if previouslySelectedIndex gets updated '
+      'in only both directions',
       (WidgetTester tester) async {
         var index = 2;
         await tester.pumpApp(
