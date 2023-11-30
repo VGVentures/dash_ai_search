@@ -26,8 +26,15 @@ void main() {
 
     test('QuestionAsked supports value equality', () {
       expect(
-        QuestionAsked(),
-        equals(QuestionAsked()),
+        QuestionAsked('query'),
+        equals(QuestionAsked('query')),
+      );
+    });
+
+    test('Results supports value equality', () {
+      expect(
+        Results(),
+        equals(Results()),
       );
     });
 
@@ -35,6 +42,20 @@ void main() {
       expect(
         SeeSourceAnswersRequested(),
         equals(SeeSourceAnswersRequested()),
+      );
+    });
+
+    test('SeeResultsSourceAnswers supports value equality', () {
+      expect(
+        SeeResultsSourceAnswers(),
+        equals(SeeResultsSourceAnswers()),
+      );
+    });
+
+    test('Restarted supports value equality', () {
+      expect(
+        Restarted(),
+        equals(Restarted()),
       );
     });
   });

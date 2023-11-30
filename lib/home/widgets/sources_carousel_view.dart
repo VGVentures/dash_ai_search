@@ -244,6 +244,8 @@ class SourceCard extends StatelessWidget {
               ),
               Text(
                 document.metadata.description ?? '',
+                maxLines: 9,
+                overflow: TextOverflow.ellipsis,
                 style: textTheme.bodySmall
                     ?.copyWith(color: VertexColors.mediumGrey),
               ),

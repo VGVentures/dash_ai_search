@@ -1,6 +1,8 @@
 import 'package:app_ui/app_ui.dart';
+import 'package:dash_ai_search/home/bloc/home_bloc.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Logo extends StatelessWidget {
   const Logo({super.key, this.hasDarkBackground = true});
@@ -23,7 +25,7 @@ class Logo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 4),
-        vertexIcons.asterisk.image(),
+        const LogoIcon(),
         const SizedBox(width: 4),
         Text(
           l10n.flutter,
@@ -32,6 +34,19 @@ class Logo extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class LogoIcon extends StatelessWidget {
+  @visibleForTesting
+  const LogoIcon({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => context.read<HomeBloc>().add(const Restarted()),
+      icon: vertexIcons.asterisk.image(),
     );
   }
 }
