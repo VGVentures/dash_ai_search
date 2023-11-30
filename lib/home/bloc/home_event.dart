@@ -46,9 +46,17 @@ class Results extends HomeEvent {
 }
 
 class SeeSourceAnswersRequested extends HomeEvent {
-  const SeeSourceAnswersRequested();
+  const SeeSourceAnswersRequested(this.index);
+
+  final String? index;
 }
 
 class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
+}
+
+class NavigateSourceAnswers extends HomeEvent {
+  const NavigateSourceAnswers(this.index);
+
+  final String index;
 }

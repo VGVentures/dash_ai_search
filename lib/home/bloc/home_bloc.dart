@@ -18,6 +18,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
+    on<NavigateSourceAnswers>(_navigate);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -87,7 +88,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SeeSourceAnswersRequested event,
     Emitter<HomeState> emit,
   ) {
-    emit(state.copyWith(status: Status.resultsToSourceAnswers));
+    final indexParsed =
+        event.index != null ? (int.parse(event.index!.substring(1, 2)) - 1) : 0;
+    emit(
+      state.copyWith(
+        status: Status.resultsToSourceAnswers,
+        selectedIndex: indexParsed,
+      ),
+    );
   }
 
   void _onSeeSourceAnswers(
@@ -95,5 +103,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(status: Status.seeSourceAnswers));
+  }
+
+  FutureOr<void> _navigate(
+    NavigateSourceAnswers event,
+    Emitter<HomeState> emit,
+  ) {
+    final indexParsed = int.parse(event.index.substring(1, 2)) - 1;
+    emit(
+      state.copyWith(
+        selectedIndex: indexParsed,
+      ),
+    );
   }
 }

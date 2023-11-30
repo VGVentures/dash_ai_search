@@ -33,15 +33,17 @@ enum Status {
 class HomeState extends Equatable {
   const HomeState({
     this.status = Status.welcome,
-    this.query = '',
+    this.query = 'What is flutter?',
     this.vertexResponse = const VertexResponse.empty(),
     this.submittedQuery,
+    this.selectedIndex = 0,
   });
 
   final Status status;
   final String query;
   final VertexResponse vertexResponse;
   final String? submittedQuery;
+  final int selectedIndex;
 
   ParsedSummary get parsedSummary {
     final textToParse = vertexResponse.summary;
@@ -93,15 +95,23 @@ class HomeState extends Equatable {
     String? query,
     VertexResponse? vertexResponse,
     String? submittedQuery,
+    int? selectedIndex,
   }) {
     return HomeState(
       status: status ?? this.status,
       query: query ?? this.query,
       vertexResponse: vertexResponse ?? this.vertexResponse,
       submittedQuery: submittedQuery ?? this.submittedQuery,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
     );
   }
 
   @override
-  List<Object> get props => [status, query, vertexResponse];
+  List<Object?> get props => [
+        status,
+        query,
+        vertexResponse,
+        selectedIndex,
+        submittedQuery,
+      ];
 }

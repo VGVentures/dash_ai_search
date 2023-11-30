@@ -402,24 +402,44 @@ class SummaryView extends StatelessWidget {
           for (final element in parsed.elements)
             if (element.isLink)
               WidgetSpan(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 2,
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 12,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: VertexColors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(100),
+                child: InkWell(
+                  onTap: () {
+                    final isOnSeeSourceAnswers =
+                        context.read<HomeBloc>().state.status ==
+                            Status.seeSourceAnswers;
+                    if (isOnSeeSourceAnswers) {
+                      context.read<HomeBloc>().add(
+                            NavigateSourceAnswers(
+                              element.text,
+                            ),
+                          );
+                    } else {
+                      context.read<HomeBloc>().add(
+                            SeeSourceAnswersRequested(
+                              element.text,
+                            ),
+                          );
+                    }
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 2,
                     ),
-                  ),
-                  child: Text(
-                    element.text,
-                    style: textTheme.labelLarge?.copyWith(
-                      color: VertexColors.googleBlue,
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 12,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: VertexColors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(100),
+                      ),
+                    ),
+                    child: Text(
+                      element.text,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: VertexColors.googleBlue,
+                      ),
                     ),
                   ),
                 ),
@@ -495,12 +515,14 @@ class CarouselViewState extends State<CarouselView>
 
   @override
   Widget build(BuildContext context) {
+    final index = context.read<HomeBloc>().state.selectedIndex;
     return SlideTransition(
       position: _offsetEnterIn,
       child: RotationTransition(
         turns: _rotationEnterIn,
         child: SourcesCarouselView(
           documents: widget.documents,
+          previouslySelectedIndex: index,
         ),
       ),
     );
@@ -628,8 +650,9 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
             icon: vertexIcons.arrowForward.image(
               color: VertexColors.white,
             ),
-            onPressed: () =>
-                context.read<HomeBloc>().add(const SeeSourceAnswersRequested()),
+            onPressed: () => context
+                .read<HomeBloc>()
+                .add(const SeeSourceAnswersRequested(null)),
           ),
         ),
       ),
