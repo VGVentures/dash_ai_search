@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template tertiary_cta}
@@ -25,8 +26,22 @@ class TertiaryCTA extends StatefulWidget {
   State<TertiaryCTA> createState() => _TertiaryCTAState();
 }
 
-class _TertiaryCTAState extends State<TertiaryCTA> {
-  bool hovered = false;
+class _TertiaryCTAState extends State<TertiaryCTA>
+    with SingleTickerProviderStateMixin {
+  final DecorationTween decorationTween = DecorationTween(
+    begin: const BoxDecoration(),
+    end: const BoxDecoration(
+      border: Border(
+        bottom: BorderSide(color: VertexColors.white, width: 2),
+      ),
+    ),
+  );
+
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 300),
+  );
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -34,10 +49,12 @@ class _TertiaryCTAState extends State<TertiaryCTA> {
       style: const ButtonStyle(
         overlayColor: MaterialStatePropertyAll(Colors.transparent),
       ),
-      onHover: (newHovered) {
-        setState(() {
-          hovered = newHovered;
-        });
+      onHover: (hovered) {
+        if (hovered) {
+          _controller.forward(from: 0);
+        } else {
+          _controller.reverse(from: 1);
+        }
       },
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -48,14 +65,8 @@ class _TertiaryCTAState extends State<TertiaryCTA> {
               child: widget.icon,
             ),
           Flexible(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                border: hovered
-                    ? const Border(
-                        bottom: BorderSide(color: Colors.white, width: 2),
-                      )
-                    : null,
-              ),
+            child: DecoratedBoxTransition(
+              decoration: decorationTween.animate(_controller),
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
