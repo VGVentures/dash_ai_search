@@ -155,7 +155,8 @@ class BlueContainerState extends State<BlueContainer>
   late Animation<double> _rotationEnterIn;
   late Animation<RelativeRect> _positionExitOut;
   late Animation<double> _borderRadiusExitOut;
-  late Animation<Size> _sizeIn;
+  @visibleForTesting
+  late Animation<Size> sizeIn;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
@@ -236,7 +237,7 @@ class BlueContainerState extends State<BlueContainer>
   }
 
   void _initSizeIn() {
-    _sizeIn = Tween<Size>(
+    sizeIn = Tween<Size>(
       begin: const Size(600, 700),
       end: Size(
         widget.constraints.maxWidth,
@@ -260,12 +261,12 @@ class BlueContainerState extends State<BlueContainer>
           child: RotationTransition(
             turns: _rotationEnterIn,
             child: AnimatedBuilder(
-              animation: _sizeIn,
+              animation: sizeIn,
               builder: (context, child) {
                 return Center(
                   child: Container(
-                    width: _sizeIn.value.width,
-                    height: _sizeIn.value.height,
+                    width: sizeIn.value.width,
+                    height: sizeIn.value.height,
                     decoration: BoxDecoration(
                       color: VertexColors.googleBlue,
                       borderRadius: BorderRadius.all(
