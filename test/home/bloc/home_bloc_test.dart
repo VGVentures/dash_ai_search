@@ -81,6 +81,27 @@ void main() {
       );
     });
 
+    group('QuestionAskedAgain', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits [Status.resultsToThinking, Status.thinkingToResults] '
+        'with vertex response from _questionsRepository.getVertexResponse',
+        setUp: () {
+          when(() => questionsRepository.getVertexResponse(any()))
+              .thenAnswer((_) async => VertexResponse.empty());
+        },
+        build: buildBloc,
+        act: (bloc) => bloc.add(QuestionAskedAgain('query')),
+        expect: () => [
+          HomeState(status: Status.resultsToThinking),
+          HomeState(
+            status: Status.thinkingToResults,
+            vertexResponse: VertexResponse.empty(),
+            submittedQuery: 'query',
+          ),
+        ],
+      );
+    });
+
     group('Results', () {
       blocTest<HomeBloc, HomeState>(
         'emits Status.results',
@@ -110,17 +131,6 @@ void main() {
         act: (bloc) => bloc.add(SeeResultsSourceAnswers()),
         expect: () => [
           HomeState(status: Status.seeSourceAnswers),
-        ],
-      );
-    });
-
-    group('Restarted', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits Status.welcome',
-        build: buildBloc,
-        act: (bloc) => bloc.add(Restarted()),
-        expect: () => [
-          HomeState(),
         ],
       );
     });

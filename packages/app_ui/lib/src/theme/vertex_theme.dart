@@ -13,6 +13,8 @@ class VertexTheme {
       textTheme: _textTheme,
       inputDecorationTheme: _inputDecorationTheme,
       useMaterial3: true,
+      elevatedButtonTheme: _elevatedButtonTheme,
+      textButtonTheme: _textButtonTheme,
     );
   }
 
@@ -53,6 +55,25 @@ class VertexTheme {
         ),
       ),
       contentPadding: const EdgeInsets.symmetric(vertical: 32),
+    );
+  }
+
+  static ElevatedButtonThemeData get _elevatedButtonTheme {
+    return ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        textStyle: _textTheme.bodyMedium,
+        backgroundColor: VertexColors.googleBlue,
+        foregroundColor: VertexColors.white,
+      ),
+    );
+  }
+
+  static TextButtonThemeData get _textButtonTheme {
+    return TextButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: _textTheme.bodyMedium,
+        foregroundColor: VertexColors.white,
+      ),
     );
   }
 }

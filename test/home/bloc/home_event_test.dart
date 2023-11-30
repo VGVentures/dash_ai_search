@@ -31,6 +31,13 @@ void main() {
       );
     });
 
+    test('QuestionAskedAgain supports value equality', () {
+      expect(
+        QuestionAskedAgain('query'),
+        equals(QuestionAskedAgain('query')),
+      );
+    });
+
     test('Results supports value equality', () {
       expect(
         Results(),
@@ -49,13 +56,6 @@ void main() {
       expect(
         SeeResultsSourceAnswers(),
         equals(SeeResultsSourceAnswers()),
-      );
-    });
-
-    test('Restarted supports value equality', () {
-      expect(
-        Restarted(),
-        equals(Restarted()),
       );
     });
   });

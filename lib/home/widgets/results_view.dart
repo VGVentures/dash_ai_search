@@ -5,78 +5,6 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/*
-class ResultsView extends StatelessWidget {
-  const ResultsView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final l10n = context.l10n;
-
-    final state = context.watch<HomeBloc>().state;
-
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 90),
-      child: Column(
-        children: [
-          const SearchBox(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(48, 64, 48, 64),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            response.summary,
-                            style: textTheme.headlineLarge?.copyWith(
-                              color: VertexColors.flutterNavy,
-                              fontSize: 32,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const Expanded(child: FeedbackButtons()),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: SizedBox(
-                                  height: 64,
-                                  child: TertiaryCTA(
-                                    label: l10n.seeSourceAnswers,
-                                    icon: vertexIcons.arrowForward.image(),
-                                    onPressed: () => context
-                                        .read<HomeBloc>()
-                                        .add(const SeeSourceAnswersRequested()),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state.isSeeSourceAnswersVisible) ...[
-                    CarouselView(documents: response.documents),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -91,9 +19,6 @@ class ResultsViewState extends State<ResultsView>
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.results];
-
-  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -101,6 +26,7 @@ class ResultsViewState extends State<ResultsView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -169,6 +95,7 @@ class SearchBoxViewState extends State<SearchBoxView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -181,6 +108,7 @@ class SearchBoxViewState extends State<SearchBoxView>
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
         .animate(enterTransitionController);
+
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
@@ -195,7 +123,9 @@ class SearchBoxViewState extends State<SearchBoxView>
         position: _offset,
         child: FadeTransition(
           opacity: _opacity,
-          child: const SearchBox(),
+          child: const SearchBox(
+            askAgain: true,
+          ),
         ),
       ),
     );
@@ -261,6 +191,7 @@ class BlueContainerState extends State<BlueContainer>
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
         parent: enterTransitionController,
@@ -345,9 +276,6 @@ class _AiResponseState extends State<_AiResponse>
   late Animation<double> _bottomPaddingExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -359,7 +287,7 @@ class _AiResponseState extends State<_AiResponse>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -501,7 +429,7 @@ class CarouselViewState extends State<CarouselView>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -516,6 +444,7 @@ class CarouselViewState extends State<CarouselView>
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
         parent: enterTransitionController,
@@ -551,9 +480,6 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
   late Animation<double> _sizeExitIn;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -565,7 +491,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -594,6 +520,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       child: Align(
         alignment: Alignment.topLeft,
         child: SizedBox(
+          width: 250,
           height: 64,
           child: TertiaryCTA(
             label: l10n.backToAIAnswer,
@@ -618,9 +545,6 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   late Animation<double> _opacityExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -632,7 +556,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -657,10 +581,13 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
       child: Align(
         alignment: Alignment.bottomRight,
         child: SizedBox(
+          width: 260,
           height: 64,
           child: TertiaryCTA(
             label: l10n.seeSourceAnswers,
-            icon: vertexIcons.arrowForward.image(),
+            icon: vertexIcons.arrowForward.image(
+              color: VertexColors.white,
+            ),
             onPressed: () =>
                 context.read<HomeBloc>().add(const SeeSourceAnswersRequested()),
           ),
