@@ -18,7 +18,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
-    on<Restarted>(_onRestarted);
     on<AnswerFeedbackUpdated>(_onAnswerFeedbackUpdated);
   }
 
