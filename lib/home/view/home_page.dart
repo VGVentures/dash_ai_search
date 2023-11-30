@@ -18,12 +18,21 @@ class HomePage extends StatelessWidget {
 
 class HomeView extends StatelessWidget {
   @visibleForTesting
-  const HomeView({super.key});
+  const HomeView({
+    super.key,
+    @visibleForTesting this.dashOnRightStatus = Status.seeSourceAnswers,
+  });
+
+  static const _dashRightKey = Key('dashAnimationContainer_right');
+  static const _dashLeftKey = Key('dashAnimationContainer_left');
+
+  final Status dashOnRightStatus;
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<HomeBloc>().state;
 
+    final isDashOnRight = state.status == dashOnRightStatus;
     return Scaffold(
       backgroundColor: VertexColors.arctic,
       body: Stack(
@@ -40,17 +49,29 @@ class HomeView extends StatelessWidget {
           if (state.isQuestionVisible) const QuestionView(),
           if (state.isThinkingVisible) const ThinkingView(),
           if (state.isResultsVisible) const ResultsView(),
-          if (state.isDashVisible)
-            const Positioned(
-              bottom: 50,
-              left: 50,
-              child: DashAnimationContainer(),
-            ),
           Positioned(
             top: 40,
             left: 48,
             child: Logo(hasDarkBackground: state.isSeeSourceAnswersVisible),
           ),
+          if (state.isDashVisible && isDashOnRight)
+            const Positioned(
+              bottom: 50,
+              right: 50,
+              child: DashAnimationContainer(
+                right: true,
+                key: _dashRightKey,
+              ),
+            ),
+          if (state.isDashVisible && !isDashOnRight)
+            const Positioned(
+              bottom: 50,
+              left: 50,
+              child: DashAnimationContainer(
+                right: false,
+                key: _dashLeftKey,
+              ),
+            ),
         ],
       ),
     );

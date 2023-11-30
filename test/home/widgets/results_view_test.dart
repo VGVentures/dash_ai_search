@@ -202,7 +202,7 @@ void main() {
 
       verify(
         () => homeBloc.add(
-          const AnswerFeedbackUpdated(AnswerFeedback.good),
+          const AddAnswerFeedback(AnswerFeedback.good),
         ),
       ).called(1);
     });
@@ -215,7 +215,7 @@ void main() {
 
       verify(
         () => homeBloc.add(
-          const AnswerFeedbackUpdated(AnswerFeedback.bad),
+          const AddAnswerFeedback(AnswerFeedback.bad),
         ),
       ).called(1);
     });

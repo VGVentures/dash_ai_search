@@ -41,6 +41,7 @@ void main() {
             value: homeBloc,
             child: DashAnimationContainer(
               animationState: animationState,
+              right: false,
             ),
           ),
         );
@@ -89,6 +90,13 @@ void main() {
       await tester.pump();
 
       expect(state.value, equals(DashAnimationPhase.dashOut));
+
+      animationController.add(
+        const HomeState(status: Status.seeSourceAnswers),
+      );
+      await tester.pump();
+
+      expect(state.value, equals(DashAnimationPhase.dashIn));
     });
   });
 
@@ -196,7 +204,7 @@ void main() {
 
         controller.add(
           const HomeState(
-            answerFeedback: AnswerFeedback.good,
+            answerFeedbacks: [AnswerFeedback.good],
           ),
         );
 
@@ -238,7 +246,7 @@ void main() {
 
         controller.add(
           const HomeState(
-            answerFeedback: AnswerFeedback.bad,
+            answerFeedbacks: [AnswerFeedback.bad],
           ),
         );
 
@@ -279,7 +287,7 @@ void main() {
 
         controller.add(
           const HomeState(
-            answerFeedback: AnswerFeedback.bad,
+            answerFeedbacks: [AnswerFeedback.bad],
           ),
         );
 

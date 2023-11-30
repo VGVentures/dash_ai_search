@@ -141,14 +141,14 @@ void main() {
       );
     });
 
-    group('AnswerFeedback', () {
+    group('AddAnswerFeedback', () {
       blocTest<HomeBloc, HomeState>(
-        'emits Status.welcome',
+        'emits the new feedback',
         build: buildBloc,
-        act: (bloc) => bloc.add(AnswerFeedbackUpdated(AnswerFeedback.good)),
+        act: (bloc) => bloc.add(AddAnswerFeedback(AnswerFeedback.good)),
         expect: () => [
           HomeState(
-            answerFeedback: AnswerFeedback.good,
+            answerFeedbacks: const [AnswerFeedback.good],
           ),
         ],
       );
