@@ -134,16 +134,5 @@ void main() {
         ],
       );
     });
-
-    group('Restarted', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits Status.welcome',
-        build: buildBloc,
-        act: (bloc) => bloc.add(Restarted()),
-        expect: () => [
-          HomeState(),
-        ],
-      );
-    });
   });
 }

@@ -524,7 +524,7 @@ packages:
     source: hosted
     version: "0.0.3"
   plugin_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: plugin_platform_interface
       sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
@@ -760,7 +760,7 @@ packages:
     source: hosted
     version: "3.1.0"
   url_launcher_platform_interface:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: url_launcher_platform_interface
       sha256: "980e8d9af422f477be6948bdfb68df8433be71f5743a188968b0c1b887807e50"

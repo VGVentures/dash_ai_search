@@ -1,29 +1,27 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
 import '../../helpers/helpers.dart';
 
-class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
-    implements HomeBloc {}
+class _MockUrlLauncher extends Mock
+    with MockPlatformInterfaceMixin
+    implements UrlLauncherPlatform {}
+
+class _FakeLaunchOptions extends Fake implements LaunchOptions {}
 
 void main() {
   group('Logo', () {
-    late HomeBloc homeBloc;
-
-    setUp(() {
-      homeBloc = _MockHomeBloc();
-      when(() => homeBloc.state).thenReturn(HomeState());
+    setUpAll(() {
+      registerFallbackValue(_FakeLaunchOptions());
     });
 
     testWidgets('renders correctly', (tester) async {
-      await tester.pumpApp(
-        Logo(),
-      );
+      await tester.pumpApp(Logo());
 
       final l10n = tester.element(find.byType(Logo)).l10n;
 
@@ -32,18 +30,15 @@ void main() {
       expect(find.text(l10n.flutter), findsOneWidget);
     });
 
-    testWidgets(
-      'calls Restarted clicking on the logo ',
-      (WidgetTester tester) async {
-        await tester.pumpApp(
-          BlocProvider.value(
-            value: homeBloc,
-            child: Logo(),
-          ),
-        );
-        await tester.tap(find.byType(LogoIcon));
-        verify(() => homeBloc.add(Restarted())).called(1);
-      },
-    );
+    testWidgets('opens the Vertex website when tapped', (tester) async {
+      final mockLauncher = _MockUrlLauncher();
+      UrlLauncherPlatform.instance = mockLauncher;
+      when(
+        () => mockLauncher.launchUrl(any(), any()),
+      ).thenAnswer((_) async => true);
+      await tester.pumpApp(Logo());
+      await tester.tap(find.byType(Logo));
+      verify(() => mockLauncher.launchUrl(any(), any())).called(1);
+    });
   });
 }

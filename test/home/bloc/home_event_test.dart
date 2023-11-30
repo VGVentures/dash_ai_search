@@ -58,12 +58,5 @@ void main() {
         equals(SeeResultsSourceAnswers()),
       );
     });
-
-    test('Restarted supports value equality', () {
-      expect(
-        Restarted(),
-        equals(Restarted()),
-      );
-    });
   });
 }
