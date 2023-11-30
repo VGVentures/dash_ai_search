@@ -17,14 +17,12 @@ void main() {
   group('ResultsView', () {
     late HomeBloc homeBloc;
     const response = VertexResponse(
-      summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, '
-          'sed do eiusmod tempor incididunt ut labore et dolore magna '
-          'aliqua. Ut enim ad minim veniam, quis nostrud exercitation '
-          'ullamco laboris nisi ut aliquip ex ea commodo consequat. '
-          'Duis aute irure dolor in reprehenderit in voluptate velit '
-          'esse cillum dolore eu fugiat nulla pariatur. Excepteur sint '
-          'occaecat cupidatat non proident, sunt in culpa qui officia'
-          ' deserunt mollit anim id est laborum.',
+      summary: 'Flutter is a free and open source software development '
+          "kit (SDK) from Google [1]. It's used to create beautiful, "
+          'fast user experiences, ,,,for mobile, web, and desktop '
+          'applications [1]. Flutter works with existing code and is used '
+          'by developers and organizations around the world [1]. [3]. '
+          'Flutter is a fully open source project [3].',
       documents: [
         VertexDocument(
           id: '1',
@@ -73,9 +71,9 @@ void main() {
           child: Material(child: ResultsView()),
         );
 
-    testWidgets('renders the response summary', (tester) async {
+    testWidgets('renders SummaryView', (tester) async {
       await tester.pumpApp(bootstrap());
-      expect(find.text(response.summary), findsOneWidget);
+      expect(find.byType(SummaryView), findsOneWidget);
     });
 
     testWidgets('renders SearchBox', (tester) async {

@@ -357,7 +357,7 @@ class _AiResponseState extends State<_AiResponse>
                     ),
                     child: const BackToAnswerButton(),
                   ),
-                  const Expanded(child: _SummaryView()),
+                  const Expanded(child: SummaryView()),
                   AnimatedBuilder(
                     animation: _bottomPaddingExitOut,
                     builder: (context, child) =>
@@ -387,8 +387,9 @@ class _AiResponseState extends State<_AiResponse>
   }
 }
 
-class _SummaryView extends StatelessWidget {
-  const _SummaryView();
+class SummaryView extends StatelessWidget {
+  @visibleForTesting
+  const SummaryView({super.key});
 
   @override
   Widget build(BuildContext context) {
