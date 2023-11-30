@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
@@ -104,5 +105,51 @@ void main() {
 
       expect(find.byType(ResultsView), findsOneWidget);
     });
+
+    testWidgets(
+      'renders DashAnimationContainer on the left if dash is '
+      'visible and is not sources',
+      (tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(
+            status: Status.results,
+          ),
+        );
+        await tester.pumpApp(bootstrap());
+
+        final widget = tester.widget<DashAnimationContainer>(
+          find.byType(DashAnimationContainer),
+        );
+
+        expect(widget.right, isFalse);
+      },
+    );
+
+    testWidgets(
+      'renders DashAnimationContainer on the left if dash is '
+      'visible and is not sources',
+      (tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(
+            status: Status.results,
+          ),
+        );
+        await tester.pumpApp(
+          RepositoryProvider.value(
+            value: dashAnimations,
+            child: BlocProvider.value(
+              value: homeBloc,
+              child: HomeView(dashOnRightStatus: Status.results),
+            ),
+          ),
+        );
+
+        final widget = tester.widget<DashAnimationContainer>(
+          find.byType(DashAnimationContainer),
+        );
+
+        expect(widget.right, isTrue);
+      },
+    );
   });
 }

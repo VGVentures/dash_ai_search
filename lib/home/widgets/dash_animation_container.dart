@@ -7,9 +7,12 @@ import 'package:phased/phased.dart';
 
 class DashAnimationContainer extends StatefulWidget {
   const DashAnimationContainer({
-    super.key,
+    required this.right,
     @visibleForTesting this.animationState,
+    super.key,
   });
+
+  final bool right;
 
   final PhasedState<DashAnimationPhase>? animationState;
 
@@ -31,12 +34,15 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
         if (state.status == Status.askQuestionToThinking ||
             state.status == Status.resultsToSourceAnswers) {
           _state.value = DashAnimationPhase.dashOut;
-        } else if (state.status == Status.thinkingToResults) {
+        } else if (state.status == Status.thinkingToResults ||
+            state.status == Status.seeSourceAnswers) {
           _state.value = DashAnimationPhase.dashIn;
         }
       },
       child: DashAnimation(
         state: _state,
+        slideOffset: widget.right ? 1.2 : -1.2,
+        rotation: widget.right ? .08 : -.08,
       ),
     );
   }
@@ -52,8 +58,13 @@ class DashAnimation extends Phased<DashAnimationPhase> {
   @visibleForTesting
   const DashAnimation({
     required super.state,
+    required this.slideOffset,
+    required this.rotation,
     super.key,
   });
+
+  final double slideOffset;
+  final double rotation;
 
   @override
   Widget build(BuildContext context) {
@@ -67,8 +78,8 @@ class DashAnimation extends Phased<DashAnimationPhase> {
       curve: Curves.decelerate,
       offset: state.phaseValue(
         values: {
-          DashAnimationPhase.initial: const Offset(-1.2, 0),
-          DashAnimationPhase.dashOut: const Offset(-1.2, 0),
+          DashAnimationPhase.initial: Offset(slideOffset, 0),
+          DashAnimationPhase.dashOut: Offset(slideOffset, 0),
         },
         defaultValue: Offset.zero,
       ),
@@ -77,8 +88,8 @@ class DashAnimation extends Phased<DashAnimationPhase> {
         curve: Curves.decelerate,
         turns: state.phaseValue(
           values: {
-            DashAnimationPhase.initial: -.08,
-            DashAnimationPhase.dashOut: -.04,
+            DashAnimationPhase.initial: rotation,
+            DashAnimationPhase.dashOut: rotation / 2,
           },
           defaultValue: 0,
         ),
@@ -119,16 +130,21 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
       width: widget.height,
       child: BlocListener<HomeBloc, HomeState>(
         listenWhen: (previous, current) =>
-            previous.answerFeedback != current.answerFeedback,
+            previous.answerFeedbacks != current.answerFeedbacks,
         listener: (context, state) {
-          if (state.answerFeedback == AnswerFeedback.good) {
-            setState(() {
-              _reaction = animations.happyAnimation;
-            });
-          } else if (state.answerFeedback == AnswerFeedback.bad) {
-            setState(() {
-              _reaction = animations.sadAnimation;
-            });
+          // Only play if we are not playing any other animation
+          // and if there is a feedback to play.
+          if (_reaction == null && state.answerFeedbacks.isNotEmpty) {
+            final lastFeedback = state.answerFeedbacks.last;
+            if (lastFeedback == AnswerFeedback.good) {
+              setState(() {
+                _reaction = animations.happyAnimation;
+              });
+            } else if (lastFeedback == AnswerFeedback.bad) {
+              setState(() {
+                _reaction = animations.sadAnimation;
+              });
+            }
           }
         },
         child: Builder(

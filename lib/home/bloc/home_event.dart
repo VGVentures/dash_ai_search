@@ -55,8 +55,8 @@ class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
 }
 
-class AnswerFeedbackUpdated extends HomeEvent {
-  const AnswerFeedbackUpdated(this.answerFeedback);
+class AddAnswerFeedback extends HomeEvent {
+  const AddAnswerFeedback(this.answerFeedback);
 
   final AnswerFeedback answerFeedback;
 

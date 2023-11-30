@@ -399,14 +399,14 @@ class _AiResponseState extends State<_AiResponse>
                         child: FeedbackButtons(
                           onLike: () {
                             context.read<HomeBloc>().add(
-                                  const AnswerFeedbackUpdated(
+                                  const AddAnswerFeedback(
                                     AnswerFeedback.good,
                                   ),
                                 );
                           },
                           onDislike: () {
                             context.read<HomeBloc>().add(
-                                  const AnswerFeedbackUpdated(
+                                  const AddAnswerFeedback(
                                     AnswerFeedback.bad,
                                   ),
                                 );

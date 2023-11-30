@@ -59,10 +59,10 @@ void main() {
       );
     });
 
-    test('AnswerFeedback supports value equality', () {
+    test('AddAnswerFeedback supports value equality', () {
       expect(
-        AnswerFeedbackUpdated(AnswerFeedback.good),
-        equals(AnswerFeedbackUpdated(AnswerFeedback.good)),
+        AddAnswerFeedback(AnswerFeedback.good),
+        equals(AddAnswerFeedback(AnswerFeedback.good)),
       );
     });
   });
