@@ -42,8 +42,9 @@ class PrimaryCTA extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 16),
               child: CircleAvatar(
-                  backgroundColor: VertexColors.white,
-                  child: SizedBox.square(dimension: 24, child: icon)),
+                backgroundColor: VertexColors.white,
+                child: SizedBox.square(dimension: 24, child: icon),
+              ),
             ),
           Text(
             label,
