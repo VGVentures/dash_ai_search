@@ -1,12 +1,19 @@
 import 'package:api_client/api_client.dart';
+import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/helpers.dart';
 
+class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
+    implements HomeBloc {}
+
 void main() {
   group('SourcesCarouselView', () {
+    late HomeBloc homeBloc;
     const documents = [
       VertexDocument(
         id: '1',
@@ -42,12 +49,18 @@ void main() {
       ),
     ];
 
+    setUp(() {
+      homeBloc = _MockHomeBloc();
+      when(() => homeBloc.state).thenReturn(HomeState());
+    });
+
     testWidgets(
       'renders N AnimatedBox',
       (WidgetTester tester) async {
         await tester.pumpApp(
           SourcesCarouselView(
             documents: documents,
+            previouslySelectedIndex: 0,
           ),
         );
         expect(find.byType(AnimatedBox), findsNWidgets(4));
@@ -55,21 +68,23 @@ void main() {
     );
 
     testWidgets(
-      'taps on next updates the counter',
+      'calls taps on next ',
       (WidgetTester tester) async {
         await tester.pumpApp(
-          SourcesCarouselView(
-            documents: documents,
+          BlocProvider.value(
+            value: homeBloc,
+            child: SourcesCarouselView(
+              documents: documents,
+              previouslySelectedIndex: 0,
+            ),
           ),
         );
-        expect(find.text('1/4'), findsOneWidget);
         final finder = find.byType(TextButton);
         await tester.ensureVisible(finder);
         await tester.pumpAndSettle();
         await tester.tap(finder);
         await tester.pumpAndSettle();
-
-        expect(find.text('2/4'), findsOneWidget);
+        verify(() => homeBloc.add(NavigateSourceAnswers('[2]'))).called(1);
       },
     );
   });

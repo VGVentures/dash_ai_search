@@ -187,6 +187,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   @override
   Widget build(BuildContext context) {
+    final index = getDocumentIndex(animatedBoxes.last.document);
     return Container(
       height: _cardHeight + 100,
       padding: const EdgeInsets.only(right: 150),
@@ -197,12 +198,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
             alignment: Alignment.bottomCenter,
             child: NextButton(
               animationController: animationController,
-              current: getDocumentIndex(animatedBoxes.last.document),
+              current: index,
               total: widget.documents.length,
               enabled: !isAnimating,
               onTap: () {
                 // Probably moving this to a new bloc event
-                final nextIndex = getDocumentIndex(documents.first) + 1;
+                final nextIndex = getDocumentIndex(documents[1]);
+
                 context.read<HomeBloc>().add(
                       NavigateSourceAnswers('[$nextIndex]'),
                     );
