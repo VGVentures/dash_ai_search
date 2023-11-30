@@ -134,5 +134,18 @@ void main() {
         ],
       );
     });
+
+    group('AnswerFeedback', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.welcome',
+        build: buildBloc,
+        act: (bloc) => bloc.add(AnswerFeedbackUpdated(AnswerFeedback.good)),
+        expect: () => [
+          HomeState(
+            answerFeedback: AnswerFeedback.good,
+          ),
+        ],
+      );
+    });
   });
 }

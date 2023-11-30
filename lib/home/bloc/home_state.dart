@@ -30,6 +30,12 @@ enum Status {
   sourceAnswersBackToResults,
 }
 
+enum AnswerFeedback {
+  good,
+  bad,
+  none,
+}
+
 class HomeState extends Equatable {
   const HomeState({
     this.status = Status.welcome,
@@ -37,6 +43,7 @@ class HomeState extends Equatable {
     this.vertexResponse = const VertexResponse.empty(),
     this.submittedQuery,
     this.selectedIndex = 0,
+    this.answerFeedback = AnswerFeedback.none,
   });
 
   final Status status;
@@ -44,6 +51,7 @@ class HomeState extends Equatable {
   final VertexResponse vertexResponse;
   final String? submittedQuery;
   final int selectedIndex;
+  final AnswerFeedback answerFeedback;
 
   ParsedSummary get parsedSummary {
     final textToParse = vertexResponse.summary;
@@ -96,6 +104,7 @@ class HomeState extends Equatable {
     VertexResponse? vertexResponse,
     String? submittedQuery,
     int? selectedIndex,
+    AnswerFeedback? answerFeedback,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -103,6 +112,7 @@ class HomeState extends Equatable {
       vertexResponse: vertexResponse ?? this.vertexResponse,
       submittedQuery: submittedQuery ?? this.submittedQuery,
       selectedIndex: selectedIndex ?? this.selectedIndex,
+      answerFeedback: answerFeedback ?? this.answerFeedback,
     );
   }
 
@@ -113,5 +123,6 @@ class HomeState extends Equatable {
         vertexResponse,
         selectedIndex,
         submittedQuery,
+        answerFeedback,
       ];
 }
