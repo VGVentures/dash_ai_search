@@ -69,12 +69,13 @@ void main() {
               .thenAnswer((_) async => VertexResponse.empty());
         },
         build: buildBloc,
-        act: (bloc) => bloc.add(QuestionAsked()),
+        act: (bloc) => bloc.add(QuestionAsked('query')),
         expect: () => [
           HomeState(status: Status.askQuestionToThinking),
           HomeState(
             status: Status.thinkingToResults,
             vertexResponse: VertexResponse.empty(),
+            submittedQuery: 'query',
           ),
         ],
       );
@@ -89,12 +90,13 @@ void main() {
               .thenAnswer((_) async => VertexResponse.empty());
         },
         build: buildBloc,
-        act: (bloc) => bloc.add(QuestionAskedAgain()),
+        act: (bloc) => bloc.add(QuestionAskedAgain('query')),
         expect: () => [
           HomeState(status: Status.resultsToThinking),
           HomeState(
             status: Status.thinkingToResults,
             vertexResponse: VertexResponse.empty(),
+            submittedQuery: 'query',
           ),
         ],
       );
@@ -129,6 +131,17 @@ void main() {
         act: (bloc) => bloc.add(SeeResultsSourceAnswers()),
         expect: () => [
           HomeState(status: Status.seeSourceAnswers),
+        ],
+      );
+    });
+
+    group('Restarted', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.welcome',
+        build: buildBloc,
+        act: (bloc) => bloc.add(Restarted()),
+        expect: () => [
+          HomeState(),
         ],
       );
     });

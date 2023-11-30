@@ -1,5 +1,7 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:flame/cache.dart';
+import 'package:flame/components.dart';
+import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:phased/phased.dart';
@@ -94,46 +96,86 @@ class DashSpriteAnimation extends StatefulWidget {
   const DashSpriteAnimation({
     required this.width,
     required this.height,
+    @visibleForTesting this.images,
     super.key,
   });
 
-  static const dashSize = Size(800, 800);
-  static const dashIdleSize = Size(1500, 1500);
+  static const dashFrameSize = Size(1500, 1500);
+  final Images? images;
   final double width;
   final double height;
 
   @override
-  State<DashSpriteAnimation> createState() => _DashSpriteAnimationState();
+  State<DashSpriteAnimation> createState() => DashSpriteAnimationState();
 }
 
-class _DashSpriteAnimationState extends State<DashSpriteAnimation> {
+@visibleForTesting
+class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   var _waved = false;
+  bool _loaded = false;
+
+  late final images = widget.images ?? Images(prefix: 'assets/animations/');
+
+  late final SpriteAnimation idleAnimation;
+  late final SpriteAnimation waveAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadAnimations();
+  }
+
+  Future<void> _loadAnimations() async {
+    final [idle, wave] = await Future.wait([
+      images.load('dash_idle_animation.png'),
+      images.load('dash_wave_animation.png'),
+    ]);
+
+    idleAnimation = SpriteAnimation.fromFrameData(
+      idle,
+      SpriteAnimationData.sequenced(
+        amount: 12,
+        amountPerRow: 4,
+        stepTime: 0.07,
+        textureSize: Vector2.all(1500),
+      ),
+    );
+
+    waveAnimation = SpriteAnimation.fromFrameData(
+      wave,
+      SpriteAnimationData.sequenced(
+        amount: 25,
+        amountPerRow: 5,
+        stepTime: 0.07,
+        textureSize: Vector2.all(1500),
+        loop: false,
+      ),
+    );
+
+    if (mounted) {
+      setState(() {
+        _loaded = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
+    if (!_loaded) {
+      return const SizedBox.shrink();
+    }
+    return SizedBox(
       height: widget.width,
       width: widget.height,
       child: _waved
-          ? const AnimatedSprite(
-              showLoadingIndicator: false,
-              sprites: Sprites(
-                asset: 'dash_idle_animation.png',
-                size: DashSpriteAnimation.dashIdleSize,
-                frames: 12,
-                stepTime: 0.07,
-              ),
+          ? SpriteAnimationWidget(
+              animation: idleAnimation,
+              animationTicker: idleAnimation.createTicker(),
             )
-          : AnimatedSprite(
-              showLoadingIndicator: false,
-              sprites: const Sprites(
-                asset: 'dash_animation.png',
-                size: DashSpriteAnimation.dashSize,
-                frames: 34,
-                stepTime: 0.07,
-              ),
-              mode: AnimationMode.oneTime,
+          : SpriteAnimationWidget(
+              animation: waveAnimation,
+              animationTicker: waveAnimation.createTicker(),
               onComplete: () {
                 setState(() {
                   _waved = true;

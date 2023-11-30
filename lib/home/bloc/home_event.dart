@@ -24,11 +24,21 @@ class QueryUpdated extends HomeEvent {
 }
 
 class QuestionAsked extends HomeEvent {
-  const QuestionAsked();
+  const QuestionAsked(this.submittedQuery);
+
+  final String submittedQuery;
+
+  @override
+  List<Object> get props => [submittedQuery];
 }
 
 class QuestionAskedAgain extends HomeEvent {
-  const QuestionAskedAgain();
+  const QuestionAskedAgain(this.submittedQuery);
+
+  final String submittedQuery;
+
+  @override
+  List<Object> get props => [submittedQuery];
 }
 
 class Results extends HomeEvent {
@@ -41,4 +51,8 @@ class SeeSourceAnswersRequested extends HomeEvent {
 
 class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
+}
+
+class Restarted extends HomeEvent {
+  const Restarted();
 }

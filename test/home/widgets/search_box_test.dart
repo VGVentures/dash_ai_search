@@ -50,7 +50,7 @@ void main() {
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap());
         await tester.tap(find.byType(PrimaryCTA));
-        verify(() => homeBloc.add(QuestionAsked())).called(1);
+        verify(() => homeBloc.add(QuestionAsked(''))).called(1);
       },
     );
 
@@ -60,7 +60,7 @@ void main() {
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap(askAgain: true));
         await tester.tap(find.byType(PrimaryCTA));
-        verify(() => homeBloc.add(QuestionAskedAgain())).called(1);
+        verify(() => homeBloc.add(QuestionAskedAgain(''))).called(1);
       },
     );
   });

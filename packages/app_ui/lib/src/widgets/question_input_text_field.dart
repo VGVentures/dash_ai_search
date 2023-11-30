@@ -13,6 +13,7 @@ class QuestionInputTextField extends StatefulWidget {
     required this.actionText,
     required this.onTextUpdated,
     required this.onActionPressed,
+    this.shouldDisplayClearTextButton = false,
     this.text,
     super.key,
   });
@@ -29,11 +30,15 @@ class QuestionInputTextField extends StatefulWidget {
   /// Function called when text is updated
   final ValueChanged<String> onTextUpdated;
 
-  ///
+  /// Function called when the action widget is pressed
   final VoidCallback onActionPressed;
 
   /// Initial text displayed in the text field
   final String? text;
+
+  /// Set to `true` when instead of showing the action, you expect a button
+  /// that clears the text field
+  final bool shouldDisplayClearTextButton;
 
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
@@ -77,10 +82,17 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
           hintText: widget.hint,
           suffixIcon: Padding(
             padding: const EdgeInsets.only(right: 12),
-            child: PrimaryCTA(
-              label: widget.actionText,
-              onPressed: () => widget.onActionPressed(),
-            ),
+            child: widget.shouldDisplayClearTextButton
+                ? IconButton(
+                    onPressed: () {
+                      _controller.clear();
+                    },
+                    icon: const Icon(Icons.close),
+                  )
+                : PrimaryCTA(
+                    label: widget.actionText,
+                    onPressed: () => widget.onActionPressed(),
+                  ),
           ),
         ),
       ),
