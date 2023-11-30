@@ -367,10 +367,22 @@ class _AiResponseState extends State<_AiResponse>
                           if (element.isLink)
                             WidgetSpan(
                               child: Container(
-                                color: VertexColors.white,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 4,
+                                  horizontal: 12,
+                                ),
+                                decoration: const BoxDecoration(
+                                  color: VertexColors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(100)),
+                                ),
                                 child: Text(
                                   element.text,
-                                  style: textTheme.headlineLarge?.copyWith(),
+                                  style: textTheme.labelLarge?.copyWith(
+                                    color: VertexColors.googleBlue,
+                                  ),
                                 ),
                               ),
                             )
