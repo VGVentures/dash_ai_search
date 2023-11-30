@@ -1,7 +1,7 @@
 part of 'home_bloc.dart';
 
-class ParsedElement {
-  ParsedElement({
+class SummaryElement {
+  SummaryElement({
     required this.text,
     required this.isLink,
   });
@@ -13,7 +13,7 @@ class ParsedSummary {
   ParsedSummary({
     required this.elements,
   });
-  final List<ParsedElement> elements;
+  final List<SummaryElement> elements;
 }
 
 enum Status {
@@ -46,16 +46,16 @@ class HomeState extends Equatable {
   ParsedSummary get parsedSummary {
     final textToParse = vertexResponse.summary;
     final pattern = RegExp(r'\[[1-9]]');
-    final elements = <ParsedElement>[];
+    final elements = <SummaryElement>[];
 
     textToParse.splitMapJoin(
       pattern,
       onMatch: (Match match) {
-        elements.add(ParsedElement(text: match.group(0)!, isLink: true));
+        elements.add(SummaryElement(text: match.group(0)!, isLink: true));
         return '';
       },
       onNonMatch: (String nonMatch) {
-        elements.add(ParsedElement(text: nonMatch, isLink: false));
+        elements.add(SummaryElement(text: nonMatch, isLink: false));
         return '';
       },
     );
