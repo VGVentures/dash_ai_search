@@ -153,5 +153,18 @@ void main() {
         ],
       );
     });
+
+    group('NavigateSourceAnswers', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits updated selectedIndex',
+        build: buildBloc,
+        act: (bloc) => bloc.add(NavigateSourceAnswers('[2]')),
+        expect: () => [
+          HomeState(
+            selectedIndex: 1,
+          ),
+        ],
+      );
+    });
   });
 }

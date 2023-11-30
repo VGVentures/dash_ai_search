@@ -18,8 +18,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
-    on<NavigateSourceAnswers>(_navigate);
     on<AnswerFeedbackUpdated>(_onAnswerFeedbackUpdated);
+    on<NavigateSourceAnswers>(_navigateSourceAnswers);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -112,7 +112,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(answerFeedback: event.answerFeedback));
   }
 
-  FutureOr<void> _navigate(
+  FutureOr<void> _navigateSourceAnswers(
     NavigateSourceAnswers event,
     Emitter<HomeState> emit,
   ) {
