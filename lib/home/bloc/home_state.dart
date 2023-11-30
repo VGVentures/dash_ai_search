@@ -33,7 +33,7 @@ enum Status {
 class HomeState extends Equatable {
   const HomeState({
     this.status = Status.welcome,
-    this.query = 'What is flutter?',
+    this.query = '',
     this.vertexResponse = const VertexResponse.empty(),
     this.submittedQuery,
     this.selectedIndex = 0,
