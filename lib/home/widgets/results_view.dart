@@ -55,18 +55,22 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        BlueContainer(),
-        Positioned(
-          top: 90,
-          left: 0,
-          right: 0,
-          child: Align(
-            child: SearchBoxView(),
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            BlueContainer(constraints: constraints),
+            const Positioned(
+              top: 90,
+              left: 0,
+              right: 0,
+              child: Align(
+                child: SearchBoxView(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -134,7 +138,12 @@ class SearchBoxViewState extends State<SearchBoxView>
 
 class BlueContainer extends StatefulWidget {
   @visibleForTesting
-  const BlueContainer({super.key});
+  const BlueContainer({
+    required this.constraints,
+    super.key,
+  });
+
+  final BoxConstraints constraints;
 
   @override
   State<BlueContainer> createState() => BlueContainerState();
@@ -169,7 +178,7 @@ class BlueContainerState extends State<BlueContainer>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 800),
     )..addStatusListener((status) {
         final state = context.read<HomeBloc>().state;
 
@@ -211,14 +220,28 @@ class BlueContainerState extends State<BlueContainer>
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
-        curve: Curves.decelerate,
+        parent: exitTransitionController,
+        curve: Curves.easeInExpo,
       ),
     );
 
+    _initSizeIn();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlueContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _initSizeIn();
+  }
+
+  void _initSizeIn() {
     _sizeIn = Tween<Size>(
       begin: const Size(600, 700),
-      end: Size.infinite,
+      end: Size(
+        widget.constraints.maxWidth,
+        widget.constraints.maxHeight,
+      ),
     ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
