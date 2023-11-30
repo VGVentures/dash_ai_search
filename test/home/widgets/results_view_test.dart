@@ -120,6 +120,22 @@ void main() {
       expect(forwardExitStatuses, equals([Status.resultsToSourceAnswers]));
     });
 
+    testWidgets('BlueContainer resize itself', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      var state = tester.state<BlueContainerState>(find.byType(BlueContainer));
+
+      final originalSizeIn = state.sizeIn;
+
+      tester.setViewSize(size: Size(2000, 1000));
+      await tester.pump();
+
+      state = tester.state<BlueContainerState>(find.byType(BlueContainer));
+
+      final sizeIn = state.sizeIn;
+      expect(sizeIn, isNot(equals(originalSizeIn)));
+    });
+
     testWidgets(
       'calls Results on enter',
       (WidgetTester tester) async {

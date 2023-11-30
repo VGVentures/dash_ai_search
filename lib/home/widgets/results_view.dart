@@ -5,6 +5,12 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+enum ResultsAnimationPhase {
+  initial,
+  results,
+  resultsSourceAnswers,
+}
+
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -55,18 +61,22 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        BlueContainer(),
-        Positioned(
-          top: 90,
-          left: 0,
-          right: 0,
-          child: Align(
-            child: SearchBoxView(),
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            BlueContainer(constraints: constraints),
+            const Positioned(
+              top: 90,
+              left: 0,
+              right: 0,
+              child: Align(
+                child: SearchBoxView(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -134,7 +144,12 @@ class SearchBoxViewState extends State<SearchBoxView>
 
 class BlueContainer extends StatefulWidget {
   @visibleForTesting
-  const BlueContainer({super.key});
+  const BlueContainer({
+    required this.constraints,
+    super.key,
+  });
+
+  final BoxConstraints constraints;
 
   @override
   State<BlueContainer> createState() => BlueContainerState();
@@ -146,7 +161,8 @@ class BlueContainerState extends State<BlueContainer>
   late Animation<double> _rotationEnterIn;
   late Animation<RelativeRect> _positionExitOut;
   late Animation<double> _borderRadiusExitOut;
-  late Animation<Size> _sizeIn;
+  @visibleForTesting
+  late Animation<Size> sizeIn;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
@@ -169,7 +185,7 @@ class BlueContainerState extends State<BlueContainer>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 800),
     )..addStatusListener((status) {
         final state = context.read<HomeBloc>().state;
 
@@ -211,14 +227,28 @@ class BlueContainerState extends State<BlueContainer>
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
-        curve: Curves.decelerate,
+        parent: exitTransitionController,
+        curve: Curves.easeInExpo,
       ),
     );
 
-    _sizeIn = Tween<Size>(
+    _initSizeIn();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlueContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _initSizeIn();
+  }
+
+  void _initSizeIn() {
+    sizeIn = Tween<Size>(
       begin: const Size(600, 700),
-      end: Size.infinite,
+      end: Size(
+        widget.constraints.maxWidth,
+        widget.constraints.maxHeight,
+      ),
     ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
@@ -237,12 +267,12 @@ class BlueContainerState extends State<BlueContainer>
           child: RotationTransition(
             turns: _rotationEnterIn,
             child: AnimatedBuilder(
-              animation: _sizeIn,
+              animation: sizeIn,
               builder: (context, child) {
                 return Center(
                   child: Container(
-                    width: _sizeIn.value.width,
-                    height: _sizeIn.value.height,
+                    width: sizeIn.value.width,
+                    height: sizeIn.value.height,
                     decoration: BoxDecoration(
                       color: VertexColors.googleBlue,
                       borderRadius: BorderRadius.all(
@@ -405,70 +435,77 @@ class _AiResponseState extends State<_AiResponse>
 }
 
 class SummaryView extends StatelessWidget {
-  @visibleForTesting
-  const SummaryView({super.key});
+  const SummaryView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
 
-    return RichText(
-      text: TextSpan(
-        children: [
-          for (final element in parsed.elements)
-            if (element.isLink)
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    final isOnSeeSourceAnswers =
-                        context.read<HomeBloc>().state.status ==
-                            Status.seeSourceAnswers;
-                    if (isOnSeeSourceAnswers) {
-                      context.read<HomeBloc>().add(
-                            NavigateSourceAnswers(
-                              element.text,
-                            ),
-                          );
-                    } else {
-                      context.read<HomeBloc>().add(
-                            SeeSourceAnswersRequested(
-                              element.text,
-                            ),
-                          );
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 2,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        width: 540,
+        child: RichText(
+          text: TextSpan(
+            children: [
+              for (final element in parsed.elements)
+                if (element.isLink)
+                  WidgetSpan(
+                    child: InkWell(
+                      onTap: () {
+                        final isOnSeeSourceAnswers =
+                            context.read<HomeBloc>().state.status ==
+                                Status.seeSourceAnswers;
+                        if (isOnSeeSourceAnswers) {
+                          context.read<HomeBloc>().add(
+                                NavigateSourceAnswers(
+                                  element.text,
+                                ),
+                              );
+                        } else {
+                          context.read<HomeBloc>().add(
+                                SeeSourceAnswersRequested(
+                                  element.text,
+                                ),
+                              );
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 2,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: VertexColors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
+                        ),
+                        child: Text(
+                          element.text,
+                          style: textTheme.labelLarge?.copyWith(
+                            color: VertexColors.googleBlue,
+                          ),
+                        ),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 12,
-                    ),
-                    decoration: const BoxDecoration(
+                  )
+                else
+                  TextSpan(
+                    text: element.text,
+                    style: textTheme.headlineLarge?.copyWith(
                       color: VertexColors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(100),
-                      ),
-                    ),
-                    child: Text(
-                      element.text,
-                      style: textTheme.labelLarge?.copyWith(
-                        color: VertexColors.googleBlue,
-                      ),
                     ),
                   ),
-                ),
-              )
-            else
-              TextSpan(
-                text: element.text,
-                style: textTheme.headlineLarge?.copyWith(
-                  color: VertexColors.white,
-                ),
-              ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }
