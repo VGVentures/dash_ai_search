@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
-import 'package:flame/cache.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +17,12 @@ class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
 void main() {
   group('DashAnimationContainer', () {
     late HomeBloc homeBloc;
+    late final DashAnimations dashAnimations;
+
+    setUpAll(() async {
+      dashAnimations = DashAnimations();
+      await dashAnimations.load();
+    });
 
     setUp(() {
       homeBloc = _MockHomeBloc();
@@ -29,10 +35,13 @@ void main() {
     });
 
     Widget bootstrap([PhasedState<DashAnimationPhase>? animationState]) =>
-        BlocProvider.value(
-          value: homeBloc,
-          child: DashAnimationContainer(
-            animationState: animationState,
+        RepositoryProvider.value(
+          value: dashAnimations,
+          child: BlocProvider.value(
+            value: homeBloc,
+            child: DashAnimationContainer(
+              animationState: animationState,
+            ),
           ),
         );
 
@@ -84,16 +93,12 @@ void main() {
   });
 
   group('DashSpriteAnimation', () {
-    final images = Images(prefix: 'assets/animations/');
     late HomeBloc bloc;
+    late final DashAnimations dashAnimations;
 
     setUpAll(() async {
-      await Future.wait([
-        images.load('dash_idle_animation.png'),
-        images.load('dash_wave_animation.png'),
-        images.load('dash_happy_animation.png'),
-        images.load('dash_sad_animation.png'),
-      ]);
+      dashAnimations = DashAnimations();
+      await dashAnimations.load();
     });
 
     setUp(() {
@@ -105,13 +110,15 @@ void main() {
       );
     });
 
-    Widget bootstrap() => BlocProvider.value(
-          value: bloc,
-          child: Material(
-            child: DashSpriteAnimation(
-              width: 100,
-              height: 100,
-              images: images,
+    Widget bootstrap() => RepositoryProvider.value(
+          value: dashAnimations,
+          child: BlocProvider.value(
+            value: bloc,
+            child: Material(
+              child: DashSpriteAnimation(
+                width: 100,
+                height: 100,
+              ),
             ),
           ),
         );
@@ -127,7 +134,7 @@ void main() {
       await tester.pumpApp(bootstrap());
       await tester.pump();
 
-      final image = images.fromCache('dash_wave_animation.png');
+      final image = dashAnimations.images.fromCache('dash_wave_animation.png');
 
       final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
         find.byType(InternalSpriteAnimationWidget),
@@ -153,7 +160,8 @@ void main() {
 
         await tester.pump();
 
-        final image = images.fromCache('dash_idle_animation.png');
+        final image =
+            dashAnimations.images.fromCache('dash_idle_animation.png');
         final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
           find.byType(InternalSpriteAnimationWidget),
         );
@@ -194,7 +202,8 @@ void main() {
 
         await tester.pump();
 
-        final image = images.fromCache('dash_happy_animation.png');
+        final image =
+            dashAnimations.images.fromCache('dash_happy_animation.png');
         final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
           find.byType(InternalSpriteAnimationWidget),
         );
@@ -235,7 +244,7 @@ void main() {
 
         await tester.pump();
 
-        final image = images.fromCache('dash_sad_animation.png');
+        final image = dashAnimations.images.fromCache('dash_sad_animation.png');
         final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
           find.byType(InternalSpriteAnimationWidget),
         );
@@ -284,7 +293,8 @@ void main() {
 
         await tester.pump();
 
-        final image = images.fromCache('dash_idle_animation.png');
+        final image =
+            dashAnimations.images.fromCache('dash_idle_animation.png');
         final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
           find.byType(InternalSpriteAnimationWidget),
         );

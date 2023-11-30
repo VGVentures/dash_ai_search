@@ -1,6 +1,5 @@
+import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
-import 'package:flame/cache.dart';
-import 'package:flame/components.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -96,12 +95,10 @@ class DashSpriteAnimation extends StatefulWidget {
   const DashSpriteAnimation({
     required this.width,
     required this.height,
-    @visibleForTesting this.images,
     super.key,
   });
 
   static const dashFrameSize = Size(1500, 1500);
-  final Images? images;
   final double width;
   final double height;
 
@@ -112,86 +109,11 @@ class DashSpriteAnimation extends StatefulWidget {
 @visibleForTesting
 class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   var _waved = false;
-  bool _loaded = false;
   SpriteAnimation? _reaction;
-
-  late final images = widget.images ?? Images(prefix: 'assets/animations/');
-
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation waveAnimation;
-  late final SpriteAnimation happyAnimation;
-  late final SpriteAnimation sadAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loadAnimations();
-  }
-
-  Future<void> _loadAnimations() async {
-    final [idle, wave, happy, sad] = await Future.wait([
-      images.load('dash_idle_animation.png'),
-      images.load('dash_wave_animation.png'),
-      images.load('dash_happy_animation.png'),
-      images.load('dash_sad_animation.png'),
-    ]);
-
-    idleAnimation = SpriteAnimation.fromFrameData(
-      idle,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-      ),
-    );
-
-    waveAnimation = SpriteAnimation.fromFrameData(
-      wave,
-      SpriteAnimationData.sequenced(
-        amount: 25,
-        amountPerRow: 5,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    happyAnimation = SpriteAnimation.fromFrameData(
-      happy,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    sadAnimation = SpriteAnimation.fromFrameData(
-      sad,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    if (mounted) {
-      setState(() {
-        _loaded = true;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (!_loaded) {
-      return const SizedBox.shrink();
-    }
+    final animations = context.read<DashAnimations>();
     return SizedBox(
       height: widget.width,
       width: widget.height,
@@ -201,11 +123,11 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
         listener: (context, state) {
           if (state.answerFeedback == AnswerFeedback.good) {
             setState(() {
-              _reaction = happyAnimation;
+              _reaction = animations.happyAnimation;
             });
           } else if (state.answerFeedback == AnswerFeedback.bad) {
             setState(() {
-              _reaction = sadAnimation;
+              _reaction = animations.sadAnimation;
             });
           }
         },
@@ -213,8 +135,8 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
           builder: (context) {
             if (!_waved) {
               return SpriteAnimationWidget(
-                animation: waveAnimation,
-                animationTicker: waveAnimation.createTicker(),
+                animation: animations.waveAnimation,
+                animationTicker: animations.waveAnimation.createTicker(),
                 onComplete: () {
                   setState(() {
                     _waved = true;
@@ -238,8 +160,8 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
             }
 
             return SpriteAnimationWidget(
-              animation: idleAnimation,
-              animationTicker: idleAnimation.createTicker(),
+              animation: animations.idleAnimation,
+              animationTicker: animations.idleAnimation.createTicker(),
             );
           },
         ),
