@@ -17,7 +17,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
-    on<Restarted>(_onRestarted);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -78,12 +77,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(status: Status.seeSourceAnswers));
-  }
-
-  void _onRestarted(
-    Restarted event,
-    Emitter<HomeState> emit,
-  ) {
-    emit(state.copyWith(status: Status.welcome));
   }
 }
