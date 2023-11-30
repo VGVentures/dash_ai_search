@@ -83,10 +83,11 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   }
 
   void animateForward() {
-    animationController.duration = remainingAnimationCount > 1
-        ? fastAnimationDuration
-        : slowAnimationDuration;
-    animationController.forward(from: 0);
+    animationController
+      ..duration = remainingAnimationCount > 1
+          ? fastAnimationDuration
+          : slowAnimationDuration
+      ..forward(from: 0);
     setState(() {
       remainingAnimationCount = remainingAnimationCount - 1;
     });

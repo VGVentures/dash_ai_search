@@ -88,8 +88,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     SeeSourceAnswersRequested event,
     Emitter<HomeState> emit,
   ) {
-    final indexParsed =
-        event.index != null ? (int.parse(event.index!.substring(1, 2)) - 1) : 0;
+    final indexParsed = event.index != null ? (_getIndex(event.index!) - 1) : 0;
     emit(
       state.copyWith(
         status: Status.resultsToSourceAnswers,
@@ -109,11 +108,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     NavigateSourceAnswers event,
     Emitter<HomeState> emit,
   ) {
-    final indexParsed = int.parse(event.index.substring(1, 2)) - 1;
+    final indexParsed = _getIndex(event.index) - 1;
     emit(
       state.copyWith(
         selectedIndex: indexParsed,
       ),
     );
+  }
+
+  int _getIndex(String textIndex) {
+    return int.parse(textIndex.substring(1, 2));
   }
 }
