@@ -26,6 +26,11 @@ class ResultsViewState extends State<ResultsView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
   }
 
   @override
@@ -87,6 +92,11 @@ class SearchBoxViewState extends State<SearchBoxView>
     super.initializeTransitionController();
 
     enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+
+    exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
     );
@@ -413,6 +423,11 @@ class CarouselViewState extends State<CarouselView>
     super.initializeTransitionController();
 
     enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 2),
     );

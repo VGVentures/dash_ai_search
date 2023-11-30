@@ -28,6 +28,11 @@ class ThinkingViewState extends State<ThinkingView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
   }
 
   @override

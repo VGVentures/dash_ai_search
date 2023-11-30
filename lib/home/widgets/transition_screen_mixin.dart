@@ -77,18 +77,26 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   }
 
   void _enterAnimation() {
-    enterTransitionController.forward();
+    if (mounted) {
+      enterTransitionController.forward();
+    }
   }
 
   void _exitAnimation() {
-    exitTransitionController.forward();
+    if (mounted) {
+      exitTransitionController.forward();
+    }
   }
 
   void _popEnterAnimation() {
-    exitTransitionController.reverse();
+    if (mounted) {
+      exitTransitionController.reverse();
+    }
   }
 
   void _popExitAnimation() {
-    enterTransitionController.reverse();
+    if (mounted) {
+      enterTransitionController.reverse();
+    }
   }
 }

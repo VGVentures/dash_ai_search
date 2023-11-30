@@ -27,8 +27,8 @@ class QuestionAsked extends HomeEvent {
   const QuestionAsked();
 }
 
-class QuestionReAsked extends HomeEvent {
-  const QuestionReAsked();
+class QuestionAskedAgain extends HomeEvent {
+  const QuestionAskedAgain();
 }
 
 class Results extends HomeEvent {

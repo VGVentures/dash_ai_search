@@ -21,7 +21,7 @@ class SearchBox extends StatelessWidget {
           context.read<HomeBloc>().add(QueryUpdated(query: query)),
       onActionPressed: () {
         if (askAgain) {
-          context.read<HomeBloc>().add(const QuestionReAsked());
+          context.read<HomeBloc>().add(const QuestionAskedAgain());
         } else {
           context.read<HomeBloc>().add(const QuestionAsked());
         }

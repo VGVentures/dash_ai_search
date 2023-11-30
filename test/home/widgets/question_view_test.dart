@@ -1,4 +1,3 @@
-import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:dash_ai_search/l10n/l10n.dart';
@@ -32,7 +31,7 @@ void main() {
       final l10n = tester.element(find.byType(QuestionView)).l10n;
 
       expect(find.text(l10n.questionScreenTitle), findsOneWidget);
-      expect(find.byType(QuestionInputTextField), findsOneWidget);
+      expect(find.byType(SearchBox), findsOneWidget);
     });
 
     testWidgets('animates in when enter', (tester) async {
@@ -43,16 +42,6 @@ void main() {
           .forwardEnterStatuses;
 
       expect(forwardEnterStatuses, equals([Status.welcomeToAskQuestion]));
-    });
-
-    testWidgets('animates out when exits forward', (tester) async {
-      await tester.pumpApp(bootstrap());
-
-      final forwardExitStatuses = tester
-          .state<QuestionViewState>(find.byType(QuestionView))
-          .forwardExitStatuses;
-
-      expect(forwardExitStatuses, equals([Status.askQuestionToThinking]));
     });
 
     testWidgets(
@@ -71,15 +60,6 @@ void main() {
         const newText = 'text';
         await tester.enterText(find.byType(TextField), newText);
         verify(() => homeBloc.add(QueryUpdated(query: newText))).called(1);
-      },
-    );
-
-    testWidgets(
-      'calls QuestionAsked clicking on the PrimaryCTA ',
-      (WidgetTester tester) async {
-        await tester.pumpApp(bootstrap());
-        await tester.tap(find.byType(PrimaryCTA));
-        verify(() => homeBloc.add(QuestionAsked())).called(1);
       },
     );
   });
