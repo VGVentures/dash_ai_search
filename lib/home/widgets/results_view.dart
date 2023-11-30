@@ -331,8 +331,6 @@ class _AiResponseState extends State<_AiResponse>
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
     final state = context.watch<HomeBloc>().state;
 
     final response =
@@ -359,15 +357,7 @@ class _AiResponseState extends State<_AiResponse>
                     ),
                     child: const BackToAnswerButton(),
                   ),
-                  Flexible(
-                    child: Text(
-                      response.summary,
-                      style: textTheme.headlineLarge?.copyWith(
-                        color: VertexColors.white,
-                        fontSize: 32,
-                      ),
-                    ),
-                  ),
+                  const Expanded(child: SummaryView()),
                   AnimatedBuilder(
                     animation: _bottomPaddingExitOut,
                     builder: (context, child) =>
@@ -409,6 +399,56 @@ class _AiResponseState extends State<_AiResponse>
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+class SummaryView extends StatelessWidget {
+  @visibleForTesting
+  const SummaryView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
+
+    return RichText(
+      text: TextSpan(
+        children: [
+          for (final element in parsed.elements)
+            if (element.isLink)
+              WidgetSpan(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 2,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 12,
+                  ),
+                  decoration: const BoxDecoration(
+                    color: VertexColors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(100),
+                    ),
+                  ),
+                  child: Text(
+                    element.text,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: VertexColors.googleBlue,
+                    ),
+                  ),
+                ),
+              )
+            else
+              TextSpan(
+                text: element.text,
+                style: textTheme.headlineLarge?.copyWith(
+                  color: VertexColors.white,
+                ),
+              ),
+        ],
       ),
     );
   }
