@@ -58,5 +58,12 @@ void main() {
         equals(Restarted()),
       );
     });
+
+    test('AnswerFeedback supports value equality', () {
+      expect(
+        AnswerFeedbackUpdated(AnswerFeedback.good),
+        equals(AnswerFeedbackUpdated(AnswerFeedback.good)),
+      );
+    });
   });
 }
