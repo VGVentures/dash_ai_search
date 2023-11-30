@@ -53,10 +53,6 @@ class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
 }
 
-class Restarted extends HomeEvent {
-  const Restarted();
-}
-
 class AnswerFeedbackUpdated extends HomeEvent {
   const AnswerFeedbackUpdated(this.answerFeedback);
 

@@ -99,13 +99,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: Status.seeSourceAnswers));
   }
 
-  void _onRestarted(
-    Restarted event,
-    Emitter<HomeState> emit,
-  ) {
-    emit(state.copyWith(status: Status.welcome));
-  }
-
   void _onAnswerFeedbackUpdated(
     AnswerFeedbackUpdated event,
     Emitter<HomeState> emit,

@@ -59,13 +59,6 @@ void main() {
       );
     });
 
-    test('Restarted supports value equality', () {
-      expect(
-        Restarted(),
-        equals(Restarted()),
-      );
-    });
-
     test('AnswerFeedback supports value equality', () {
       expect(
         AnswerFeedbackUpdated(AnswerFeedback.good),
