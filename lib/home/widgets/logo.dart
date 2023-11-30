@@ -16,6 +16,9 @@ class Logo extends StatelessWidget {
         hasDarkBackground ? VertexColors.arctic : VertexColors.flutterNavy;
 
     return InkWell(
+      customBorder: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       onTap: () async {
         await launchUrl(
           Uri.parse(
@@ -23,24 +26,27 @@ class Logo extends StatelessWidget {
           ),
         );
       },
-      child: Row(
-        children: [
-          Text(
-            l10n.vertexAI,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: textColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          children: [
+            Text(
+              l10n.vertexAI,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: textColor,
+              ),
             ),
-          ),
-          const SizedBox(width: 4),
-          vertexIcons.asterisk.image(),
-          const SizedBox(width: 4),
-          Text(
-            l10n.flutter,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: textColor,
+            const SizedBox(width: 4),
+            vertexIcons.asterisk.image(),
+            const SizedBox(width: 4),
+            Text(
+              l10n.flutter,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: textColor,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -15,11 +15,11 @@ class _MockUrlLauncher extends Mock
 class _FakeLaunchOptions extends Fake implements LaunchOptions {}
 
 void main() {
-  setUpAll(() {
-    registerFallbackValue(_FakeLaunchOptions());
-  });
-
   group('Logo', () {
+    setUpAll(() {
+      registerFallbackValue(_FakeLaunchOptions());
+    });
+
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(Logo());
 
