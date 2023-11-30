@@ -1,7 +1,5 @@
 import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
-import 'package:flame/cache.dart';
-import 'package:flame/components.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
