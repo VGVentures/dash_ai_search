@@ -1,4 +1,3 @@
-import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
