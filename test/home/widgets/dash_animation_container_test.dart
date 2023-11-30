@@ -85,35 +85,46 @@ void main() {
 
   group('DashSpriteAnimation', () {
     final images = Images(prefix: 'assets/animations/');
+    late HomeBloc bloc;
 
     setUpAll(() async {
       await Future.wait([
         images.load('dash_idle_animation.png'),
         images.load('dash_wave_animation.png'),
+        images.load('dash_happy_animation.png'),
+        images.load('dash_sad_animation.png'),
       ]);
     });
 
-    testWidgets('renders correctly', (tester) async {
-      await tester.pumpApp(
-        DashSpriteAnimation(
-          width: 100,
-          height: 100,
-          images: images,
-        ),
+    setUp(() {
+      bloc = _MockHomeBloc();
+      whenListen(
+        bloc,
+        Stream.fromIterable(const <HomeState>[]),
+        initialState: const HomeState(),
       );
+    });
+
+    Widget bootstrap() => BlocProvider.value(
+          value: bloc,
+          child: Material(
+            child: DashSpriteAnimation(
+              width: 100,
+              height: 100,
+              images: images,
+            ),
+          ),
+        );
+
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpApp(bootstrap());
       await tester.pump();
 
       expect(find.byType(SpriteAnimationWidget), findsOneWidget);
     });
 
     testWidgets('starts with the waving animation', (tester) async {
-      await tester.pumpApp(
-        DashSpriteAnimation(
-          width: 100,
-          height: 100,
-          images: images,
-        ),
-      );
+      await tester.pumpApp(bootstrap());
       await tester.pump();
 
       final image = images.fromCache('dash_wave_animation.png');
@@ -131,16 +142,141 @@ void main() {
     testWidgets(
       'changes to idle animation when the waving is finished',
       (tester) async {
-        await tester.pumpApp(
-          DashSpriteAnimation(
-            width: 100,
-            height: 100,
-            images: images,
-          ),
-        );
+        await tester.pumpApp(bootstrap());
         await tester.pump();
 
         final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
+        );
+
+        spriteAnimationWidget.onComplete!();
+
+        await tester.pump();
+
+        final image = images.fromCache('dash_idle_animation.png');
+        final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+          find.byType(InternalSpriteAnimationWidget),
+        );
+
+        expect(
+          currentAnimaton.animation.frames.first.sprite.image,
+          equals(image),
+        );
+      },
+    );
+
+    testWidgets(
+      'plays the thumbs up when there is a good answer feedback',
+      (tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          bloc,
+          controller.stream,
+          initialState: const HomeState(),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pump();
+
+        final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
+        );
+
+        spriteAnimationWidget.onComplete!();
+
+        await tester.pump();
+
+        controller.add(
+          const HomeState(
+            answerFeedback: AnswerFeedback.good,
+          ),
+        );
+
+        await tester.pump();
+
+        final image = images.fromCache('dash_happy_animation.png');
+        final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+          find.byType(InternalSpriteAnimationWidget),
+        );
+
+        expect(
+          currentAnimaton.animation.frames.first.sprite.image,
+          equals(image),
+        );
+      },
+    );
+
+    testWidgets(
+      'plays the thumbs down when there is a bad answer feedback',
+      (tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          bloc,
+          controller.stream,
+          initialState: const HomeState(),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pump();
+
+        final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
+        );
+
+        spriteAnimationWidget.onComplete!();
+
+        await tester.pump();
+
+        controller.add(
+          const HomeState(
+            answerFeedback: AnswerFeedback.bad,
+          ),
+        );
+
+        await tester.pump();
+
+        final image = images.fromCache('dash_sad_animation.png');
+        final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+          find.byType(InternalSpriteAnimationWidget),
+        );
+
+        expect(
+          currentAnimaton.animation.frames.first.sprite.image,
+          equals(image),
+        );
+      },
+    );
+
+    testWidgets(
+      'returns to idle when the reaction is over',
+      (tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          bloc,
+          controller.stream,
+          initialState: const HomeState(),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pump();
+
+        var spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
+        );
+
+        spriteAnimationWidget.onComplete!();
+
+        await tester.pump();
+
+        controller.add(
+          const HomeState(
+            answerFeedback: AnswerFeedback.bad,
+          ),
+        );
+
+        await tester.pump();
+
+        spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
           find.byType(SpriteAnimationWidget),
         );
 

@@ -176,5 +176,31 @@ void main() {
 
       verify(() => homeBloc.add(const SeeSourceAnswersRequested())).called(1);
     });
+
+    testWidgets('adds AnswerFeedback.good on thumbs up', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(CircleAvatar).first);
+
+      verify(
+        () => homeBloc.add(
+          const AnswerFeedbackUpdated(AnswerFeedback.good),
+        ),
+      ).called(1);
+    });
+
+    testWidgets('adds AnswerFeedback.bad on thumbs down', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(CircleAvatar).last);
+
+      verify(
+        () => homeBloc.add(
+          const AnswerFeedbackUpdated(AnswerFeedback.bad),
+        ),
+      ).called(1);
+    });
   });
 }

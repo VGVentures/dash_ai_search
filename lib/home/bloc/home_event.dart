@@ -52,3 +52,12 @@ class SeeSourceAnswersRequested extends HomeEvent {
 class SeeResultsSourceAnswers extends HomeEvent {
   const SeeResultsSourceAnswers();
 }
+
+class AnswerFeedbackUpdated extends HomeEvent {
+  const AnswerFeedbackUpdated(this.answerFeedback);
+
+  final AnswerFeedback answerFeedback;
+
+  @override
+  List<Object> get props => [answerFeedback];
+}
