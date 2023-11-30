@@ -5,6 +5,12 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+enum ResultsAnimationPhase {
+  initial,
+  results,
+  resultsSourceAnswers,
+}
+
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -429,70 +435,77 @@ class _AiResponseState extends State<_AiResponse>
 }
 
 class SummaryView extends StatelessWidget {
-  @visibleForTesting
-  const SummaryView({super.key});
+  const SummaryView({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
 
-    return RichText(
-      text: TextSpan(
-        children: [
-          for (final element in parsed.elements)
-            if (element.isLink)
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    final isOnSeeSourceAnswers =
-                        context.read<HomeBloc>().state.status ==
-                            Status.seeSourceAnswers;
-                    if (isOnSeeSourceAnswers) {
-                      context.read<HomeBloc>().add(
-                            NavigateSourceAnswers(
-                              element.text,
-                            ),
-                          );
-                    } else {
-                      context.read<HomeBloc>().add(
-                            SeeSourceAnswersRequested(
-                              element.text,
-                            ),
-                          );
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 2,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: SizedBox(
+        width: 540,
+        child: RichText(
+          text: TextSpan(
+            children: [
+              for (final element in parsed.elements)
+                if (element.isLink)
+                  WidgetSpan(
+                    child: InkWell(
+                      onTap: () {
+                        final isOnSeeSourceAnswers =
+                            context.read<HomeBloc>().state.status ==
+                                Status.seeSourceAnswers;
+                        if (isOnSeeSourceAnswers) {
+                          context.read<HomeBloc>().add(
+                                NavigateSourceAnswers(
+                                  element.text,
+                                ),
+                              );
+                        } else {
+                          context.read<HomeBloc>().add(
+                                SeeSourceAnswersRequested(
+                                  element.text,
+                                ),
+                              );
+                        }
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 2,
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 4,
+                          horizontal: 12,
+                        ),
+                        decoration: const BoxDecoration(
+                          color: VertexColors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
+                        ),
+                        child: Text(
+                          element.text,
+                          style: textTheme.labelLarge?.copyWith(
+                            color: VertexColors.googleBlue,
+                          ),
+                        ),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 12,
-                    ),
-                    decoration: const BoxDecoration(
+                  )
+                else
+                  TextSpan(
+                    text: element.text,
+                    style: textTheme.headlineLarge?.copyWith(
                       color: VertexColors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(100),
-                      ),
-                    ),
-                    child: Text(
-                      element.text,
-                      style: textTheme.labelLarge?.copyWith(
-                        color: VertexColors.googleBlue,
-                      ),
                     ),
                   ),
-                ),
-              )
-            else
-              TextSpan(
-                text: element.text,
-                style: textTheme.headlineLarge?.copyWith(
-                  color: VertexColors.white,
-                ),
-              ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }
