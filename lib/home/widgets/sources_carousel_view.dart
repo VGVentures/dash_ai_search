@@ -78,7 +78,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getScale(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 2).animate(
+      return Tween<double>(begin: 1, end: 2.5).animate(
         animationController,
       );
     }
