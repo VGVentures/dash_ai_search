@@ -46,7 +46,9 @@ class Results extends HomeEvent {
 }
 
 class SeeSourceAnswersRequested extends HomeEvent {
-  const SeeSourceAnswersRequested();
+  const SeeSourceAnswersRequested(this.index);
+
+  final String? index;
 }
 
 class SeeResultsSourceAnswers extends HomeEvent {
@@ -60,4 +62,10 @@ class AnswerFeedbackUpdated extends HomeEvent {
 
   @override
   List<Object> get props => [answerFeedback];
+}
+
+class NavigateSourceAnswers extends HomeEvent {
+  const NavigateSourceAnswers(this.index);
+
+  final String index;
 }

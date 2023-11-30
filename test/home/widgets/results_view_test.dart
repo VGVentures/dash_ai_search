@@ -174,7 +174,8 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byType(SeeSourceAnswersButton));
 
-      verify(() => homeBloc.add(const SeeSourceAnswersRequested())).called(1);
+      verify(() => homeBloc.add(const SeeSourceAnswersRequested(null)))
+          .called(1);
     });
 
     testWidgets('adds AnswerFeedback.good on thumbs up', (tester) async {
@@ -202,5 +203,91 @@ void main() {
         ),
       ).called(1);
     });
+  });
+
+  group('SummaryView', () {
+    late HomeBloc homeBloc;
+    const response = VertexResponse(
+      summary: 'Flutter is a free and open source software development '
+          "kit (SDK) from Google [1]. It's used to create beautiful, "
+          'fast user experiences, ,,,for mobile, web, and desktop '
+          'applications [1]. Flutter works with existing code and is used '
+          'by developers and organizations around the world [1]. [3]. '
+          'Flutter is a fully open source project [3].',
+      documents: [
+        VertexDocument(
+          id: '1',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '2',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '3',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '4',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+      ],
+    );
+
+    Widget bootstrap() => BlocProvider.value(
+          value: homeBloc,
+          child: Material(child: SummaryView()),
+        );
+
+    setUp(() {
+      homeBloc = _MockHomeBloc();
+      when(() => homeBloc.state).thenReturn(
+        HomeState(vertexResponse: response),
+      );
+    });
+
+    testWidgets(
+      'adds NavigateSourceAnswers tapping on the link if state '
+      'Status.seeSourceAnswers',
+      (WidgetTester tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(vertexResponse: response, status: Status.seeSourceAnswers),
+        );
+        await tester.pumpApp(bootstrap());
+        final widget = tester.widget<InkWell>(find.byType(InkWell).first);
+        widget.onTap?.call();
+        verify(() => homeBloc.add(NavigateSourceAnswers('[1]'))).called(1);
+      },
+    );
+
+    testWidgets(
+      'adds SeeSourceAnswersRequested tapping on the link if state '
+      'is not Status.seeSourceAnswers',
+      (WidgetTester tester) async {
+        when(() => homeBloc.state).thenReturn(
+          HomeState(vertexResponse: response, status: Status.results),
+        );
+        await tester.pumpApp(bootstrap());
+        final widget = tester.widget<InkWell>(find.byType(InkWell).first);
+        widget.onTap?.call();
+        verify(() => homeBloc.add(SeeSourceAnswersRequested('[1]'))).called(1);
+      },
+    );
   });
 }

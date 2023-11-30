@@ -1,15 +1,22 @@
 import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
+import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const _cardHeight = 600.0;
 const _cardWidth = 450.0;
 
 class SourcesCarouselView extends StatefulWidget {
-  const SourcesCarouselView({required this.documents, super.key});
+  const SourcesCarouselView({
+    required this.documents,
+    required this.previouslySelectedIndex,
+    super.key,
+  });
 
   final List<VertexDocument> documents;
+  final int previouslySelectedIndex;
 
   @override
   State<SourcesCarouselView> createState() => _SourcesCarouselViewState();
@@ -26,14 +33,25 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   List<VertexDocument> documents = [];
   bool isAnimating = false;
 
+  int remainingAnimationCount = 0;
+
+  static const fastAnimationDuration = Duration(milliseconds: 250);
+  static const slowAnimationDuration = Duration(milliseconds: 800);
+
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: slowAnimationDuration,
     );
     documents = List.from(widget.documents);
+    // If we come to this screen with selected index we display that first
+    if (widget.previouslySelectedIndex != 0) {
+      for (var i = 0; i < widget.previouslySelectedIndex; i++) {
+        moveFirstDocument();
+      }
+    }
     setupAnimatedBoxes();
     setupStatusListener();
   }
@@ -44,6 +62,42 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     animationController.dispose();
   }
 
+  @override
+  void didUpdateWidget(covariant SourcesCarouselView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.previouslySelectedIndex != widget.previouslySelectedIndex) {
+      final diff =
+          widget.previouslySelectedIndex - oldWidget.previouslySelectedIndex;
+
+      if (diff > 0) {
+        // We animate normal
+        remainingAnimationCount = diff;
+      } else {
+        // We need to animate "back"
+        remainingAnimationCount =
+            (documents.length - oldWidget.previouslySelectedIndex) +
+                widget.previouslySelectedIndex;
+      }
+      animateForward();
+    }
+  }
+
+  void animateForward() {
+    animationController
+      ..duration = remainingAnimationCount > 1
+          ? fastAnimationDuration
+          : slowAnimationDuration
+      ..forward(from: 0);
+    setState(() {
+      remainingAnimationCount = remainingAnimationCount - 1;
+    });
+  }
+
+  void moveFirstDocument() {
+    final toTheLast = documents.removeAt(0);
+    documents.add(toTheLast);
+  }
+
   void setupStatusListener() {
     animationController.addStatusListener((status) {
       setState(() {
@@ -52,9 +106,11 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       });
       if (status == AnimationStatus.completed) {
         setState(() {
-          final toTheLast = documents.removeAt(0);
-          documents.add(toTheLast);
+          moveFirstDocument();
           setupAnimatedBoxes();
+          if (remainingAnimationCount > 0) {
+            animateForward();
+          }
         });
       }
     });
@@ -91,7 +147,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     );
   }
 
-  int index(VertexDocument document) {
+  int getDocumentIndex(VertexDocument document) {
     return widget.documents.indexOf(document) + 1;
   }
 
@@ -116,7 +172,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     for (var i = 0; i < maxCardsVisible; i++) {
       children.add(
         AnimatedBox(
-          index: index(documents[i]),
+          index: getDocumentIndex(documents[i]),
           controller: animationController,
           offset: _getOffset(i),
           scale: _getScale(i),
@@ -131,6 +187,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   @override
   Widget build(BuildContext context) {
+    final index = getDocumentIndex(animatedBoxes.last.document);
     return Container(
       height: _cardHeight + 100,
       padding: const EdgeInsets.only(right: 150),
@@ -141,9 +198,17 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
             alignment: Alignment.bottomCenter,
             child: NextButton(
               animationController: animationController,
-              current: index(animatedBoxes.last.document),
+              current: index,
               total: widget.documents.length,
               enabled: !isAnimating,
+              onTap: () {
+                // Probably moving this to a new bloc event
+                final nextIndex = getDocumentIndex(documents[1]);
+
+                context.read<HomeBloc>().add(
+                      NavigateSourceAnswers('[$nextIndex]'),
+                    );
+              },
             ),
           ),
         ],
@@ -213,7 +278,6 @@ class SourceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
     return Container(
       height: _cardHeight,
       width: _cardWidth,
@@ -302,6 +366,7 @@ class NextButton extends StatelessWidget {
     required this.current,
     required this.total,
     required this.enabled,
+    required this.onTap,
     super.key,
   });
 
@@ -309,10 +374,7 @@ class NextButton extends StatelessWidget {
   final int current;
   final int total;
   final bool enabled;
-
-  void onTap() {
-    animationController.forward(from: 0);
-  }
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

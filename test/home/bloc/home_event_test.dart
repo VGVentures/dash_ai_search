@@ -47,8 +47,8 @@ void main() {
 
     test('SeeSourceAnswersRequested supports value equality', () {
       expect(
-        SeeSourceAnswersRequested(),
-        equals(SeeSourceAnswersRequested()),
+        SeeSourceAnswersRequested('[1]'),
+        equals(SeeSourceAnswersRequested('[1]')),
       );
     });
 

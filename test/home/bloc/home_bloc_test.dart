@@ -71,7 +71,10 @@ void main() {
         build: buildBloc,
         act: (bloc) => bloc.add(QuestionAsked('query')),
         expect: () => [
-          HomeState(status: Status.askQuestionToThinking),
+          HomeState(
+            status: Status.askQuestionToThinking,
+            submittedQuery: 'query',
+          ),
           HomeState(
             status: Status.thinkingToResults,
             vertexResponse: VertexResponse.empty(),
@@ -92,7 +95,10 @@ void main() {
         build: buildBloc,
         act: (bloc) => bloc.add(QuestionAskedAgain('query')),
         expect: () => [
-          HomeState(status: Status.resultsToThinking),
+          HomeState(
+            status: Status.resultsToThinking,
+            submittedQuery: 'query',
+          ),
           HomeState(
             status: Status.thinkingToResults,
             vertexResponse: VertexResponse.empty(),
@@ -117,7 +123,7 @@ void main() {
       blocTest<HomeBloc, HomeState>(
         'emits Status.resultsToSourceAnswers',
         build: buildBloc,
-        act: (bloc) => bloc.add(SeeSourceAnswersRequested()),
+        act: (bloc) => bloc.add(SeeSourceAnswersRequested('[1]')),
         expect: () => [
           HomeState(status: Status.resultsToSourceAnswers),
         ],
@@ -143,6 +149,19 @@ void main() {
         expect: () => [
           HomeState(
             answerFeedback: AnswerFeedback.good,
+          ),
+        ],
+      );
+    });
+
+    group('NavigateSourceAnswers', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits updated selectedIndex',
+        build: buildBloc,
+        act: (bloc) => bloc.add(NavigateSourceAnswers('[2]')),
+        expect: () => [
+          HomeState(
+            selectedIndex: 1,
           ),
         ],
       );

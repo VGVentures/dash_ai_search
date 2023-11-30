@@ -42,6 +42,7 @@ class HomeState extends Equatable {
     this.query = '',
     this.vertexResponse = const VertexResponse.empty(),
     this.submittedQuery,
+    this.selectedIndex = 0,
     this.answerFeedback = AnswerFeedback.none,
   });
 
@@ -49,6 +50,7 @@ class HomeState extends Equatable {
   final String query;
   final VertexResponse vertexResponse;
   final String? submittedQuery;
+  final int selectedIndex;
   final AnswerFeedback answerFeedback;
 
   ParsedSummary get parsedSummary {
@@ -101,6 +103,7 @@ class HomeState extends Equatable {
     String? query,
     VertexResponse? vertexResponse,
     String? submittedQuery,
+    int? selectedIndex,
     AnswerFeedback? answerFeedback,
   }) {
     return HomeState(
@@ -108,10 +111,18 @@ class HomeState extends Equatable {
       query: query ?? this.query,
       vertexResponse: vertexResponse ?? this.vertexResponse,
       submittedQuery: submittedQuery ?? this.submittedQuery,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
       answerFeedback: answerFeedback ?? this.answerFeedback,
     );
   }
 
   @override
-  List<Object> get props => [status, query, vertexResponse, answerFeedback];
+  List<Object?> get props => [
+        status,
+        query,
+        vertexResponse,
+        selectedIndex,
+        submittedQuery,
+        answerFeedback,
+      ];
 }
