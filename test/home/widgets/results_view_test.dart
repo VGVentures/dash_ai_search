@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:api_client/api_client.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,16 @@ void main() {
       );
       await tester.pumpApp(bootstrap());
       expect(find.byType(CarouselView), findsOneWidget);
+    });
+
+    testWidgets('calls BackToAiSummaryTapped on backToAiResults tapped',
+        (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(vertexResponse: response, status: Status.seeSourceAnswers),
+      );
+      await tester.pumpApp(bootstrap());
+      await tester.tap(find.byType(BackToAnswerButton));
+      verify(() => homeBloc.add(const BackToAiSummaryTapped())).called(1);
     });
 
     testWidgets('animates in search box when enter', (tester) async {

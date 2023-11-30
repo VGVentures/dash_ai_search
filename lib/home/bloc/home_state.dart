@@ -85,7 +85,8 @@ class HomeState extends Equatable {
       status == Status.thinkingToResults ||
       status == Status.results ||
       status == Status.resultsToSourceAnswers ||
-      status == Status.seeSourceAnswers;
+      status == Status.seeSourceAnswers ||
+      status == Status.sourceAnswersBackToResults;
   bool get isSeeSourceAnswersVisible => status == Status.seeSourceAnswers;
   bool get isDashVisible => [
         Status.welcome,
@@ -96,6 +97,7 @@ class HomeState extends Equatable {
         Status.results,
         Status.resultsToSourceAnswers,
         Status.seeSourceAnswers,
+        Status.sourceAnswersBackToResults,
       ].contains(status);
 
   HomeState copyWith({
