@@ -19,9 +19,6 @@ class ResultsViewState extends State<ResultsView>
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
-  List<Status> get forwardExitStatuses => [Status.results];
-
-  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -29,6 +26,7 @@ class ResultsViewState extends State<ResultsView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -97,6 +95,7 @@ class SearchBoxViewState extends State<SearchBoxView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -109,6 +108,7 @@ class SearchBoxViewState extends State<SearchBoxView>
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
         .animate(enterTransitionController);
+
     _opacity =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
   }
@@ -123,7 +123,9 @@ class SearchBoxViewState extends State<SearchBoxView>
         position: _offset,
         child: FadeTransition(
           opacity: _opacity,
-          child: const SearchBox(),
+          child: const SearchBox(
+            askAgain: true,
+          ),
         ),
       ),
     );
@@ -189,6 +191,7 @@ class BlueContainerState extends State<BlueContainer>
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
         parent: enterTransitionController,
@@ -273,9 +276,6 @@ class _AiResponseState extends State<_AiResponse>
   late Animation<double> _bottomPaddingExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -287,7 +287,7 @@ class _AiResponseState extends State<_AiResponse>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -429,7 +429,7 @@ class CarouselViewState extends State<CarouselView>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -444,6 +444,7 @@ class CarouselViewState extends State<CarouselView>
         curve: Curves.decelerate,
       ),
     );
+
     _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
       CurvedAnimation(
         parent: enterTransitionController,
@@ -479,9 +480,6 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
   late Animation<double> _sizeExitIn;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -493,7 +491,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -522,6 +520,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       child: Align(
         alignment: Alignment.topLeft,
         child: SizedBox(
+          width: 250,
           height: 64,
           child: TertiaryCTA(
             label: l10n.backToAIAnswer,
@@ -546,9 +545,6 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
   late Animation<double> _opacityExitOut;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
-
-  @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
 
   @override
@@ -560,7 +556,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
 
     exitTransitionController = AnimationController(
@@ -585,6 +581,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
       child: Align(
         alignment: Alignment.bottomRight,
         child: SizedBox(
+          width: 260,
           height: 64,
           child: TertiaryCTA(
             label: l10n.seeSourceAnswers,

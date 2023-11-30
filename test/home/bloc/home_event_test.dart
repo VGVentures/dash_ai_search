@@ -31,6 +31,13 @@ void main() {
       );
     });
 
+    test('QuestionAskedAgain supports value equality', () {
+      expect(
+        QuestionAskedAgain('query'),
+        equals(QuestionAskedAgain('query')),
+      );
+    });
+
     test('Results supports value equality', () {
       expect(
         Results(),

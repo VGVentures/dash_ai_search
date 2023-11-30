@@ -10,6 +10,7 @@ enum Status {
   results,
   resultsToSourceAnswers,
   seeSourceAnswers,
+  resultsToThinking,
   sourceAnswersBackToResults,
 }
 
@@ -33,7 +34,8 @@ class HomeState extends Equatable {
   bool get isThinkingVisible =>
       status == Status.askQuestionToThinking ||
       status == Status.thinking ||
-      status == Status.thinkingToResults;
+      status == Status.thinkingToResults ||
+      status == Status.resultsToThinking;
   bool get isResultsVisible =>
       status == Status.thinkingToResults ||
       status == Status.results ||

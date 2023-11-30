@@ -17,10 +17,8 @@ class ThinkingViewState extends State<ThinkingView>
   late Animation<double> _opacity;
 
   @override
-  List<Status> get forwardEnterStatuses => [Status.askQuestionToThinking];
-
-  @override
-  List<Status> get forwardExitStatuses => [Status.thinkingToResults];
+  List<Status> get forwardEnterStatuses =>
+      [Status.askQuestionToThinking, Status.resultsToThinking];
 
   @override
   void initializeTransitionController() {
@@ -30,6 +28,7 @@ class ThinkingViewState extends State<ThinkingView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),

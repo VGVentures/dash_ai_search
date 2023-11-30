@@ -14,6 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<AskQuestion>(_onQuestion);
     on<QueryUpdated>(_queryUpdated);
     on<QuestionAsked>(_questionAsked);
+    on<QuestionAskedAgain>(_questionAskedAgain);
     on<Results>(_onResults);
     on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
@@ -49,6 +50,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         submittedQuery: event.submittedQuery,
       ),
     );
+    await _emitVertexResponse(emit);
+  }
+
+  Future<void> _questionAskedAgain(
+    QuestionAskedAgain event,
+    Emitter<HomeState> emit,
+  ) async {
+    emit(
+      state.copyWith(
+        status: Status.resultsToThinking,
+        submittedQuery: event.submittedQuery,
+      ),
+    );
+    await _emitVertexResponse(emit);
+  }
+
+  Future<void> _emitVertexResponse(Emitter<HomeState> emit) async {
     final result = await _questionsRepository.getVertexResponse(state.query);
     emit(
       state.copyWith(

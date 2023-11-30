@@ -30,6 +30,7 @@ class WelcomeViewState extends State<WelcomeView>
       vsync: this,
       duration: const Duration(seconds: 1),
     );
+
     exitTransitionController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 1),
@@ -42,6 +43,7 @@ class WelcomeViewState extends State<WelcomeView>
 
     _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
         .animate(enterTransitionController);
+
     _opacity =
         Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
   }

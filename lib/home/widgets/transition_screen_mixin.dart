@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,6 +30,10 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   @protected
   List<Status> backExitStatuses = [];
 
+  StreamSubscription<HomeState>? _streamSubscripton;
+
+  Status? _previousStatus;
+
   /// Initialize the [AnimationController]s.
   @protected
   void initializeTransitionController() {}
@@ -40,7 +46,11 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
 
     _enterAnimation();
 
-    context.read<HomeBloc>().stream.listen((state) {
+    _streamSubscripton = context.read<HomeBloc>().stream.listen((state) {
+      if (_previousStatus == state.status) {
+        return;
+      }
+
       if (forwardEnterStatuses.contains(state.status)) {
         _enterAnimation();
       }
@@ -53,6 +63,8 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
       if (backExitStatuses.contains(state.status)) {
         _popExitAnimation();
       }
+
+      _previousStatus = state.status;
     });
   }
 
@@ -60,22 +72,31 @@ mixin TransitionScreenMixin<T extends StatefulWidget> on State<T> {
   void dispose() {
     enterTransitionController.dispose();
     exitTransitionController.dispose();
+    _streamSubscripton?.cancel();
     super.dispose();
   }
 
   void _enterAnimation() {
-    enterTransitionController.forward();
+    if (mounted) {
+      enterTransitionController.forward();
+    }
   }
 
   void _exitAnimation() {
-    exitTransitionController.forward();
+    if (mounted) {
+      exitTransitionController.forward();
+    }
   }
 
   void _popEnterAnimation() {
-    exitTransitionController.reverse();
+    if (mounted) {
+      exitTransitionController.reverse();
+    }
   }
 
   void _popExitAnimation() {
-    enterTransitionController.reverse();
+    if (mounted) {
+      enterTransitionController.reverse();
+    }
   }
 }
