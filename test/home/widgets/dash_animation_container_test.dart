@@ -85,35 +85,46 @@ void main() {
 
   group('DashSpriteAnimation', () {
     final images = Images(prefix: 'assets/animations/');
+    late HomeBloc bloc;
 
     setUpAll(() async {
       await Future.wait([
         images.load('dash_idle_animation.png'),
         images.load('dash_wave_animation.png'),
+        images.load('dash_happy_animation.png'),
+        images.load('dash_sad_animation.png'),
       ]);
     });
 
-    testWidgets('renders correctly', (tester) async {
-      await tester.pumpApp(
-        DashSpriteAnimation(
-          width: 100,
-          height: 100,
-          images: images,
-        ),
+    setUp(() {
+      bloc = _MockHomeBloc();
+      whenListen(
+        bloc,
+        Stream.fromIterable(const <HomeState>[]),
+        initialState: const HomeState(),
       );
+    });
+
+    Widget bootstrap() => BlocProvider.value(
+          value: bloc,
+          child: Material(
+            child: DashSpriteAnimation(
+              width: 100,
+              height: 100,
+              images: images,
+            ),
+          ),
+        );
+
+    testWidgets('renders correctly', (tester) async {
+      await tester.pumpApp(bootstrap());
       await tester.pump();
 
       expect(find.byType(SpriteAnimationWidget), findsOneWidget);
     });
 
     testWidgets('starts with the waving animation', (tester) async {
-      await tester.pumpApp(
-        DashSpriteAnimation(
-          width: 100,
-          height: 100,
-          images: images,
-        ),
-      );
+      await tester.pumpApp(bootstrap());
       await tester.pump();
 
       final image = images.fromCache('dash_wave_animation.png');
@@ -131,13 +142,7 @@ void main() {
     testWidgets(
       'changes to idle animation when the waving is finished',
       (tester) async {
-        await tester.pumpApp(
-          DashSpriteAnimation(
-            width: 100,
-            height: 100,
-            images: images,
-          ),
-        );
+        await tester.pumpApp(bootstrap());
         await tester.pump();
 
         final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
