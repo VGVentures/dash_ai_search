@@ -5,78 +5,6 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/*
-class ResultsView extends StatelessWidget {
-  const ResultsView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final l10n = context.l10n;
-
-    final state = context.watch<HomeBloc>().state;
-
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 90),
-      child: Column(
-        children: [
-          const SearchBox(),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(48, 64, 48, 64),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            response.summary,
-                            style: textTheme.headlineLarge?.copyWith(
-                              color: VertexColors.flutterNavy,
-                              fontSize: 32,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const Expanded(child: FeedbackButtons()),
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: SizedBox(
-                                  height: 64,
-                                  child: TertiaryCTA(
-                                    label: l10n.seeSourceAnswers,
-                                    icon: vertexIcons.arrowForward.image(),
-                                    onPressed: () => context
-                                        .read<HomeBloc>()
-                                        .add(const SeeSourceAnswersRequested()),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (state.isSeeSourceAnswersVisible) ...[
-                    CarouselView(documents: response.documents),
-                  ],
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-*/
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -409,6 +337,7 @@ class _AiResponseState extends State<_AiResponse>
 
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
+    final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
 
     return AnimatedBuilder(
       animation: _leftPaddingExitOut,
@@ -431,7 +360,31 @@ class _AiResponseState extends State<_AiResponse>
                     ),
                     child: const BackToAnswerButton(),
                   ),
-                  Flexible(
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        for (final element in parsed.elements)
+                          if (element.isLink)
+                            WidgetSpan(
+                              child: Container(
+                                color: VertexColors.white,
+                                child: Text(
+                                  element.text,
+                                  style: textTheme.headlineLarge?.copyWith(),
+                                ),
+                              ),
+                            )
+                          else
+                            TextSpan(
+                              text: element.text,
+                              style: textTheme.headlineLarge?.copyWith(
+                                color: VertexColors.white,
+                              ),
+                            ),
+                      ],
+                    ),
+                  ),
+                  /*Flexible(
                     child: Text(
                       response.summary,
                       style: textTheme.headlineLarge?.copyWith(
@@ -439,7 +392,7 @@ class _AiResponseState extends State<_AiResponse>
                         fontSize: 32,
                       ),
                     ),
-                  ),
+                  ),*/
                   AnimatedBuilder(
                     animation: _bottomPaddingExitOut,
                     builder: (context, child) =>

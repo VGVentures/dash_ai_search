@@ -80,10 +80,22 @@ class HomeState extends Equatable {
 
   ParsedSummary get parsedSummary {
     final textToParse = vertexResponse.summary;
-    final pattern = RegExp(r'\[[1-9]]\');
-    final elements = textToParse.split(pattern);
+    final pattern = RegExp(r'\[[1-9]]');
+    final elements = <ParsedElement>[];
 
-    return ParsedSummary(elements: []);
+    textToParse.splitMapJoin(
+      pattern,
+      onMatch: (Match match) {
+        elements.add(ParsedElement(text: match.group(0)!, isLink: true));
+        return '';
+      },
+      onNonMatch: (String nonMatch) {
+        elements.add(ParsedElement(text: nonMatch, isLink: false));
+        return '';
+      },
+    );
+
+    return ParsedSummary(elements: elements);
   }
 
   bool get isWelcomeVisible =>
