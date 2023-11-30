@@ -13,8 +13,8 @@ class TertiaryCTA extends StatefulWidget {
     super.key,
   });
 
-  /// The image that will be displayed on the left side of the button.
-  final Image? icon;
+  /// The icon that will be displayed on the left side of the button.
+  final Widget? icon;
 
   /// The text that will be displayed on the right side of the button.
   final String label;
@@ -62,7 +62,10 @@ class _TertiaryCTAState extends State<TertiaryCTA>
           if (widget.icon != null)
             Padding(
               padding: const EdgeInsets.only(right: 4),
-              child: widget.icon,
+              child: SizedBox.square(
+                dimension: 24,
+                child: widget.icon,
+              ),
             ),
           Flexible(
             child: DecoratedBoxTransition(

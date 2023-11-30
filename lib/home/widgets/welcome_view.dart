@@ -84,12 +84,8 @@ class _WelcomeView extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               PrimaryCTA(
-                icon: const CircleAvatar(
-                  backgroundColor: VertexColors.white,
-                  child: Icon(
-                    Icons.arrow_forward,
-                    color: VertexColors.googleBlue,
-                  ),
+                icon: vertexIcons.arrowForward.image(
+                  color: VertexColors.googleBlue,
                 ),
                 label: l10n.startAsking,
                 onPressed: () =>

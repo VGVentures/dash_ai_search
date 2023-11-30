@@ -1,3 +1,4 @@
+import 'package:app_ui/app_ui.dart';
 import 'package:flutter/material.dart';
 
 /// {@template primary_cta}
@@ -40,7 +41,9 @@ class PrimaryCTA extends StatelessWidget {
           if (icon != null)
             Padding(
               padding: const EdgeInsets.only(right: 16),
-              child: icon,
+              child: CircleAvatar(
+                  backgroundColor: VertexColors.white,
+                  child: SizedBox.square(dimension: 24, child: icon)),
             ),
           Text(
             label,

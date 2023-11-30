@@ -660,7 +660,9 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
           height: 64,
           child: TertiaryCTA(
             label: l10n.seeSourceAnswers,
-            icon: vertexIcons.arrowForward.image(),
+            icon: vertexIcons.arrowForward.image(
+              color: VertexColors.white,
+            ),
             onPressed: () =>
                 context.read<HomeBloc>().add(const SeeSourceAnswersRequested()),
           ),
