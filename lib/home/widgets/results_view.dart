@@ -645,6 +645,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
           width: 250,
           height: 64,
           child: TertiaryCTA(
+            key: const Key('backToAnswerButtonKey'),
             label: l10n.backToAIAnswer,
             icon: vertexIcons.arrowBack.image(color: VertexColors.white),
             onPressed: () {
