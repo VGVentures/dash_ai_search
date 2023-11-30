@@ -35,12 +35,15 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   int remainingAnimationCount = 0;
 
+  static const fastAnimationDuration = Duration(milliseconds: 250);
+  static const slowAnimationDuration = Duration(milliseconds: 800);
+
   @override
   void initState() {
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: slowAnimationDuration,
     );
     documents = List.from(widget.documents);
     // If we come to this screen with selected index we display that first
@@ -69,19 +72,20 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       if (diff > 0) {
         // We animate normal
         remainingAnimationCount = diff;
-        animateForward();
       } else {
         // We need to animate "back"
         remainingAnimationCount =
             (documents.length - oldWidget.previouslySelectedIndex) +
                 widget.previouslySelectedIndex;
-
-        animateForward();
       }
+      animateForward();
     }
   }
 
   void animateForward() {
+    animationController.duration = remainingAnimationCount > 1
+        ? fastAnimationDuration
+        : slowAnimationDuration;
     animationController.forward(from: 0);
     setState(() {
       remainingAnimationCount = remainingAnimationCount - 1;
@@ -271,7 +275,6 @@ class SourceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
     return Container(
       height: _cardHeight,
       width: _cardWidth,
