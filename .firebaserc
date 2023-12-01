@@ -7,6 +7,9 @@
       "hosting": {
         "app_dev": [
           "dash-ai-search-dev"
+        ],
+        "app_staging": [
+          "dash-ai-search-staging"
         ]
       }
     }

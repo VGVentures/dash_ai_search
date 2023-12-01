@@ -66,7 +66,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 600),
+      constraints: const BoxConstraints(maxWidth: 659),
       child: TextField(
         controller: _controller,
         style: textTheme.bodyMedium?.copyWith(
