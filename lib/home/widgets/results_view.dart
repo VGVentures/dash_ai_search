@@ -13,6 +13,8 @@ enum ResultsAnimationPhase {
 
 const _searchBarTopPadding = 90.0;
 const _questionBoxHeight = 84.0;
+const _cardEnterDuration = Duration(seconds: 2);
+const _cardExpandDuration = Duration(milliseconds: 800);
 
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
@@ -67,9 +69,15 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<HomeBloc>().state;
+
+    final response =
+        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
+          fit: StackFit.expand,
           children: [
             BlueContainer(constraints: constraints),
             const Positioned(
@@ -80,6 +88,14 @@ class _ResultsView extends StatelessWidget {
                 child: SearchBoxView(),
               ),
             ),
+            if (state.isMovingToSeeSourceAnswers)
+              Padding(
+                padding: EdgeInsets.only(
+                  left: constraints.maxWidth / 2,
+                  top: _questionBoxHeight + _searchBarTopPadding + 54,
+                ),
+                child: CarouselView(documents: response.documents),
+              ),
           ],
         );
       },
@@ -185,7 +201,7 @@ class BlueContainerState extends State<BlueContainer>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: _cardEnterDuration,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           context.read<HomeBloc>().add(const Results());
@@ -194,7 +210,7 @@ class BlueContainerState extends State<BlueContainer>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: _cardExpandDuration,
     )..addStatusListener((status) {
         final state = context.read<HomeBloc>().state;
 
@@ -322,12 +338,12 @@ class _AiResponseState extends State<_AiResponse>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: _cardEnterDuration,
     );
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 800),
+      duration: _cardExpandDuration,
     );
   }
 
@@ -356,9 +372,6 @@ class _AiResponseState extends State<_AiResponse>
   @override
   Widget build(BuildContext context) {
     final state = context.watch<HomeBloc>().state;
-
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
 
     return AnimatedBuilder(
       animation: _leftPaddingExitOut,
@@ -417,11 +430,6 @@ class _AiResponseState extends State<_AiResponse>
                 ],
               ),
             ),
-            if (state.isSeeSourceAnswersVisible) ...[
-              Expanded(
-                child: CarouselView(documents: response.documents),
-              ),
-            ],
           ],
         ),
       ),

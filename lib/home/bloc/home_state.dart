@@ -87,6 +87,9 @@ class HomeState extends Equatable {
       status == Status.resultsToSourceAnswers ||
       status == Status.seeSourceAnswers ||
       status == Status.sourceAnswersBackToResults;
+  bool get isMovingToSeeSourceAnswers =>
+      status == Status.resultsToSourceAnswers ||
+      status == Status.seeSourceAnswers;
   bool get isSeeSourceAnswersVisible => status == Status.seeSourceAnswers;
   bool get isDashVisible => [
         Status.welcome,
