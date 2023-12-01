@@ -1,5 +1,6 @@
 import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:flame/sprite.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +32,7 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state.status == Status.askQuestionToThinking ||
-            state.status == Status.resultsToSourceAnswers) {
+        if (state.status == Status.resultsToSourceAnswers) {
           _state.value = DashAnimationPhase.dashOut;
         } else if (state.status == Status.thinkingToResults ||
             state.status == Status.seeSourceAnswers) {
@@ -122,37 +122,71 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   var _waved = false;
   SpriteAnimation? _reaction;
 
+  late final SpriteAnimationTicker _waveTicker;
+  @visibleForTesting
+  late SpriteAnimationTicker thinkingTicker;
+
+  @override
+  void initState() {
+    super.initState();
+    final animations = context.read<DashAnimations>();
+    _waveTicker = animations.waveAnimation.createTicker();
+    thinkingTicker = animations.thinkingAnimation.createTicker();
+  }
+
   @override
   Widget build(BuildContext context) {
     final animations = context.read<DashAnimations>();
     return SizedBox(
       height: widget.width,
       width: widget.height,
-      child: BlocListener<HomeBloc, HomeState>(
-        listenWhen: (previous, current) =>
-            previous.answerFeedbacks != current.answerFeedbacks,
-        listener: (context, state) {
-          // Only play if we are not playing any other animation
-          // and if there is a feedback to play.
-          if (_reaction == null && state.answerFeedbacks.isNotEmpty) {
-            final lastFeedback = state.answerFeedbacks.last;
-            if (lastFeedback == AnswerFeedback.good) {
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<HomeBloc, HomeState>(
+            listenWhen: (previous, current) =>
+                previous.answerFeedbacks != current.answerFeedbacks,
+            listener: (context, state) {
+              // Only play if we are not playing any other animation
+              // and if there is a feedback to play.
+              if (_reaction == null && state.answerFeedbacks.isNotEmpty) {
+                final lastFeedback = state.answerFeedbacks.last;
+                if (lastFeedback == AnswerFeedback.good) {
+                  setState(() {
+                    _reaction = animations.happyAnimation;
+                  });
+                } else if (lastFeedback == AnswerFeedback.bad) {
+                  setState(() {
+                    _reaction = animations.sadAnimation;
+                  });
+                }
+              }
+            },
+          ),
+          BlocListener<HomeBloc, HomeState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == Status.askQuestionToThinking,
+            listener: (context, state) {
+              thinkingTicker = animations.thinkingAnimation.createTicker();
+            },
+          ),
+          BlocListener<HomeBloc, HomeState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == Status.thinkingToResults,
+            listener: (context, state) {
               setState(() {
-                _reaction = animations.happyAnimation;
+                _reaction = animations.thinkingAnimation.reversed();
               });
-            } else if (lastFeedback == AnswerFeedback.bad) {
-              setState(() {
-                _reaction = animations.sadAnimation;
-              });
-            }
-          }
-        },
-        child: Builder(
-          builder: (context) {
+            },
+          ),
+        ],
+        child: BlocBuilder<HomeBloc, HomeState>(
+          builder: (context, state) {
             if (!_waved) {
               return SpriteAnimationWidget(
                 animation: animations.waveAnimation,
-                animationTicker: animations.waveAnimation.createTicker(),
+                animationTicker: _waveTicker,
                 onComplete: () {
                   setState(() {
                     _waved = true;
@@ -175,9 +209,17 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
               );
             }
 
+            final idleAnimation = state.status == Status.askQuestionToThinking
+                ? animations.thinkingAnimation
+                : animations.idleAnimation;
+
+            final idleTicker = state.status == Status.askQuestionToThinking
+                ? thinkingTicker
+                : idleAnimation.createTicker();
+
             return SpriteAnimationWidget(
-              animation: animations.idleAnimation,
-              animationTicker: animations.idleAnimation.createTicker(),
+              animation: idleAnimation,
+              animationTicker: idleTicker,
             );
           },
         ),

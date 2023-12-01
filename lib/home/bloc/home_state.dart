@@ -96,6 +96,7 @@ class HomeState extends Equatable {
         Status.welcomeToAskQuestion,
         Status.askQuestion,
         Status.askQuestionToThinking,
+        Status.thinking,
         Status.thinkingToResults,
         Status.results,
         Status.resultsToSourceAnswers,
