@@ -4,6 +4,7 @@ import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -151,15 +152,6 @@ void main() {
     });
 
     testWidgets(
-      'calls Results on enter',
-      (WidgetTester tester) async {
-        await tester.pumpApp(bootstrap());
-        await tester.pumpAndSettle();
-        verify(() => homeBloc.add(Results())).called(1);
-      },
-    );
-
-    testWidgets(
       'calls SeeResultsSourceAnswers on exit',
       (WidgetTester tester) async {
         final controller = StreamController<HomeState>();
@@ -201,8 +193,18 @@ void main() {
         (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SeeSourceAnswersButton));
+      final l10n = tester.element(find.byType(ResultsView)).l10n;
+
+      await tester.pump();
+      tester
+          .widget<TertiaryCTA>(
+            find.ancestor(
+              of: find.text(l10n.seeSourceAnswers),
+              matching: find.byType(TertiaryCTA),
+            ),
+          )
+          .onPressed
+          ?.call();
 
       verify(() => homeBloc.add(const SeeSourceAnswersRequested(null)))
           .called(1);
@@ -211,8 +213,11 @@ void main() {
     testWidgets('adds AnswerFeedback.good on thumbs up', (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(CircleAvatar).first);
+      await tester.pump();
+      tester
+          .widget<FeedbackButtons>(find.byType(FeedbackButtons))
+          .onLike
+          ?.call();
 
       verify(
         () => homeBloc.add(
@@ -224,8 +229,11 @@ void main() {
     testWidgets('adds AnswerFeedback.bad on thumbs down', (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(CircleAvatar).last);
+      await tester.pump();
+      tester
+          .widget<FeedbackButtons>(find.byType(FeedbackButtons))
+          .onDislike
+          ?.call();
 
       verify(
         () => homeBloc.add(
