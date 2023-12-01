@@ -72,6 +72,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
         style: textTheme.bodyMedium?.copyWith(
           color: VertexColors.flutterNavy,
         ),
+        autofillHints: null,
         decoration: InputDecoration(
           filled: true,
           fillColor: VertexColors.arctic,
