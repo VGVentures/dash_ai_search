@@ -85,7 +85,7 @@ class _WelcomeView extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 40),
-              PrimaryCTA(
+              PrimaryIconCTA(
                 icon: vertexIcons.arrowForward.image(
                   color: VertexColors.googleBlue,
                 ),
