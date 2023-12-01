@@ -11,6 +11,9 @@ enum ResultsAnimationPhase {
   resultsSourceAnswers,
 }
 
+const _searchBarTopPadding = 90.0;
+const _questionBoxHeight = 84.0;
+
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -67,7 +70,7 @@ class _ResultsView extends StatelessWidget {
           children: [
             BlueContainer(constraints: constraints),
             const Positioned(
-              top: 90,
+              top: _searchBarTopPadding,
               left: 0,
               right: 0,
               child: Align(
@@ -269,18 +272,16 @@ class BlueContainerState extends State<BlueContainer>
             child: AnimatedBuilder(
               animation: sizeIn,
               builder: (context, child) {
-                return Center(
-                  child: Container(
-                    width: sizeIn.value.width,
-                    height: sizeIn.value.height,
-                    decoration: BoxDecoration(
-                      color: VertexColors.googleBlue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(_borderRadiusExitOut.value),
-                      ),
+                return Container(
+                  width: sizeIn.value.width,
+                  height: sizeIn.value.height,
+                  decoration: BoxDecoration(
+                    color: VertexColors.googleBlue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(_borderRadiusExitOut.value),
                     ),
-                    child: const _AiResponse(),
                   ),
+                  child: const _AiResponse(),
                 );
               },
             ),
@@ -335,7 +336,9 @@ class _AiResponseState extends State<_AiResponse>
       ),
     );
 
-    _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
+    _topPaddingExitOut =
+        Tween<double>(begin: 64, end: _questionBoxHeight + _searchBarTopPadding)
+            .animate(
       CurvedAnimation(
         parent: exitTransitionController,
         curve: Curves.decelerate,
@@ -353,18 +356,19 @@ class _AiResponseState extends State<_AiResponse>
     return AnimatedBuilder(
       animation: _leftPaddingExitOut,
       builder: (context, child) => Padding(
-        padding: EdgeInsets.fromLTRB(_leftPaddingExitOut.value, 64, 48, 64),
+        padding: EdgeInsets.fromLTRB(
+          _leftPaddingExitOut.value,
+          _topPaddingExitOut.value,
+          48,
+          64,
+        ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AnimatedBuilder(
-                    animation: _topPaddingExitOut,
-                    builder: (context, child) =>
-                        SizedBox(height: _topPaddingExitOut.value),
-                  ),
                   SizeTransition(
                     sizeFactor: CurvedAnimation(
                       parent: exitTransitionController,
@@ -406,7 +410,9 @@ class _AiResponseState extends State<_AiResponse>
               ),
             ),
             if (state.isSeeSourceAnswersVisible) ...[
-              CarouselView(documents: response.documents),
+              Expanded(
+                child: CarouselView(documents: response.documents),
+              ),
             ],
           ],
         ),
