@@ -158,13 +158,18 @@ void main() {
         whenListen(
           homeBloc,
           controller.stream,
-          initialState: const HomeState(),
+          initialState: const HomeState(vertexResponse: response),
         );
 
         await tester.pumpApp(bootstrap());
         await tester.pumpAndSettle();
 
-        controller.add(const HomeState(status: Status.resultsToSourceAnswers));
+        controller.add(
+          const HomeState(
+            vertexResponse: response,
+            status: Status.resultsToSourceAnswers,
+          ),
+        );
         await tester.pumpAndSettle();
 
         verify(() => homeBloc.add(SeeResultsSourceAnswers())).called(1);

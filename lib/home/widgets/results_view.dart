@@ -399,7 +399,7 @@ class _AiResponseState extends State<_AiResponse>
                       state.status == Status.sourceAnswersBackToResults)
                     const Expanded(child: SummaryView())
                   else
-                    const SummaryView(),
+                    const Flexible(child: SummaryView()),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: SizedBox(
