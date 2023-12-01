@@ -31,7 +31,7 @@ void main() {
       final l10n = tester.element(find.byType(WelcomeView)).l10n;
 
       expect(find.text(l10n.initialScreenTitle), findsOneWidget);
-      expect(find.byType(PrimaryCTA), findsOneWidget);
+      expect(find.byType(PrimaryIconCTA), findsOneWidget);
     });
 
     testWidgets('animates in when enter', (tester) async {
@@ -74,7 +74,7 @@ void main() {
       );
 
       await tester.pumpAndSettle();
-      await tester.tap(find.byType(PrimaryCTA));
+      await tester.tap(find.byType(PrimaryIconCTA));
 
       verify(() => homeBloc.add(const FromWelcomeToQuestion())).called(1);
     });
