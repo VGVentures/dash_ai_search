@@ -384,7 +384,8 @@ class _AiResponseState extends State<_AiResponse>
                     child: const BackToAnswerButton(),
                   ),
                   if (state.status == Status.results ||
-                      state.status == Status.thinkingToResults)
+                      state.status == Status.thinkingToResults ||
+                      state.status == Status.sourceAnswersBackToResults)
                     const Expanded(child: SummaryView())
                   else
                     const SummaryView(),
