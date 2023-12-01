@@ -10,10 +10,13 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final l10n = context.l10n;
     final textColor =
         hasDarkBackground ? VertexColors.arctic : VertexColors.flutterNavy;
+    final textStyle = Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: textColor,
+          letterSpacing: -1,
+        );
 
     return InkWell(
       customBorder: RoundedRectangleBorder(
@@ -32,18 +35,14 @@ class Logo extends StatelessWidget {
           children: [
             Text(
               l10n.vertexAI,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: textColor,
-              ),
+              style: textStyle,
             ),
             const SizedBox(width: 4),
             vertexIcons.asterisk.image(),
             const SizedBox(width: 4),
             Text(
               l10n.flutter,
-              style: theme.textTheme.bodyLarge?.copyWith(
-                color: textColor,
-              ),
+              style: textStyle,
             ),
           ],
         ),
