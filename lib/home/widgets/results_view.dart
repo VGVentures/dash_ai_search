@@ -89,11 +89,9 @@ class _ResultsView extends StatelessWidget {
               ),
             ),
             if (state.isMovingToSeeSourceAnswers)
-              Padding(
-                padding: EdgeInsets.only(
-                  left: constraints.maxWidth / 2,
-                  top: _questionBoxHeight + _searchBarTopPadding + 54,
-                ),
+              Positioned(
+                top: _questionBoxHeight + _searchBarTopPadding + 32,
+                right: 100,
                 child: CarouselView(documents: response.documents),
               ),
           ],
