@@ -72,6 +72,9 @@ class HomeView extends StatelessWidget {
                 key: _dashLeftKey,
               ),
             ),
+          const Positioned.fill(
+            child: EmojiBubbles(),
+          ),
         ],
       ),
     );

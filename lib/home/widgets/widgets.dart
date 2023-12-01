@@ -1,6 +1,7 @@
 export 'background.dart';
 export 'circle.dart';
 export 'dash_animation_container.dart';
+export 'emoji_bubbles.dart';
 export 'logo.dart';
 export 'question_view.dart';
 export 'results_view.dart';
