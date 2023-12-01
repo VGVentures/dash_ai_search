@@ -16,13 +16,15 @@ class DashAnimations {
   late final SpriteAnimation waveAnimation;
   late final SpriteAnimation happyAnimation;
   late final SpriteAnimation sadAnimation;
+  late final SpriteAnimation thinkingAnimation;
 
   Future<void> load() async {
-    final [idle, wave, happy, sad] = await Future.wait([
+    final [idle, wave, happy, sad, thinking] = await Future.wait([
       _images.load('dash_idle_animation.png'),
       _images.load('dash_wave_animation.png'),
       _images.load('dash_happy_animation.png'),
       _images.load('dash_sad_animation.png'),
+      _images.load('dash_thinking_animation.png'),
     ]);
 
     idleAnimation = SpriteAnimation.fromFrameData(
@@ -59,6 +61,17 @@ class DashAnimations {
 
     sadAnimation = SpriteAnimation.fromFrameData(
       sad,
+      SpriteAnimationData.sequenced(
+        amount: 12,
+        amountPerRow: 4,
+        stepTime: 0.07,
+        textureSize: Vector2.all(1500),
+        loop: false,
+      ),
+    );
+
+    thinkingAnimation = SpriteAnimation.fromFrameData(
+      thinking,
       SpriteAnimationData.sequenced(
         amount: 12,
         amountPerRow: 4,

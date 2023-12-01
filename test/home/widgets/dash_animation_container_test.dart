@@ -71,13 +71,6 @@ void main() {
       expect(state.value, equals(DashAnimationPhase.dashIn));
 
       animationController.add(
-        const HomeState(status: Status.askQuestionToThinking),
-      );
-      await tester.pump();
-
-      expect(state.value, equals(DashAnimationPhase.dashOut));
-
-      animationController.add(
         const HomeState(status: Status.thinkingToResults),
       );
       await tester.pump();
@@ -303,6 +296,80 @@ void main() {
 
         final image =
             dashAnimations.images.fromCache('dash_idle_animation.png');
+        final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
+          find.byType(InternalSpriteAnimationWidget),
+        );
+
+        expect(
+          currentAnimaton.animation.frames.first.sprite.image,
+          equals(image),
+        );
+      },
+    );
+
+    testWidgets(
+      'resets the thinking ticker when the status is askQuestionToThinking',
+      (tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          bloc,
+          controller.stream,
+          initialState: const HomeState(),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pump();
+
+        final dashAnimationState = tester.state<DashSpriteAnimationState>(
+          find.byType(DashSpriteAnimation),
+        );
+
+        final thinkingTicker = dashAnimationState.thinkingTicker;
+
+        controller.add(
+          const HomeState(
+            status: Status.askQuestionToThinking,
+          ),
+        );
+
+        await tester.pump();
+
+        final updatedThinkingTicker = dashAnimationState.thinkingTicker;
+
+        expect(
+          thinkingTicker,
+          isNot(equals(updatedThinkingTicker)),
+        );
+      },
+    );
+
+    testWidgets(
+      'idle animation is thinking when status is askQuestionToThinking',
+      (tester) async {
+        whenListen(
+          bloc,
+          Stream.fromIterable(
+            [
+              const HomeState(
+                status: Status.askQuestionToThinking,
+              ),
+            ],
+          ),
+          initialState: const HomeState(status: Status.askQuestionToThinking),
+        );
+        await tester.pumpApp(bootstrap());
+        await tester.pump();
+
+        final spriteAnimationWidget = tester.widget<SpriteAnimationWidget>(
+          find.byType(SpriteAnimationWidget),
+        );
+
+        spriteAnimationWidget.onComplete!();
+
+        await tester.pump();
+
+        final image =
+            dashAnimations.images.fromCache('dash_thinking_animation.png');
         final currentAnimaton = tester.widget<InternalSpriteAnimationWidget>(
           find.byType(InternalSpriteAnimationWidget),
         );

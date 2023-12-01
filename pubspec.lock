@@ -274,11 +274,12 @@ packages:
   flame:
     dependency: "direct main"
     description:
-      name: flame
-      sha256: b6bb76224fc29fd5eea25d66cda6e322e3678bdedc1f65956c6151326a6a798b
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.10.1"
+      path: "packages/flame"
+      ref: main
+      resolved-ref: "9aed8b4dea3074c9ca708ad991cdc90b12707fbe"
+      url: "https://github.com/flame-engine/flame.git"
+    source: git
+    version: "1.11.0"
   flutter:
     dependency: "direct main"
     description: flutter

@@ -38,6 +38,13 @@ dev_dependencies:
   url_launcher_platform_interface: ^2.2.0
   very_good_analysis: ^5.1.0
 
+dependency_overrides:
+  flame:
+    git:
+      url: https://github.com/flame-engine/flame.git
+      path: packages/flame
+      ref: main
+
 flutter_gen:
   line_length: 80 #
 
