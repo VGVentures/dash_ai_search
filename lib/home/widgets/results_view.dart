@@ -28,6 +28,9 @@ class ResultsViewState extends State<ResultsView>
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
+
+  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
@@ -172,6 +175,9 @@ class BlueContainerState extends State<BlueContainer>
 
   @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
+
+  @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
 
   @override
   void initializeTransitionController() {
@@ -623,8 +629,12 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
           width: 250,
           height: 64,
           child: TertiaryCTA(
+            key: const Key('backToAnswerButtonKey'),
             label: l10n.backToAIAnswer,
             icon: vertexIcons.arrowBack.image(color: VertexColors.white),
+            onPressed: () {
+              context.read<HomeBloc>().add(const BackToAiSummaryTapped());
+            },
           ),
         ),
       ),

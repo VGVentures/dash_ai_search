@@ -20,6 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
     on<AddAnswerFeedback>(_onAddAnswerFeedback);
     on<NavigateSourceAnswers>(_navigateSourceAnswers);
+    on<BackToAiSummaryTapped>(_onBackToAiSummaryTapped);
   }
 
   final QuestionsRepository _questionsRepository;
@@ -129,6 +130,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         selectedIndex: indexParsed,
       ),
     );
+  }
+
+  void _onBackToAiSummaryTapped(
+    BackToAiSummaryTapped event,
+    Emitter<HomeState> emit,
+  ) {
+    emit(state.copyWith(status: Status.sourceAnswersBackToResults));
   }
 
   int _getIndex(String textIndex) {

@@ -141,6 +141,17 @@ void main() {
       );
     });
 
+    group('BackToAiResultsTapped', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits Status.sourceAnswersBackToResults',
+        build: buildBloc,
+        act: (bloc) => bloc.add(BackToAiSummaryTapped()),
+        expect: () => [
+          HomeState(status: Status.sourceAnswersBackToResults),
+        ],
+      );
+    });
+
     group('AddAnswerFeedback', () {
       blocTest<HomeBloc, HomeState>(
         'emits the new feedback',

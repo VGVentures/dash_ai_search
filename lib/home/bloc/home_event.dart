@@ -69,3 +69,7 @@ class NavigateSourceAnswers extends HomeEvent {
 
   final String index;
 }
+
+class BackToAiSummaryTapped extends HomeEvent {
+  const BackToAiSummaryTapped();
+}
