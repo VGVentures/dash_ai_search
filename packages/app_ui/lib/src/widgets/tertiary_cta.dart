@@ -48,6 +48,7 @@ class _TertiaryCTAState extends State<TertiaryCTA>
       onPressed: widget.onPressed,
       style: const ButtonStyle(
         overlayColor: MaterialStatePropertyAll(Colors.transparent),
+        padding: MaterialStatePropertyAll(EdgeInsets.zero),
       ),
       onHover: (hovered) {
         if (hovered) {

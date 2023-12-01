@@ -11,6 +11,9 @@ enum ResultsAnimationPhase {
   resultsSourceAnswers,
 }
 
+const _searchBarTopPadding = 90.0;
+const _questionBoxHeight = 84.0;
+
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -70,7 +73,7 @@ class _ResultsView extends StatelessWidget {
           children: [
             BlueContainer(constraints: constraints),
             const Positioned(
-              top: 90,
+              top: _searchBarTopPadding,
               left: 0,
               right: 0,
               child: Align(
@@ -275,18 +278,16 @@ class BlueContainerState extends State<BlueContainer>
             child: AnimatedBuilder(
               animation: sizeIn,
               builder: (context, child) {
-                return Center(
-                  child: Container(
-                    width: sizeIn.value.width,
-                    height: sizeIn.value.height,
-                    decoration: BoxDecoration(
-                      color: VertexColors.googleBlue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(_borderRadiusExitOut.value),
-                      ),
+                return Container(
+                  width: sizeIn.value.width,
+                  height: sizeIn.value.height,
+                  decoration: BoxDecoration(
+                    color: VertexColors.googleBlue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(_borderRadiusExitOut.value),
                     ),
-                    child: const _AiResponse(),
                   ),
+                  child: const _AiResponse(),
                 );
               },
             ),
@@ -307,9 +308,7 @@ class _AiResponse extends StatefulWidget {
 class _AiResponseState extends State<_AiResponse>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _leftPaddingExitOut;
-  late Animation<double> _rightPaddingExitOut;
   late Animation<double> _topPaddingExitOut;
-  late Animation<double> _bottomPaddingExitOut;
 
   @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
@@ -343,21 +342,10 @@ class _AiResponseState extends State<_AiResponse>
       ),
     );
 
-    _rightPaddingExitOut = Tween<double>(begin: 0, end: 150).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
+    _topPaddingExitOut = Tween<double>(
+      begin: 64,
+      end: _questionBoxHeight + _searchBarTopPadding + 32,
+    ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
         curve: Curves.decelerate,
@@ -375,17 +363,19 @@ class _AiResponseState extends State<_AiResponse>
     return AnimatedBuilder(
       animation: _leftPaddingExitOut,
       builder: (context, child) => Padding(
-        padding: EdgeInsets.fromLTRB(_leftPaddingExitOut.value, 64, 48, 64),
+        padding: EdgeInsets.fromLTRB(
+          _leftPaddingExitOut.value,
+          _topPaddingExitOut.value,
+          48,
+          64,
+        ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AnimatedBuilder(
-                    animation: _topPaddingExitOut,
-                    builder: (context, child) =>
-                        SizedBox(height: _topPaddingExitOut.value),
-                  ),
                   SizeTransition(
                     sizeFactor: CurvedAnimation(
                       parent: exitTransitionController,
@@ -393,16 +383,18 @@ class _AiResponseState extends State<_AiResponse>
                     ),
                     child: const BackToAnswerButton(),
                   ),
-                  const Expanded(child: SummaryView()),
-                  AnimatedBuilder(
-                    animation: _bottomPaddingExitOut,
-                    builder: (context, child) =>
-                        SizedBox(height: _bottomPaddingExitOut.value),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FeedbackButtons(
+                  if (state.status == Status.results ||
+                      state.status == Status.thinkingToResults ||
+                      state.status == Status.sourceAnswersBackToResults)
+                    const Expanded(child: SummaryView())
+                  else
+                    const SummaryView(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FeedbackButtons(
                           onLike: () {
                             context.read<HomeBloc>().add(
                                   const AddAnswerFeedback(
@@ -418,20 +410,17 @@ class _AiResponseState extends State<_AiResponse>
                                 );
                           },
                         ),
-                      ),
-                      const Expanded(child: SeeSourceAnswersButton()),
-                    ],
+                        const SeeSourceAnswersButton(),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
             if (state.isSeeSourceAnswersVisible) ...[
-              AnimatedBuilder(
-                animation: _bottomPaddingExitOut,
-                builder: (context, child) =>
-                    SizedBox(width: _rightPaddingExitOut.value),
+              Expanded(
+                child: CarouselView(documents: response.documents),
               ),
-              CarouselView(documents: response.documents),
             ],
           ],
         ),
@@ -450,67 +439,64 @@ class SummaryView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
 
-    return Align(
-      alignment: Alignment.topLeft,
-      child: SizedBox(
-        width: 540,
-        child: RichText(
-          text: TextSpan(
-            children: [
-              for (final element in parsed.elements)
-                if (element.isLink)
-                  WidgetSpan(
-                    child: InkWell(
-                      onTap: () {
-                        final isOnSeeSourceAnswers =
-                            context.read<HomeBloc>().state.status ==
-                                Status.seeSourceAnswers;
-                        if (isOnSeeSourceAnswers) {
-                          context.read<HomeBloc>().add(
-                                NavigateSourceAnswers(
-                                  element.text,
-                                ),
-                              );
-                        } else {
-                          context.read<HomeBloc>().add(
-                                SeeSourceAnswersRequested(
-                                  element.text,
-                                ),
-                              );
-                        }
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 2,
+    return SizedBox(
+      width: 540,
+      child: RichText(
+        text: TextSpan(
+          children: [
+            for (final element in parsed.elements)
+              if (element.isLink)
+                WidgetSpan(
+                  child: InkWell(
+                    onTap: () {
+                      final isOnSeeSourceAnswers =
+                          context.read<HomeBloc>().state.status ==
+                              Status.seeSourceAnswers;
+                      if (isOnSeeSourceAnswers) {
+                        context.read<HomeBloc>().add(
+                              NavigateSourceAnswers(
+                                element.text,
+                              ),
+                            );
+                      } else {
+                        context.read<HomeBloc>().add(
+                              SeeSourceAnswersRequested(
+                                element.text,
+                              ),
+                            );
+                      }
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 12,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: VertexColors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(100),
                         ),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 4,
-                          horizontal: 12,
-                        ),
-                        decoration: const BoxDecoration(
-                          color: VertexColors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(100),
-                          ),
-                        ),
-                        child: Text(
-                          element.text,
-                          style: textTheme.labelLarge?.copyWith(
-                            color: VertexColors.googleBlue,
-                          ),
+                      ),
+                      child: Text(
+                        element.text,
+                        style: textTheme.labelLarge?.copyWith(
+                          color: VertexColors.googleBlue,
                         ),
                       ),
                     ),
-                  )
-                else
-                  TextSpan(
-                    text: element.text,
-                    style: textTheme.headlineLarge?.copyWith(
-                      color: VertexColors.white,
-                    ),
                   ),
-            ],
-          ),
+                )
+              else
+                TextSpan(
+                  text: element.text,
+                  style: textTheme.headlineLarge?.copyWith(
+                    color: VertexColors.white,
+                  ),
+                ),
+          ],
         ),
       ),
     );
@@ -641,17 +627,13 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       axis: Axis.horizontal,
       child: Align(
         alignment: Alignment.topLeft,
-        child: SizedBox(
-          width: 250,
-          height: 64,
-          child: TertiaryCTA(
-            key: const Key('backToAnswerButtonKey'),
-            label: l10n.backToAIAnswer,
-            icon: vertexIcons.arrowBack.image(color: VertexColors.white),
-            onPressed: () {
-              context.read<HomeBloc>().add(const BackToAiSummaryTapped());
-            },
-          ),
+        child: TertiaryCTA(
+          key: const Key('backToAnswerButtonKey'),
+          label: l10n.backToAIAnswer,
+          icon: vertexIcons.arrowBack.image(color: VertexColors.white),
+          onPressed: () {
+            context.read<HomeBloc>().add(const BackToAiSummaryTapped());
+          },
         ),
       ),
     );
