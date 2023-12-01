@@ -404,27 +404,31 @@ class _AiResponseState extends State<_AiResponse>
                     const SummaryView(),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        FeedbackButtons(
-                          onLike: () {
-                            context.read<HomeBloc>().add(
-                                  const AddAnswerFeedback(
-                                    AnswerFeedback.good,
-                                  ),
-                                );
-                          },
-                          onDislike: () {
-                            context.read<HomeBloc>().add(
-                                  const AddAnswerFeedback(
-                                    AnswerFeedback.bad,
-                                  ),
-                                );
-                          },
-                        ),
-                        const SeeSourceAnswersButton(),
-                      ],
+                    child: SizedBox(
+                      width: 563,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FeedbackButtons(
+                            onLike: () {
+                              context.read<HomeBloc>().add(
+                                    const AddAnswerFeedback(
+                                      AnswerFeedback.good,
+                                    ),
+                                  );
+                            },
+                            onDislike: () {
+                              context.read<HomeBloc>().add(
+                                    const AddAnswerFeedback(
+                                      AnswerFeedback.bad,
+                                    ),
+                                  );
+                            },
+                          ),
+                          if (!state.isSeeSourceAnswersVisible)
+                            const SeeSourceAnswersButton(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -742,18 +746,14 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
       opacity: _opacityExitOut,
       child: Align(
         alignment: Alignment.bottomRight,
-        child: SizedBox(
-          width: 260,
-          height: 64,
-          child: TertiaryCTA(
-            label: l10n.seeSourceAnswers,
-            icon: vertexIcons.arrowForward.image(
-              color: VertexColors.white,
-            ),
-            onPressed: () => context
-                .read<HomeBloc>()
-                .add(const SeeSourceAnswersRequested(null)),
+        child: TertiaryCTA(
+          label: l10n.seeSourceAnswers,
+          icon: vertexIcons.arrowForward.image(
+            color: VertexColors.white,
           ),
+          onPressed: () => context
+              .read<HomeBloc>()
+              .add(const SeeSourceAnswersRequested(null)),
         ),
       ),
     );
