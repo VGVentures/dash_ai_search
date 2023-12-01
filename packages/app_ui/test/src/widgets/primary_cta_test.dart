@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:app_ui/src/generated/assets.gen.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/helpers.dart';
@@ -9,7 +8,6 @@ void main() {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(
         PrimaryCTA(
-          icon: Assets.icons.arrowForward.image(),
           label: 'label',
         ),
       );
@@ -22,7 +20,6 @@ void main() {
 
       await tester.pumpApp(
         PrimaryCTA(
-          icon: Assets.icons.arrowForward.image(),
           label: 'label',
           onPressed: () {
             called = true;
