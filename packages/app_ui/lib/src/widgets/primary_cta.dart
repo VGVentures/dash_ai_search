@@ -114,7 +114,7 @@ class _PrimaryCTAState extends State<PrimaryCTA>
                             icon: widget.icon!,
                             width: circleWidth,
                             iconDimension: iconDimension,
-                            hideIcon: false,
+                            hideIcon: _offset.value != Offset.zero,
                           ),
                         ),
                       ),
@@ -135,7 +135,6 @@ class _Icon extends StatelessWidget {
     required this.width,
     required this.iconDimension,
     required this.hideIcon,
-    super.key,
   });
 
   final Widget icon;
