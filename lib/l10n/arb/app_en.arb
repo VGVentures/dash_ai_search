@@ -36,7 +36,7 @@
     "@seeSourceAnswers": {
         "description": "Text in see source answers button."
     },
-    "backToAIAnswer": "Back to AI answer",
+    "backToAIAnswer": "Back to AI Summary",
     "@backToAIAnswer": {
         "description": "Text in back to AI answer button."
     }

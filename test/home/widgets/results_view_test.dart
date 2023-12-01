@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:api_client/api_client.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
+import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -89,6 +91,19 @@ void main() {
       expect(find.byType(CarouselView), findsOneWidget);
     });
 
+    testWidgets('calls BackToAiSummaryTapped on backToAiResults tapped',
+        (tester) async {
+      when(() => homeBloc.state).thenReturn(
+        HomeState(vertexResponse: response, status: Status.seeSourceAnswers),
+      );
+      await tester.pumpApp(bootstrap());
+
+      final button =
+          tester.widget<TertiaryCTA>(find.byKey(Key('backToAnswerButtonKey')));
+      button.onPressed!();
+      verify(() => homeBloc.add(const BackToAiSummaryTapped())).called(1);
+    });
+
     testWidgets('animates in search box when enter', (tester) async {
       await tester.pumpApp(bootstrap());
 
@@ -120,14 +135,21 @@ void main() {
       expect(forwardExitStatuses, equals([Status.resultsToSourceAnswers]));
     });
 
-    testWidgets(
-      'calls Results on enter',
-      (WidgetTester tester) async {
-        await tester.pumpApp(bootstrap());
-        await tester.pumpAndSettle();
-        verify(() => homeBloc.add(Results())).called(1);
-      },
-    );
+    testWidgets('BlueContainer resize itself', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      var state = tester.state<BlueContainerState>(find.byType(BlueContainer));
+
+      final originalSizeIn = state.sizeIn;
+
+      tester.setViewSize(size: Size(2000, 1000));
+      await tester.pump();
+
+      state = tester.state<BlueContainerState>(find.byType(BlueContainer));
+
+      final sizeIn = state.sizeIn;
+      expect(sizeIn, isNot(equals(originalSizeIn)));
+    });
 
     testWidgets(
       'calls SeeResultsSourceAnswers on exit',
@@ -171,8 +193,18 @@ void main() {
         (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(SeeSourceAnswersButton));
+      final l10n = tester.element(find.byType(ResultsView)).l10n;
+
+      await tester.pump();
+      tester
+          .widget<TertiaryCTA>(
+            find.ancestor(
+              of: find.text(l10n.seeSourceAnswers),
+              matching: find.byType(TertiaryCTA),
+            ),
+          )
+          .onPressed
+          ?.call();
 
       verify(() => homeBloc.add(const SeeSourceAnswersRequested(null)))
           .called(1);
@@ -181,12 +213,15 @@ void main() {
     testWidgets('adds AnswerFeedback.good on thumbs up', (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(CircleAvatar).first);
+      await tester.pump();
+      tester
+          .widget<FeedbackButtons>(find.byType(FeedbackButtons))
+          .onLike
+          ?.call();
 
       verify(
         () => homeBloc.add(
-          const AnswerFeedbackUpdated(AnswerFeedback.good),
+          const AddAnswerFeedback(AnswerFeedback.good),
         ),
       ).called(1);
     });
@@ -194,12 +229,15 @@ void main() {
     testWidgets('adds AnswerFeedback.bad on thumbs down', (tester) async {
       await tester.pumpApp(bootstrap());
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(CircleAvatar).last);
+      await tester.pump();
+      tester
+          .widget<FeedbackButtons>(find.byType(FeedbackButtons))
+          .onDislike
+          ?.call();
 
       verify(
         () => homeBloc.add(
-          const AnswerFeedbackUpdated(AnswerFeedback.bad),
+          const AddAnswerFeedback(AnswerFeedback.bad),
         ),
       ).called(1);
     });

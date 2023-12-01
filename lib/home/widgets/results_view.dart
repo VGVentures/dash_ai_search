@@ -5,6 +5,15 @@ import 'package:dash_ai_search/l10n/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+enum ResultsAnimationPhase {
+  initial,
+  results,
+  resultsSourceAnswers,
+}
+
+const _searchBarTopPadding = 90.0;
+const _questionBoxHeight = 84.0;
+
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
 
@@ -17,6 +26,9 @@ class ResultsViewState extends State<ResultsView>
   late Animation<double> _opacity;
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
+
+  @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
 
   @override
   void initializeTransitionController() {
@@ -55,18 +67,22 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Stack(
-      children: [
-        BlueContainer(),
-        Positioned(
-          top: 90,
-          left: 0,
-          right: 0,
-          child: Align(
-            child: SearchBoxView(),
-          ),
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            BlueContainer(constraints: constraints),
+            const Positioned(
+              top: _searchBarTopPadding,
+              left: 0,
+              right: 0,
+              child: Align(
+                child: SearchBoxView(),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -117,7 +133,7 @@ class SearchBoxViewState extends State<SearchBoxView>
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(
-        maxWidth: 595,
+        maxWidth: 659,
       ),
       child: SlideTransition(
         position: _offset,
@@ -134,7 +150,12 @@ class SearchBoxViewState extends State<SearchBoxView>
 
 class BlueContainer extends StatefulWidget {
   @visibleForTesting
-  const BlueContainer({super.key});
+  const BlueContainer({
+    required this.constraints,
+    super.key,
+  });
+
+  final BoxConstraints constraints;
 
   @override
   State<BlueContainer> createState() => BlueContainerState();
@@ -146,13 +167,17 @@ class BlueContainerState extends State<BlueContainer>
   late Animation<double> _rotationEnterIn;
   late Animation<RelativeRect> _positionExitOut;
   late Animation<double> _borderRadiusExitOut;
-  late Animation<Size> _sizeIn;
+  @visibleForTesting
+  late Animation<Size> sizeIn;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.thinkingToResults];
 
   @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
+
+  @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
 
   @override
   void initializeTransitionController() {
@@ -169,7 +194,7 @@ class BlueContainerState extends State<BlueContainer>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 800),
     )..addStatusListener((status) {
         final state = context.read<HomeBloc>().state;
 
@@ -211,14 +236,28 @@ class BlueContainerState extends State<BlueContainer>
 
     _borderRadiusExitOut = Tween<double>(begin: 24, end: 0).animate(
       CurvedAnimation(
-        parent: enterTransitionController,
-        curve: Curves.decelerate,
+        parent: exitTransitionController,
+        curve: Curves.easeInExpo,
       ),
     );
 
-    _sizeIn = Tween<Size>(
-      begin: const Size(600, 700),
-      end: Size.infinite,
+    _initSizeIn();
+  }
+
+  @override
+  void didUpdateWidget(covariant BlueContainer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _initSizeIn();
+  }
+
+  void _initSizeIn() {
+    sizeIn = Tween<Size>(
+      begin: const Size(659, 732),
+      end: Size(
+        widget.constraints.maxWidth,
+        widget.constraints.maxHeight,
+      ),
     ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
@@ -237,20 +276,18 @@ class BlueContainerState extends State<BlueContainer>
           child: RotationTransition(
             turns: _rotationEnterIn,
             child: AnimatedBuilder(
-              animation: _sizeIn,
+              animation: sizeIn,
               builder: (context, child) {
-                return Center(
-                  child: Container(
-                    width: _sizeIn.value.width,
-                    height: _sizeIn.value.height,
-                    decoration: BoxDecoration(
-                      color: VertexColors.googleBlue,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(_borderRadiusExitOut.value),
-                      ),
+                return Container(
+                  width: sizeIn.value.width,
+                  height: sizeIn.value.height,
+                  decoration: BoxDecoration(
+                    color: VertexColors.googleBlue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(_borderRadiusExitOut.value),
                     ),
-                    child: const _AiResponse(),
                   ),
+                  child: const _AiResponse(),
                 );
               },
             ),
@@ -271,9 +308,143 @@ class _AiResponse extends StatefulWidget {
 class _AiResponseState extends State<_AiResponse>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _leftPaddingExitOut;
-  late Animation<double> _rightPaddingExitOut;
   late Animation<double> _topPaddingExitOut;
-  late Animation<double> _bottomPaddingExitOut;
+
+  @override
+  List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
+
+  @override
+  List<Status> get backEnterStatuses => [Status.sourceAnswersBackToResults];
+
+  @override
+  void initializeTransitionController() {
+    super.initializeTransitionController();
+
+    enterTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    exitTransitionController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _leftPaddingExitOut = Tween<double>(begin: 48, end: 165).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _topPaddingExitOut = Tween<double>(
+      begin: 64,
+      end: _questionBoxHeight + _searchBarTopPadding + 32,
+    ).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<HomeBloc>().state;
+
+    final response =
+        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
+
+    return AnimatedBuilder(
+      animation: _leftPaddingExitOut,
+      builder: (context, child) => Padding(
+        padding: EdgeInsets.fromLTRB(
+          _leftPaddingExitOut.value,
+          _topPaddingExitOut.value,
+          48,
+          64,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizeTransition(
+                    sizeFactor: CurvedAnimation(
+                      parent: exitTransitionController,
+                      curve: Curves.decelerate,
+                    ),
+                    child: const BackToAnswerButton(),
+                  ),
+                  if (state.status == Status.results ||
+                      state.status == Status.thinkingToResults ||
+                      state.status == Status.sourceAnswersBackToResults)
+                    const Expanded(child: SummaryView())
+                  else
+                    const SummaryView(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 16),
+                    child: SizedBox(
+                      width: 563,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          FeedbackButtons(
+                            onLike: () {
+                              context.read<HomeBloc>().add(
+                                    const AddAnswerFeedback(
+                                      AnswerFeedback.good,
+                                    ),
+                                  );
+                            },
+                            onDislike: () {
+                              context.read<HomeBloc>().add(
+                                    const AddAnswerFeedback(
+                                      AnswerFeedback.bad,
+                                    ),
+                                  );
+                            },
+                          ),
+                          if (!state.isSeeSourceAnswersVisible)
+                            const SeeSourceAnswersButton(),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (state.isSeeSourceAnswersVisible) ...[
+              Expanded(
+                child: CarouselView(documents: response.documents),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SummaryView extends StatefulWidget {
+  const SummaryView({
+    super.key,
+  });
+
+  @override
+  State<SummaryView> createState() => _SummaryViewState();
+}
+
+class _SummaryViewState extends State<SummaryView>
+    with TickerProviderStateMixin, TransitionScreenMixin {
+  late Animation<double> _width;
 
   @override
   List<Status> get forwardExitStatuses => [Status.resultsToSourceAnswers];
@@ -300,176 +471,84 @@ class _AiResponseState extends State<_AiResponse>
   void initState() {
     super.initState();
 
-    _leftPaddingExitOut = Tween<double>(begin: 48, end: 165).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _rightPaddingExitOut = Tween<double>(begin: 0, end: 150).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _topPaddingExitOut = Tween<double>(begin: 0, end: 155).animate(
-      CurvedAnimation(
-        parent: exitTransitionController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _bottomPaddingExitOut = Tween<double>(begin: 172, end: 40).animate(
+    _width = Tween<double>(begin: 563, end: 659).animate(
       CurvedAnimation(
         parent: exitTransitionController,
         curve: Curves.decelerate,
       ),
     );
   }
-
-  @override
-  Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
-
-    final response =
-        context.select((HomeBloc bloc) => bloc.state.vertexResponse);
-
-    return AnimatedBuilder(
-      animation: _leftPaddingExitOut,
-      builder: (context, child) => Padding(
-        padding: EdgeInsets.fromLTRB(_leftPaddingExitOut.value, 64, 48, 64),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  AnimatedBuilder(
-                    animation: _topPaddingExitOut,
-                    builder: (context, child) =>
-                        SizedBox(height: _topPaddingExitOut.value),
-                  ),
-                  SizeTransition(
-                    sizeFactor: CurvedAnimation(
-                      parent: exitTransitionController,
-                      curve: Curves.decelerate,
-                    ),
-                    child: const BackToAnswerButton(),
-                  ),
-                  const Expanded(child: SummaryView()),
-                  AnimatedBuilder(
-                    animation: _bottomPaddingExitOut,
-                    builder: (context, child) =>
-                        SizedBox(height: _bottomPaddingExitOut.value),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FeedbackButtons(
-                          onLike: () {
-                            context.read<HomeBloc>().add(
-                                  const AnswerFeedbackUpdated(
-                                    AnswerFeedback.good,
-                                  ),
-                                );
-                          },
-                          onDislike: () {
-                            context.read<HomeBloc>().add(
-                                  const AnswerFeedbackUpdated(
-                                    AnswerFeedback.bad,
-                                  ),
-                                );
-                          },
-                        ),
-                      ),
-                      const Expanded(child: SeeSourceAnswersButton()),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            if (state.isSeeSourceAnswersVisible) ...[
-              AnimatedBuilder(
-                animation: _bottomPaddingExitOut,
-                builder: (context, child) =>
-                    SizedBox(width: _rightPaddingExitOut.value),
-              ),
-              CarouselView(documents: response.documents),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SummaryView extends StatelessWidget {
-  @visibleForTesting
-  const SummaryView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final parsed = context.select((HomeBloc bloc) => bloc.state.parsedSummary);
 
-    return RichText(
-      text: TextSpan(
-        children: [
-          for (final element in parsed.elements)
-            if (element.isLink)
-              WidgetSpan(
-                child: InkWell(
-                  onTap: () {
-                    final isOnSeeSourceAnswers =
-                        context.read<HomeBloc>().state.status ==
-                            Status.seeSourceAnswers;
-                    if (isOnSeeSourceAnswers) {
-                      context.read<HomeBloc>().add(
-                            NavigateSourceAnswers(
-                              element.text,
+    return AnimatedBuilder(
+      animation: _width,
+      builder: (context, child) {
+        return SizedBox(
+          width: _width.value,
+          child: RichText(
+            text: TextSpan(
+              children: [
+                for (final element in parsed.elements)
+                  if (element.isLink)
+                    WidgetSpan(
+                      child: InkWell(
+                        onTap: () {
+                          final isOnSeeSourceAnswers =
+                              context.read<HomeBloc>().state.status ==
+                                  Status.seeSourceAnswers;
+                          if (isOnSeeSourceAnswers) {
+                            context.read<HomeBloc>().add(
+                                  NavigateSourceAnswers(
+                                    element.text,
+                                  ),
+                                );
+                          } else {
+                            context.read<HomeBloc>().add(
+                                  SeeSourceAnswersRequested(
+                                    element.text,
+                                  ),
+                                );
+                          }
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 2,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: VertexColors.white,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(100),
                             ),
-                          );
-                    } else {
-                      context.read<HomeBloc>().add(
-                            SeeSourceAnswersRequested(
-                              element.text,
+                          ),
+                          child: Text(
+                            element.text,
+                            style: textTheme.labelLarge?.copyWith(
+                              color: VertexColors.googleBlue,
                             ),
-                          );
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 2,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 12,
-                    ),
-                    decoration: const BoxDecoration(
-                      color: VertexColors.white,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(100),
+                          ),
+                        ),
+                      ),
+                    )
+                  else
+                    TextSpan(
+                      text: element.text,
+                      style: textTheme.headlineLarge?.copyWith(
+                        color: VertexColors.white,
                       ),
                     ),
-                    child: Text(
-                      element.text,
-                      style: textTheme.labelLarge?.copyWith(
-                        color: VertexColors.googleBlue,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            else
-              TextSpan(
-                text: element.text,
-                style: textTheme.headlineLarge?.copyWith(
-                  color: VertexColors.white,
-                ),
-              ),
-        ],
-      ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
@@ -598,13 +677,13 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       axis: Axis.horizontal,
       child: Align(
         alignment: Alignment.topLeft,
-        child: SizedBox(
-          width: 250,
-          height: 64,
-          child: TertiaryCTA(
-            label: l10n.backToAIAnswer,
-            icon: vertexIcons.arrowBack.image(color: VertexColors.white),
-          ),
+        child: TertiaryCTA(
+          key: const Key('backToAnswerButtonKey'),
+          label: l10n.backToAIAnswer,
+          icon: vertexIcons.arrowBack.image(color: VertexColors.white),
+          onPressed: () {
+            context.read<HomeBloc>().add(const BackToAiSummaryTapped());
+          },
         ),
       ),
     );
@@ -659,18 +738,14 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
       opacity: _opacityExitOut,
       child: Align(
         alignment: Alignment.bottomRight,
-        child: SizedBox(
-          width: 260,
-          height: 64,
-          child: TertiaryCTA(
-            label: l10n.seeSourceAnswers,
-            icon: vertexIcons.arrowForward.image(
-              color: VertexColors.white,
-            ),
-            onPressed: () => context
-                .read<HomeBloc>()
-                .add(const SeeSourceAnswersRequested(null)),
+        child: TertiaryCTA(
+          label: l10n.seeSourceAnswers,
+          icon: vertexIcons.arrowForward.image(
+            color: VertexColors.white,
           ),
+          onPressed: () => context
+              .read<HomeBloc>()
+              .add(const SeeSourceAnswersRequested(null)),
         ),
       ),
     );

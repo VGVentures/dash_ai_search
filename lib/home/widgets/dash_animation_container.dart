@@ -1,6 +1,5 @@
+import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
-import 'package:flame/cache.dart';
-import 'package:flame/components.dart';
 import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,9 +7,12 @@ import 'package:phased/phased.dart';
 
 class DashAnimationContainer extends StatefulWidget {
   const DashAnimationContainer({
-    super.key,
+    required this.right,
     @visibleForTesting this.animationState,
+    super.key,
   });
+
+  final bool right;
 
   final PhasedState<DashAnimationPhase>? animationState;
 
@@ -32,12 +34,15 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
         if (state.status == Status.askQuestionToThinking ||
             state.status == Status.resultsToSourceAnswers) {
           _state.value = DashAnimationPhase.dashOut;
-        } else if (state.status == Status.thinkingToResults) {
+        } else if (state.status == Status.thinkingToResults ||
+            state.status == Status.seeSourceAnswers) {
           _state.value = DashAnimationPhase.dashIn;
         }
       },
       child: DashAnimation(
         state: _state,
+        slideOffset: widget.right ? 1.2 : -1.2,
+        rotation: widget.right ? .08 : -.08,
       ),
     );
   }
@@ -53,8 +58,13 @@ class DashAnimation extends Phased<DashAnimationPhase> {
   @visibleForTesting
   const DashAnimation({
     required super.state,
+    required this.slideOffset,
+    required this.rotation,
     super.key,
   });
+
+  final double slideOffset;
+  final double rotation;
 
   @override
   Widget build(BuildContext context) {
@@ -68,8 +78,8 @@ class DashAnimation extends Phased<DashAnimationPhase> {
       curve: Curves.decelerate,
       offset: state.phaseValue(
         values: {
-          DashAnimationPhase.initial: const Offset(-1.2, 0),
-          DashAnimationPhase.dashOut: const Offset(-1.2, 0),
+          DashAnimationPhase.initial: Offset(slideOffset, 0),
+          DashAnimationPhase.dashOut: Offset(slideOffset, 0),
         },
         defaultValue: Offset.zero,
       ),
@@ -78,8 +88,8 @@ class DashAnimation extends Phased<DashAnimationPhase> {
         curve: Curves.decelerate,
         turns: state.phaseValue(
           values: {
-            DashAnimationPhase.initial: -.08,
-            DashAnimationPhase.dashOut: -.04,
+            DashAnimationPhase.initial: rotation,
+            DashAnimationPhase.dashOut: rotation / 2,
           },
           defaultValue: 0,
         ),
@@ -96,12 +106,10 @@ class DashSpriteAnimation extends StatefulWidget {
   const DashSpriteAnimation({
     required this.width,
     required this.height,
-    @visibleForTesting this.images,
     super.key,
   });
 
   static const dashFrameSize = Size(1500, 1500);
-  final Images? images;
   final double width;
   final double height;
 
@@ -112,109 +120,39 @@ class DashSpriteAnimation extends StatefulWidget {
 @visibleForTesting
 class DashSpriteAnimationState extends State<DashSpriteAnimation> {
   var _waved = false;
-  bool _loaded = false;
   SpriteAnimation? _reaction;
-
-  late final images = widget.images ?? Images(prefix: 'assets/animations/');
-
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation waveAnimation;
-  late final SpriteAnimation happyAnimation;
-  late final SpriteAnimation sadAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _loadAnimations();
-  }
-
-  Future<void> _loadAnimations() async {
-    final [idle, wave, happy, sad] = await Future.wait([
-      images.load('dash_idle_animation.png'),
-      images.load('dash_wave_animation.png'),
-      images.load('dash_happy_animation.png'),
-      images.load('dash_sad_animation.png'),
-    ]);
-
-    idleAnimation = SpriteAnimation.fromFrameData(
-      idle,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-      ),
-    );
-
-    waveAnimation = SpriteAnimation.fromFrameData(
-      wave,
-      SpriteAnimationData.sequenced(
-        amount: 25,
-        amountPerRow: 5,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    happyAnimation = SpriteAnimation.fromFrameData(
-      happy,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    sadAnimation = SpriteAnimation.fromFrameData(
-      sad,
-      SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
-        stepTime: 0.07,
-        textureSize: Vector2.all(1500),
-        loop: false,
-      ),
-    );
-
-    if (mounted) {
-      setState(() {
-        _loaded = true;
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (!_loaded) {
-      return const SizedBox.shrink();
-    }
+    final animations = context.read<DashAnimations>();
     return SizedBox(
       height: widget.width,
       width: widget.height,
       child: BlocListener<HomeBloc, HomeState>(
         listenWhen: (previous, current) =>
-            previous.answerFeedback != current.answerFeedback,
+            previous.answerFeedbacks != current.answerFeedbacks,
         listener: (context, state) {
-          if (state.answerFeedback == AnswerFeedback.good) {
-            setState(() {
-              _reaction = happyAnimation;
-            });
-          } else if (state.answerFeedback == AnswerFeedback.bad) {
-            setState(() {
-              _reaction = sadAnimation;
-            });
+          // Only play if we are not playing any other animation
+          // and if there is a feedback to play.
+          if (_reaction == null && state.answerFeedbacks.isNotEmpty) {
+            final lastFeedback = state.answerFeedbacks.last;
+            if (lastFeedback == AnswerFeedback.good) {
+              setState(() {
+                _reaction = animations.happyAnimation;
+              });
+            } else if (lastFeedback == AnswerFeedback.bad) {
+              setState(() {
+                _reaction = animations.sadAnimation;
+              });
+            }
           }
         },
         child: Builder(
           builder: (context) {
             if (!_waved) {
               return SpriteAnimationWidget(
-                animation: waveAnimation,
-                animationTicker: waveAnimation.createTicker(),
+                animation: animations.waveAnimation,
+                animationTicker: animations.waveAnimation.createTicker(),
                 onComplete: () {
                   setState(() {
                     _waved = true;
@@ -238,8 +176,8 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
             }
 
             return SpriteAnimationWidget(
-              animation: idleAnimation,
-              animationTicker: idleAnimation.createTicker(),
+              animation: animations.idleAnimation,
+              animationTicker: animations.idleAnimation.createTicker(),
             );
           },
         ),

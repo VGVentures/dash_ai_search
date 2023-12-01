@@ -141,14 +141,25 @@ void main() {
       );
     });
 
-    group('AnswerFeedback', () {
+    group('BackToAiResultsTapped', () {
       blocTest<HomeBloc, HomeState>(
-        'emits Status.welcome',
+        'emits Status.sourceAnswersBackToResults',
         build: buildBloc,
-        act: (bloc) => bloc.add(AnswerFeedbackUpdated(AnswerFeedback.good)),
+        act: (bloc) => bloc.add(BackToAiSummaryTapped()),
+        expect: () => [
+          HomeState(status: Status.sourceAnswersBackToResults),
+        ],
+      );
+    });
+
+    group('AddAnswerFeedback', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits the new feedback',
+        build: buildBloc,
+        act: (bloc) => bloc.add(AddAnswerFeedback(AnswerFeedback.good)),
         expect: () => [
           HomeState(
-            answerFeedback: AnswerFeedback.good,
+            answerFeedbacks: const [AnswerFeedback.good],
           ),
         ],
       );
