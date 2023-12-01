@@ -342,9 +342,10 @@ class _AiResponseState extends State<_AiResponse>
       ),
     );
 
-    _topPaddingExitOut =
-        Tween<double>(begin: 64, end: _questionBoxHeight + _searchBarTopPadding)
-            .animate(
+    _topPaddingExitOut = Tween<double>(
+      begin: 64,
+      end: _questionBoxHeight + _searchBarTopPadding + 32,
+    ).animate(
       CurvedAnimation(
         parent: exitTransitionController,
         curve: Curves.decelerate,
@@ -625,17 +626,13 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
       axis: Axis.horizontal,
       child: Align(
         alignment: Alignment.topLeft,
-        child: SizedBox(
-          width: 250,
-          height: 64,
-          child: TertiaryCTA(
-            key: const Key('backToAnswerButtonKey'),
-            label: l10n.backToAIAnswer,
-            icon: vertexIcons.arrowBack.image(color: VertexColors.white),
-            onPressed: () {
-              context.read<HomeBloc>().add(const BackToAiSummaryTapped());
-            },
-          ),
+        child: TertiaryCTA(
+          key: const Key('backToAnswerButtonKey'),
+          label: l10n.backToAIAnswer,
+          icon: vertexIcons.arrowBack.image(color: VertexColors.white),
+          onPressed: () {
+            context.read<HomeBloc>().add(const BackToAiSummaryTapped());
+          },
         ),
       ),
     );
