@@ -392,7 +392,7 @@ class _AiResponseState extends State<_AiResponse>
                   Padding(
                     padding: const EdgeInsets.only(top: 16),
                     child: SizedBox(
-                      width: 540,
+                      width: 563,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
