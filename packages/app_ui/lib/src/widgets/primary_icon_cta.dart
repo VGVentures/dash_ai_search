@@ -23,6 +23,10 @@ class PrimaryIconCTA extends StatefulWidget {
   /// The callback that will be called when the button is tapped.
   final VoidCallback? onPressed;
 
+  /// Key to find the animated builder. Used for testing.
+  @visibleForTesting
+  static const Key animatedBuilderKey = Key('animated_builder');
+
   @override
   State<PrimaryIconCTA> createState() => _PrimaryCTAIconState();
 }
@@ -84,6 +88,7 @@ class _PrimaryCTAIconState extends State<PrimaryIconCTA>
               Align(
                 alignment: Alignment.centerLeft,
                 child: AnimatedBuilder(
+                  key: PrimaryIconCTA.animatedBuilderKey,
                   animation: controller,
                   builder: (_, __) {
                     return Padding(
