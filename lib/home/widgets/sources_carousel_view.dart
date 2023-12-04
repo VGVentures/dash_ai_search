@@ -128,7 +128,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         setState(() {
           moveDocumentForward();
           setupAnimatedBoxes();
-          if (remainingAnimationCount > 0) {
+          if (remainingAnimationCount != 0) {
             animateForward();
           }
         });
@@ -140,6 +140,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         setState(() {
           moveDocumentBackwards();
           setupAnimatedBoxes();
+          if (remainingAnimationCount != 0) {
+            animateBack();
+          }
         });
       }
     });
@@ -243,7 +246,8 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   void setupAnimatedBoxes() {
     final children = <AnimatedBox>[];
     nextAnimationController.reset();
-    for (var i = 0; i < maxCardsVisible; i++) {
+    backAnimationController.reset();
+    for (var i = 0; i < documents.length - 1; i++) {
       children.add(
         AnimatedBox(
           index: getDocumentIndex(documents[i]),
@@ -256,6 +260,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
           document: documents[i],
           nextRotation: _getRotationForward(i),
           backRotation: _getRotationBack(i),
+          color: Colors.white,
         ),
       );
     }
@@ -337,6 +342,7 @@ class AnimatedBox extends StatelessWidget {
     required this.backScale,
     required this.nextRotation,
     required this.backRotation,
+    required this.color,
     super.key,
   });
 
@@ -350,6 +356,7 @@ class AnimatedBox extends StatelessWidget {
   final int index;
   final Animation<double> nextRotation;
   final Animation<double> backRotation;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -381,6 +388,7 @@ class AnimatedBox extends StatelessWidget {
               child: SourceCard(
                 document: document,
                 index: index,
+                color: color,
               ),
             );
           },
@@ -395,6 +403,7 @@ class SourceCard extends StatelessWidget {
   const SourceCard({
     required this.document,
     required this.index,
+    required this.color,
     this.openLink = launchUrl,
     super.key,
   });
@@ -402,6 +411,7 @@ class SourceCard extends StatelessWidget {
   final VertexDocument document;
   final int index;
   final Future<bool> Function(Uri) openLink;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -411,7 +421,7 @@ class SourceCard extends StatelessWidget {
       width: _cardWidth,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 56),
       decoration: BoxDecoration(
-        color: VertexColors.arctic,
+        color: color,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
