@@ -216,6 +216,11 @@ class BlueContainerState extends State<BlueContainer>
             state.status == Status.resultsToSourceAnswers) {
           context.read<HomeBloc>().add(const SeeResultsSourceAnswers());
         }
+
+        if (status == AnimationStatus.dismissed &&
+            state.status == Status.sourceAnswersBackToResults) {
+          context.read<HomeBloc>().add(const Results());
+        }
       });
   }
 
