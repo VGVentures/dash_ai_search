@@ -23,12 +23,13 @@ class SourcesCarouselView extends StatefulWidget {
 }
 
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   static const maxCardsVisible = 4;
   static const incrementsOffset = 180.0;
-  static const decementScale = 0.22;
+  static const decrementScale = 0.22;
   static const rotationIncrement = 0.1;
-  late AnimationController animationController;
+  late AnimationController nextAnimationController;
+  late AnimationController backAnimationController;
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
   List<VertexDocument> documents = [];
   bool isAnimating = false;
@@ -41,7 +42,11 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   @override
   void initState() {
     super.initState();
-    animationController = AnimationController(
+    nextAnimationController = AnimationController(
+      vsync: this,
+      duration: slowAnimationDuration,
+    );
+    backAnimationController = AnimationController(
       vsync: this,
       duration: slowAnimationDuration,
     );
@@ -49,7 +54,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     // If we come to this screen with selected index we display that first
     if (widget.previouslySelectedIndex != 0) {
       for (var i = 0; i < widget.previouslySelectedIndex; i++) {
-        moveFirstDocument();
+        moveDocumentForward();
       }
     }
     setupAnimatedBoxes();
@@ -59,7 +64,8 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   @override
   void dispose() {
     super.dispose();
-    animationController.dispose();
+    nextAnimationController.dispose();
+    backAnimationController.dispose();
   }
 
   @override
@@ -68,22 +74,20 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     if (oldWidget.previouslySelectedIndex != widget.previouslySelectedIndex) {
       final diff =
           widget.previouslySelectedIndex - oldWidget.previouslySelectedIndex;
-
-      if (diff > 0) {
+      remainingAnimationCount = diff;
+      if (remainingAnimationCount > 0) {
         // We animate normal
-        remainingAnimationCount = diff;
+        animateForward();
       } else {
         // We need to animate "back"
-        remainingAnimationCount =
-            (documents.length - oldWidget.previouslySelectedIndex) +
-                widget.previouslySelectedIndex;
+        animateBack();
       }
-      animateForward();
+      //
     }
   }
 
   void animateForward() {
-    animationController
+    nextAnimationController
       ..duration = remainingAnimationCount > 1
           ? fastAnimationDuration
           : slowAnimationDuration
@@ -93,20 +97,36 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     });
   }
 
-  void moveFirstDocument() {
+  void animateBack() {
+    backAnimationController
+      ..duration = remainingAnimationCount > 1
+          ? fastAnimationDuration
+          : slowAnimationDuration
+      ..forward(from: 0);
+    setState(() {
+      remainingAnimationCount = remainingAnimationCount + 1;
+    });
+  }
+
+  void moveDocumentForward() {
     final toTheLast = documents.removeAt(0);
     documents.add(toTheLast);
   }
 
+  void moveDocumentBackwards() {
+    final toTheLast = documents.removeLast();
+    documents.insert(0, toTheLast);
+  }
+
   void setupStatusListener() {
-    animationController.addStatusListener((status) {
+    nextAnimationController.addStatusListener((status) {
       setState(() {
         isAnimating = status == AnimationStatus.forward ||
             status == AnimationStatus.reverse;
       });
       if (status == AnimationStatus.completed) {
         setState(() {
-          moveFirstDocument();
+          moveDocumentForward();
           setupAnimatedBoxes();
           if (remainingAnimationCount > 0) {
             animateForward();
@@ -114,13 +134,22 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         });
       }
     });
+
+    backAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          moveDocumentBackwards();
+          setupAnimatedBoxes();
+        });
+      }
+    });
   }
 
-  Animation<Offset> _getOffset(int index) {
+  Animation<Offset> _getOffsetForward(int index) {
     if (index == 0) {
       return Tween<Offset>(begin: Offset.zero, end: const Offset(1000, 0))
           .animate(
-        animationController,
+        nextAnimationController,
       );
     }
 
@@ -128,22 +157,52 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       begin: Offset(incrementsOffset * index, 0),
       end: Offset((incrementsOffset * index) - incrementsOffset, 0),
     ).animate(
-      animationController,
+      nextAnimationController,
     );
   }
 
-  Animation<double> _getScale(int index) {
-    if (index == 0) {
-      return Tween<double>(begin: 1, end: 2).animate(
-        animationController,
+  Animation<Offset> _getOffsetBack(int index) {
+    if (index == 3) {
+      return Tween<Offset>(begin: const Offset(1000, 0), end: Offset.zero)
+          .animate(
+        backAnimationController,
       );
     }
-    final startScale = 1 - (decementScale * index);
+    return Tween<Offset>(
+      begin: Offset(incrementsOffset * index, 0),
+      end: Offset((incrementsOffset * index) + incrementsOffset, 0),
+    ).animate(
+      backAnimationController,
+    );
+  }
+
+  Animation<double> _getScaleForward(int index) {
+    if (index == 0) {
+      return Tween<double>(begin: 1, end: 2).animate(
+        nextAnimationController,
+      );
+    }
+    final startScale = 1 - (decrementScale * index);
     return Tween<double>(
       begin: startScale,
-      end: startScale + decementScale,
+      end: startScale + decrementScale,
     ).animate(
-      animationController,
+      nextAnimationController,
+    );
+  }
+
+  Animation<double> _getScaleBack(int index) {
+    if (index == 3) {
+      return Tween<double>(begin: 2, end: 1).animate(
+        backAnimationController,
+      );
+    }
+    final startScale = 1 - (decrementScale * index);
+    return Tween<double>(
+      begin: startScale,
+      end: startScale - decrementScale,
+    ).animate(
+      backAnimationController,
     );
   }
 
@@ -151,10 +210,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     return widget.documents.indexOf(document) + 1;
   }
 
-  Animation<double> _getRotation(int index) {
+  Animation<double> _getRotationForward(int index) {
     if (index == 0) {
       return Tween<double>(begin: 0, end: -1).animate(
-        animationController,
+        nextAnimationController,
       );
     }
     final startRotation = rotationIncrement * index;
@@ -162,22 +221,41 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       begin: startRotation,
       end: startRotation - rotationIncrement,
     ).animate(
-      animationController,
+      nextAnimationController,
+    );
+  }
+
+  Animation<double> _getRotationBack(int index) {
+    if (index == 3) {
+      return Tween<double>(begin: 1, end: 0).animate(
+        backAnimationController,
+      );
+    }
+    final startRotation = rotationIncrement * index;
+    return Tween<double>(
+      begin: startRotation,
+      end: startRotation - rotationIncrement,
+    ).animate(
+      backAnimationController,
     );
   }
 
   void setupAnimatedBoxes() {
     final children = <AnimatedBox>[];
-    animationController.reset();
+    nextAnimationController.reset();
     for (var i = 0; i < maxCardsVisible; i++) {
       children.add(
         AnimatedBox(
           index: getDocumentIndex(documents[i]),
-          controller: animationController,
-          offset: _getOffset(i),
-          scale: _getScale(i),
+          nextAnimationController: nextAnimationController,
+          backAnimationController: backAnimationController,
+          nextOffset: _getOffsetForward(i),
+          backOffset: _getOffsetBack(i),
+          nextScale: _getScaleForward(i),
+          backScale: _getScaleBack(i),
           document: documents[i],
-          rotation: _getRotation(i),
+          nextRotation: _getRotationForward(i),
+          backRotation: _getRotationBack(i),
         ),
       );
     }
@@ -196,21 +274,50 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
           ...animatedBoxes,
           Align(
             alignment: Alignment.bottomCenter,
+            child: Row(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    final nextIndex = getDocumentIndex(documents.last);
+
+                    context.read<HomeBloc>().add(
+                          NavigateSourceAnswers('[$nextIndex]'),
+                        );
+                  },
+                  child: const Text('Back'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final nextIndex = getDocumentIndex(documents[1]);
+
+                    context.read<HomeBloc>().add(
+                          NavigateSourceAnswers('[$nextIndex]'),
+                        );
+                  },
+                  child: const Text('Next'),
+                ),
+              ],
+            ),
+          ),
+          /*
+          
+          Align(
+            alignment: Alignment.bottomCenter,
             child: NextButton(
-              animationController: animationController,
+              animationController: nextAnimationController,
               current: index,
               total: widget.documents.length,
               enabled: !isAnimating,
               onTap: () {
                 // Probably moving this to a new bloc event
-                final nextIndex = getDocumentIndex(documents[1]);
+                final nextIndex = getDocumentIndex(documents.last);
 
                 context.read<HomeBloc>().add(
                       NavigateSourceAnswers('[$nextIndex]'),
                     );
               },
             ),
-          ),
+          ),*/
         ],
       ),
     );
@@ -220,43 +327,64 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 class AnimatedBox extends StatelessWidget {
   @visibleForTesting
   const AnimatedBox({
-    required this.controller,
-    required this.offset,
-    required this.scale,
-    required this.document,
     required this.index,
-    required this.rotation,
+    required this.document,
+    required this.nextAnimationController,
+    required this.backAnimationController,
+    required this.nextOffset,
+    required this.backOffset,
+    required this.nextScale,
+    required this.backScale,
+    required this.nextRotation,
+    required this.backRotation,
     super.key,
   });
 
-  final AnimationController controller;
-  final Animation<Offset> offset;
-  final Animation<double> scale;
+  final AnimationController nextAnimationController;
+  final AnimationController backAnimationController;
+  final Animation<Offset> nextOffset;
+  final Animation<Offset> backOffset;
+  final Animation<double> nextScale;
+  final Animation<double> backScale;
   final VertexDocument document;
   final int index;
-  final Animation<double> rotation;
+  final Animation<double> nextRotation;
+  final Animation<double> backRotation;
 
   @override
   Widget build(BuildContext context) {
     return Align(
       child: AnimatedBuilder(
-        animation: controller,
-        builder: (_, __) {
-          return Transform(
-            alignment: FractionalOffset.center,
-            transform: Matrix4.identity()
-              ..translate(offset.value.dx, offset.value.dy)
-              ..scale(scale.value)
-              ..setEntry(3, 2, 0.003)
-              ..rotateY(
-                rotation.value,
+        animation: backAnimationController,
+        builder: (_, __) => AnimatedBuilder(
+          animation: nextAnimationController,
+          builder: (_, __) {
+            final offsetFinal =
+                backAnimationController.isAnimating ? backOffset : nextOffset;
+            final scaleFinal =
+                backAnimationController.isAnimating ? backScale : nextScale;
+            final rotationFinal = backAnimationController.isAnimating
+                ? backRotation
+                : nextRotation;
+            return Transform(
+              alignment: FractionalOffset.center,
+              transform: Matrix4.identity()
+                ..translate(
+                  offsetFinal.value.dx,
+                  offsetFinal.value.dy,
+                )
+                ..scale(scaleFinal.value)
+                ..setEntry(3, 2, 0.003)
+                ..rotateY(
+                  rotationFinal.value,
+                ),
+              child: SourceCard(
+                document: document,
+                index: index,
               ),
-            child: SourceCard(
-              document: document,
-              index: index,
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
