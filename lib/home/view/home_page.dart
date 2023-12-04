@@ -57,7 +57,7 @@ class HomeView extends StatelessWidget {
                 key: _dashRightKey,
               ),
             ),
-          if (state.isDashVisible && !state.isDashOnRight)
+          if (state.isDashOnLeft)
             const Positioned(
               bottom: 50,
               left: 50,
