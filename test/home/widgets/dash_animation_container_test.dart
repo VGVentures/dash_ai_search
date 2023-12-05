@@ -34,62 +34,113 @@ void main() {
       );
     });
 
-    Widget bootstrap([PhasedState<DashAnimationPhase>? animationState]) =>
+    Widget bootstrap({
+      PhasedState<DashAnimationPhase>? animationState,
+      bool isRight = false,
+    }) =>
         RepositoryProvider.value(
           value: dashAnimations,
           child: BlocProvider.value(
             value: homeBloc,
             child: DashAnimationContainer(
               animationState: animationState,
-              right: false,
+              right: isRight,
             ),
           ),
         );
 
-    testWidgets('renders correctly', (tester) async {
-      await tester.pumpApp(bootstrap());
+    group('left', () {
+      testWidgets('renders correctly', (tester) async {
+        await tester.pumpApp(bootstrap());
 
-      expect(find.byType(DashAnimation), findsOneWidget);
+        expect(find.byType(DashAnimation), findsOneWidget);
+      });
+
+      testWidgets('updates the animation state correctly', (tester) async {
+        final state = PhasedState<DashAnimationPhase>(
+          values: DashAnimationPhase.values,
+          initialValue: DashAnimationPhase.initial,
+        );
+
+        final animationController = StreamController<HomeState>();
+        whenListen(
+          homeBloc,
+          animationController.stream,
+          initialState: const HomeState(),
+        );
+
+        expect(state.value, equals(DashAnimationPhase.initial));
+        await tester.pumpApp(bootstrap(animationState: state));
+
+        expect(state.value, equals(DashAnimationPhase.dashIn));
+
+        animationController.add(
+          const HomeState(status: Status.thinkingToResults),
+        );
+        await tester.pump();
+
+        expect(state.value, equals(DashAnimationPhase.dashIn));
+
+        animationController.add(
+          const HomeState(status: Status.resultsToSourceAnswers),
+        );
+        await tester.pump();
+
+        expect(state.value, equals(DashAnimationPhase.dashOut));
+
+        animationController.add(
+          const HomeState(status: Status.sourceAnswersBackToResults),
+        );
+        await tester.pump();
+
+        expect(state.value, equals(DashAnimationPhase.dashIn));
+      });
     });
 
-    testWidgets('updates the animation state correctly', (tester) async {
-      final state = PhasedState<DashAnimationPhase>(
-        values: DashAnimationPhase.values,
-        initialValue: DashAnimationPhase.initial,
-      );
+    group('right', () {
+      testWidgets('renders correctly', (tester) async {
+        await tester.pumpApp(bootstrap(isRight: true));
 
-      final animationController = StreamController<HomeState>();
-      whenListen(
-        homeBloc,
-        animationController.stream,
-        initialState: const HomeState(),
-      );
+        expect(find.byType(DashAnimation), findsOneWidget);
+      });
 
-      expect(state.value, equals(DashAnimationPhase.initial));
-      await tester.pumpApp(bootstrap(state));
+      testWidgets('updates the animation state correctly', (tester) async {
+        final state = PhasedState<DashAnimationPhase>(
+          values: DashAnimationPhase.values,
+          initialValue: DashAnimationPhase.initial,
+        );
 
-      expect(state.value, equals(DashAnimationPhase.dashIn));
+        final animationController = StreamController<HomeState>();
+        whenListen(
+          homeBloc,
+          animationController.stream,
+          initialState: const HomeState(),
+        );
 
-      animationController.add(
-        const HomeState(status: Status.thinkingToResults),
-      );
-      await tester.pump();
+        expect(state.value, equals(DashAnimationPhase.initial));
+        await tester.pumpApp(
+          bootstrap(
+            animationState: state,
+            isRight: true,
+          ),
+        );
 
-      expect(state.value, equals(DashAnimationPhase.dashIn));
+        expect(state.value, equals(DashAnimationPhase.dashIn));
 
-      animationController.add(
-        const HomeState(status: Status.resultsToSourceAnswers),
-      );
-      await tester.pump();
+        animationController.add(
+          const HomeState(status: Status.resultsToSourceAnswers),
+        );
+        await tester.pump();
 
-      expect(state.value, equals(DashAnimationPhase.dashOut));
+        expect(state.value, equals(DashAnimationPhase.dashIn));
 
-      animationController.add(
-        const HomeState(status: Status.seeSourceAnswers),
-      );
-      await tester.pump();
+        animationController.add(
+          const HomeState(status: Status.sourceAnswersBackToResults),
+        );
+        await tester.pump();
 
-      expect(state.value, equals(DashAnimationPhase.dashIn));
+        expect(state.value, equals(DashAnimationPhase.dashOut));
+      });
     });
   });
 

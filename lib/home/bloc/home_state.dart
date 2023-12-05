@@ -91,20 +91,21 @@ class HomeState extends Equatable {
       status == Status.sourceAnswersBackToResults;
   bool get isMovingToSeeSourceAnswers =>
       status == Status.resultsToSourceAnswers ||
-      status == Status.seeSourceAnswers;
+      status == Status.seeSourceAnswers ||
+      status == Status.sourceAnswersBackToResults;
   bool get isSeeSourceAnswersVisible => status == Status.seeSourceAnswers;
-  bool get isDashVisible => [
-        Status.welcome,
-        Status.welcomeToAskQuestion,
-        Status.askQuestion,
-        Status.askQuestionToThinking,
-        Status.thinking,
-        Status.thinkingToResults,
-        Status.results,
-        Status.resultsToSourceAnswers,
-        Status.seeSourceAnswers,
-        Status.sourceAnswersBackToResults,
-      ].contains(status);
+  bool get isDashOnLeft =>
+      status == Status.welcome ||
+      status == Status.welcomeToAskQuestion ||
+      status == Status.askQuestion ||
+      status == Status.askQuestionToThinking ||
+      status == Status.thinking ||
+      status == Status.thinkingToResults ||
+      status == Status.results;
+  bool get isDashOnRight =>
+      status == Status.resultsToSourceAnswers ||
+      status == Status.seeSourceAnswers ||
+      status == Status.sourceAnswersBackToResults;
 
   HomeState copyWith({
     Status? status,

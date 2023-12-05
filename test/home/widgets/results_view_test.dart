@@ -176,6 +176,42 @@ void main() {
       },
     );
 
+    testWidgets(
+      'calls Results on back exit',
+      (WidgetTester tester) async {
+        final controller = StreamController<HomeState>();
+        whenListen(
+          homeBloc,
+          controller.stream,
+          initialState: const HomeState(
+            vertexResponse: response,
+          ),
+        );
+
+        await tester.pumpApp(bootstrap());
+        await tester.pumpAndSettle();
+
+        controller.add(
+          const HomeState(
+            vertexResponse: response,
+            status: Status.resultsToSourceAnswers,
+          ),
+        );
+
+        await tester.pumpAndSettle();
+
+        controller.add(
+          const HomeState(
+            vertexResponse: response,
+            status: Status.sourceAnswersBackToResults,
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        verify(() => homeBloc.add(Results())).called(2);
+      },
+    );
+
     testWidgets('animates in CarouselView when enter', (tester) async {
       when(() => homeBloc.state).thenReturn(
         HomeState(
@@ -186,11 +222,17 @@ void main() {
 
       await tester.pumpApp(bootstrap());
 
-      final forwardEnterStatuses = tester
-          .state<CarouselViewState>(find.byType(CarouselView))
-          .forwardEnterStatuses;
+      final carouselViewState =
+          tester.state<CarouselViewState>(find.byType(CarouselView));
 
-      expect(forwardEnterStatuses, equals([Status.resultsToSourceAnswers]));
+      expect(
+        carouselViewState.forwardEnterStatuses,
+        equals([Status.resultsToSourceAnswers]),
+      );
+      expect(
+        carouselViewState.backExitStatuses,
+        equals([Status.sourceAnswersBackToResults]),
+      );
     });
 
     testWidgets(
