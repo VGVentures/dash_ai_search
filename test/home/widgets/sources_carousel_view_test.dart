@@ -68,7 +68,28 @@ void main() {
     );
 
     testWidgets(
-      'calls NavigateSourceAnswers taps on next button',
+      'calls NavigateSourceAnswers taps on GoPreviousButton',
+      (WidgetTester tester) async {
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: homeBloc,
+            child: SourcesCarouselView(
+              documents: documents,
+              previouslySelectedIndex: 1,
+            ),
+          ),
+        );
+        final finder = find.byType(GoPreviousButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+        verify(() => homeBloc.add(NavigateSourceAnswers('[1]'))).called(1);
+      },
+    );
+
+    testWidgets(
+      'calls NavigateSourceAnswers taps on GoNextButton',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -79,7 +100,7 @@ void main() {
             ),
           ),
         );
-        final finder = find.byType(TextButton);
+        final finder = find.byType(GoNextButton);
         await tester.ensureVisible(finder);
         await tester.pumpAndSettle();
         await tester.tap(finder);

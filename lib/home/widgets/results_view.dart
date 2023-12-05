@@ -626,7 +626,7 @@ class CarouselViewState extends State<CarouselView>
 
   @override
   Widget build(BuildContext context) {
-    final index = context.read<HomeBloc>().state.selectedIndex;
+    final index = context.watch<HomeBloc>().state.selectedIndex;
     return SlideTransition(
       position: _offsetEnterIn,
       child: RotationTransition(
