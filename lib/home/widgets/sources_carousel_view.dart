@@ -368,19 +368,49 @@ class _NavigationButtons extends StatelessWidget {
     const color = VertexColors.white;
     return Row(
       children: [
-        _NavigationButton(
-          icon: vertexIcons.arrowBack.image(color: color),
-          onTap: onBackPressed,
+        GoPreviousButton(
+          onBackPressed: onBackPressed,
         ),
         Text(
           counter,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
         ),
-        _NavigationButton(
-          icon: vertexIcons.arrowForward.image(color: color),
-          onTap: onNextPressed,
+        GoNextButton(
+          onNextPressed: onNextPressed,
         ),
       ],
+    );
+  }
+}
+
+class GoPreviousButton extends StatelessWidget {
+  @visibleForTesting
+  const GoPreviousButton({required this.onBackPressed, super.key});
+
+  final VoidCallback onBackPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    const color = VertexColors.white;
+    return _NavigationButton(
+      icon: vertexIcons.arrowBack.image(color: color),
+      onTap: onBackPressed,
+    );
+  }
+}
+
+class GoNextButton extends StatelessWidget {
+  @visibleForTesting
+  const GoNextButton({required this.onNextPressed, super.key});
+
+  final VoidCallback onNextPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    const color = VertexColors.white;
+    return _NavigationButton(
+      icon: vertexIcons.arrowForward.image(color: color),
+      onTap: onNextPressed,
     );
   }
 }
@@ -468,7 +498,6 @@ class AnimatedBox extends StatelessWidget {
               child: SourceCard(
                 document: document,
                 index: index,
-                color: color,
               ),
             );
           },
@@ -483,7 +512,6 @@ class SourceCard extends StatelessWidget {
   const SourceCard({
     required this.document,
     required this.index,
-    required this.color,
     this.openLink = launchUrl,
     super.key,
   });
@@ -491,7 +519,6 @@ class SourceCard extends StatelessWidget {
   final VertexDocument document;
   final int index;
   final Future<bool> Function(Uri) openLink;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -501,7 +528,7 @@ class SourceCard extends StatelessWidget {
       width: _cardWidth,
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 56),
       decoration: BoxDecoration(
-        color: color,
+        color: VertexColors.deepArctic,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -572,53 +599,6 @@ class SourceCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class NextButton extends StatelessWidget {
-  @visibleForTesting
-  const NextButton({
-    required this.animationController,
-    required this.current,
-    required this.total,
-    required this.enabled,
-    required this.onTap,
-    super.key,
-  });
-
-  final AnimationController animationController;
-  final int current;
-  final int total;
-  final bool enabled;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Container(
-      alignment: Alignment.centerLeft,
-      width: _cardWidth,
-      height: kMinInteractiveDimension,
-      child: TextButton(
-        onPressed: enabled ? onTap : null,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '$current/$total',
-              style: textTheme.bodyMedium?.copyWith(color: VertexColors.arctic),
-            ),
-            const SizedBox(
-              width: 2,
-            ),
-            const Icon(
-              Icons.arrow_forward,
-              color: VertexColors.arctic,
-            ),
-          ],
-        ),
       ),
     );
   }
