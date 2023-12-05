@@ -144,7 +144,7 @@ void main() {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          index = 2;
+                          index = 1;
                         });
                       },
                       child: Text('Click me'),
@@ -163,7 +163,7 @@ void main() {
         await tester.tap(finder);
         await tester.pumpAndSettle();
 
-        expect(find.text('3/4'), findsOneWidget);
+        expect(find.text('2/4'), findsOneWidget);
       },
     );
 
@@ -172,6 +172,88 @@ void main() {
       'in only both directions',
       (WidgetTester tester) async {
         var index = 2;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = 1;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('3/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('2/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates back when on the firt index and previouslySelectedIndex gets '
+      'updated',
+      (WidgetTester tester) async {
+        var index = 0;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = documents.length - 1;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('1/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('4/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates forward when on the last index and previouslySelectedIndex '
+      'gets updated',
+      (WidgetTester tester) async {
+        var index = documents.length - 1;
         await tester.pumpApp(
           StatefulBuilder(
             builder: (context, setState) {
@@ -200,6 +282,7 @@ void main() {
         final finder = find.byType(ElevatedButton);
         await tester.ensureVisible(finder);
         await tester.pumpAndSettle();
+        expect(find.text('4/4'), findsOneWidget);
         await tester.tap(finder);
         await tester.pumpAndSettle();
 

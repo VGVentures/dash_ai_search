@@ -32,10 +32,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
   List<VertexDocument> documents = [];
   bool isAnimating = false;
+  bool isResetingList = false;
+  bool isResetingListBackwards = false;
 
-  int remainingAnimationCount = 0;
-
-  static const fastAnimationDuration = Duration(milliseconds: 250);
   static const slowAnimationDuration = Duration(milliseconds: 800);
 
   @override
@@ -71,41 +70,39 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   @override
   void didUpdateWidget(covariant SourcesCarouselView oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (oldWidget.previouslySelectedIndex != widget.previouslySelectedIndex) {
-      final diff =
-          widget.previouslySelectedIndex - oldWidget.previouslySelectedIndex;
-      remainingAnimationCount = diff;
-      if (remainingAnimationCount > 0) {
+      if (oldWidget.previouslySelectedIndex == widget.documents.length - 1 &&
+          widget.previouslySelectedIndex == 0) {
+        // We are at the end and we need to go to the beginning
+        animateForward();
+        isResetingList = true;
+      } else if (oldWidget.previouslySelectedIndex == 0 &&
+          widget.previouslySelectedIndex == widget.documents.length - 1) {
+        // We are at the beginning and we need to go to the end
+        animateBack();
+        isResetingListBackwards = true;
+      } else if (widget.previouslySelectedIndex >=
+          oldWidget.previouslySelectedIndex) {
         // We animate normal
         animateForward();
       } else {
         // We need to animate "back"
         animateBack();
       }
-      //
     }
   }
 
   void animateForward() {
     nextAnimationController
-      ..duration = remainingAnimationCount > 1
-          ? fastAnimationDuration
-          : slowAnimationDuration
+      ..duration = slowAnimationDuration
       ..forward(from: 0);
-    setState(() {
-      remainingAnimationCount = remainingAnimationCount - 1;
-    });
   }
 
   void animateBack() {
     backAnimationController
-      ..duration = remainingAnimationCount > 1
-          ? fastAnimationDuration
-          : slowAnimationDuration
+      ..duration = slowAnimationDuration
       ..forward(from: 0);
-    setState(() {
-      remainingAnimationCount = remainingAnimationCount + 1;
-    });
   }
 
   void moveDocumentForward() {
@@ -130,11 +127,14 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       });
       if (status == AnimationStatus.completed) {
         setState(() {
-          moveDocumentForward();
-          setupAnimatedBoxes();
-          if (remainingAnimationCount != 0) {
-            animateForward();
+          if (!isResetingList) {
+            moveDocumentForward();
+          } else {
+            documents = List.from(widget.documents);
+            isResetingList = false;
+            moveDocumentBackwards();
           }
+          setupAnimatedBoxes();
         });
       }
     });
@@ -142,11 +142,21 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     backAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          moveDocumentBackwards();
-          setupAnimatedBoxes();
-          if (remainingAnimationCount != 0) {
-            animateBack();
+          if (!isResetingListBackwards) {
+            moveDocumentBackwards();
+          } else {
+            final newList =
+                List<VertexDocument>.from(widget.documents).toList();
+            final lastElement = newList.removeLast();
+            final previousToLastElement = newList.removeLast();
+            documents = [
+              previousToLastElement,
+              lastElement,
+              ...newList,
+            ];
+            isResetingListBackwards = false;
           }
+          setupAnimatedBoxes();
         });
       }
     });
