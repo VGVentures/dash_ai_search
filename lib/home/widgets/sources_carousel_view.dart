@@ -319,7 +319,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   @override
   Widget build(BuildContext context) {
-    final index = getDocumentIndex(animatedBoxes.last.document);
+    final index =
+        getDocumentIndex(animatedBoxes[documents.length - 2].document);
+    final total = documents.length;
     return Container(
       height: _cardHeight + 100,
       padding: const EdgeInsets.only(right: 150),
@@ -328,51 +330,80 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
           ...animatedBoxes,
           Align(
             alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                TextButton(
-                  onPressed: () {
-                    final nextIndex = getDocumentIndex(documents[0]);
-
-                    context.read<HomeBloc>().add(
-                          NavigateSourceAnswers('[$nextIndex]'),
-                        );
-                  },
-                  child: const Text('Back'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    final nextIndex = getDocumentIndex(documents[2]);
-
-                    context.read<HomeBloc>().add(
-                          NavigateSourceAnswers('[$nextIndex]'),
-                        );
-                  },
-                  child: const Text('Next'),
-                ),
-              ],
-            ),
-          ),
-          /*
-          
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: NextButton(
-              animationController: nextAnimationController,
-              current: index,
-              total: widget.documents.length,
-              enabled: !isAnimating,
-              onTap: () {
-                // Probably moving this to a new bloc event
-                final nextIndex = getDocumentIndex(documents.last);
-
+            child: _NavigationButtons(
+              counter: '$index/$total',
+              onBackPressed: () {
+                final nextIndex = getDocumentIndex(documents[0]);
+                context.read<HomeBloc>().add(
+                      NavigateSourceAnswers('[$nextIndex]'),
+                    );
+              },
+              onNextPressed: () {
+                final nextIndex = getDocumentIndex(documents[2]);
                 context.read<HomeBloc>().add(
                       NavigateSourceAnswers('[$nextIndex]'),
                     );
               },
             ),
-          ),*/
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _NavigationButtons extends StatelessWidget {
+  const _NavigationButtons({
+    required this.onBackPressed,
+    required this.onNextPressed,
+    required this.counter,
+  });
+
+  final VoidCallback onBackPressed;
+  final VoidCallback onNextPressed;
+  final String counter;
+
+  @override
+  Widget build(BuildContext context) {
+    const color = VertexColors.white;
+    return Row(
+      children: [
+        _NavigationButton(
+          icon: vertexIcons.arrowBack.image(color: color),
+          onTap: onBackPressed,
+        ),
+        Text(
+          counter,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
+        ),
+        _NavigationButton(
+          icon: vertexIcons.arrowForward.image(color: color),
+          onTap: onNextPressed,
+        ),
+      ],
+    );
+  }
+}
+
+class _NavigationButton extends StatelessWidget {
+  const _NavigationButton({
+    required this.icon,
+    required this.onTap,
+  });
+
+  final Widget icon;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: SizedBox.square(
+        dimension: 48,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: icon,
+        ),
       ),
     );
   }
