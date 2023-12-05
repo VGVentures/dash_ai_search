@@ -75,7 +75,9 @@ class HomeState extends Equatable {
   bool get isWelcomeVisible =>
       status == Status.welcome || status == Status.welcomeToAskQuestion;
   bool get isQuestionVisible =>
-      status == Status.welcomeToAskQuestion || status == Status.askQuestion;
+      status == Status.welcomeToAskQuestion ||
+      status == Status.askQuestion ||
+      status == Status.askQuestionToThinking;
   bool get isThinkingVisible =>
       status == Status.askQuestionToThinking ||
       status == Status.thinking ||
