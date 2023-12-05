@@ -24,7 +24,6 @@ class SourcesCarouselView extends StatefulWidget {
 
 class _SourcesCarouselViewState extends State<SourcesCarouselView>
     with TickerProviderStateMixin {
-  static const maxCardsVisible = 4;
   static const incrementsOffset = 180.0;
   static const decrementScale = 0.22;
   static const rotationIncrement = 0.1;
@@ -57,6 +56,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         moveDocumentForward();
       }
     }
+    moveDocumentBackwards();
     setupAnimatedBoxes();
     setupStatusListener();
   }
@@ -286,7 +286,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     final startRotation = (rotationIncrement * index) - rotationIncrement;
     return Tween<double>(
       begin: startRotation,
-      end: startRotation - rotationIncrement,
+      end: startRotation + rotationIncrement,
     ).animate(
       backAnimationController,
     );
@@ -332,7 +332,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
               children: [
                 TextButton(
                   onPressed: () {
-                    final nextIndex = getDocumentIndex(documents.last);
+                    final nextIndex = getDocumentIndex(documents[0]);
 
                     context.read<HomeBloc>().add(
                           NavigateSourceAnswers('[$nextIndex]'),
@@ -342,7 +342,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
                 ),
                 TextButton(
                   onPressed: () {
-                    final nextIndex = getDocumentIndex(documents[1]);
+                    final nextIndex = getDocumentIndex(documents[2]);
 
                     context.read<HomeBloc>().add(
                           NavigateSourceAnswers('[$nextIndex]'),
