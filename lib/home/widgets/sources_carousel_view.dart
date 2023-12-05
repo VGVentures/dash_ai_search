@@ -118,6 +118,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     documents.insert(0, toTheLast);
   }
 
+  int getDocumentIndex(VertexDocument document) {
+    return widget.documents.indexOf(document) + 1;
+  }
+
   void setupStatusListener() {
     nextAnimationController.addStatusListener((status) {
       setState(() {
@@ -150,30 +154,47 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<Offset> _getOffsetForward(int index) {
     if (index == 0) {
-      return Tween<Offset>(begin: Offset.zero, end: const Offset(1000, 0))
-          .animate(
+      return Tween<Offset>(
+        begin: const Offset(1000, 0),
+        end: const Offset(1000, 0),
+      ).animate(
+        nextAnimationController,
+      );
+    }
+
+    if (index == 1) {
+      return Tween<Offset>(
+        begin: Offset.zero,
+        end: const Offset(1000, 0),
+      ).animate(
         nextAnimationController,
       );
     }
 
     return Tween<Offset>(
-      begin: Offset(incrementsOffset * index, 0),
-      end: Offset((incrementsOffset * index) - incrementsOffset, 0),
+      begin: Offset((incrementsOffset * index) - incrementsOffset, 0),
+      end: Offset(
+        (incrementsOffset * index) - incrementsOffset - incrementsOffset,
+        0,
+      ),
     ).animate(
       nextAnimationController,
     );
   }
 
   Animation<Offset> _getOffsetBack(int index) {
-    if (index == 3) {
+    if (index == 0) {
       return Tween<Offset>(begin: const Offset(1000, 0), end: Offset.zero)
           .animate(
         backAnimationController,
       );
     }
     return Tween<Offset>(
-      begin: Offset(incrementsOffset * index, 0),
-      end: Offset((incrementsOffset * index) + incrementsOffset, 0),
+      begin: Offset((incrementsOffset * index) - incrementsOffset, 0),
+      end: Offset(
+        (incrementsOffset * index) - incrementsOffset + incrementsOffset,
+        0,
+      ),
     ).animate(
       backAnimationController,
     );
@@ -181,11 +202,16 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getScaleForward(int index) {
     if (index == 0) {
+      return Tween<double>(begin: 2, end: 2).animate(
+        nextAnimationController,
+      );
+    }
+    if (index == 1) {
       return Tween<double>(begin: 1, end: 2).animate(
         nextAnimationController,
       );
     }
-    final startScale = 1 - (decrementScale * index);
+    final startScale = 1 - (decrementScale * index) + decrementScale;
     return Tween<double>(
       begin: startScale,
       end: startScale + decrementScale,
@@ -195,8 +221,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   }
 
   Animation<double> _getScaleBack(int index) {
-    if (index == 3) {
+    if (index == 0) {
       return Tween<double>(begin: 2, end: 1).animate(
+        backAnimationController,
+      );
+    }
+    if (index == 1) {
+      return Tween<double>(begin: 1, end: 1 - decrementScale).animate(
         backAnimationController,
       );
     }
@@ -209,12 +240,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     );
   }
 
-  int getDocumentIndex(VertexDocument document) {
-    return widget.documents.indexOf(document) + 1;
-  }
-
   Animation<double> _getRotationForward(int index) {
     if (index == 0) {
+      return Tween<double>(begin: -1, end: -1).animate(
+        nextAnimationController,
+      );
+    }
+    if (index == 1) {
       return Tween<double>(begin: 0, end: -1).animate(
         nextAnimationController,
       );
@@ -229,7 +261,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   }
 
   Animation<double> _getRotationBack(int index) {
-    if (index == 3) {
+    if (index == 0) {
       return Tween<double>(begin: 1, end: 0).animate(
         backAnimationController,
       );
@@ -247,7 +279,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     final children = <AnimatedBox>[];
     nextAnimationController.reset();
     backAnimationController.reset();
-    for (var i = 0; i < documents.length - 1; i++) {
+    for (var i = 0; i < documents.length; i++) {
       children.add(
         AnimatedBox(
           index: getDocumentIndex(documents[i]),
