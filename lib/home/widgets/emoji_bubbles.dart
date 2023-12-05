@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flame/components.dart';
@@ -63,7 +64,7 @@ class EmojiBubblesState extends State<EmojiBubbles>
   void _generateBubbles(bool happy) {
     final mediaQuery = MediaQuery.of(context);
     final homeBloc = context.read<HomeBloc>();
-    final color = homeBloc.state.isSeeSourceAnswersVisible
+    final color = homeBloc.state.status.isSeeSourceAnswersVisible
         ? VertexColors.deepArctic
         : VertexColors.white;
 
