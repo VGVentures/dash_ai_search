@@ -53,3 +53,4 @@ flutter:
   generate: true
   assets:
     - assets/animations/  
+    - assets/rating-assets/  

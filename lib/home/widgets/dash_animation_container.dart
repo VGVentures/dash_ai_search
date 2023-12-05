@@ -32,11 +32,19 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
   Widget build(BuildContext context) {
     return BlocListener<HomeBloc, HomeState>(
       listener: (context, state) {
-        if (state.status == Status.resultsToSourceAnswers) {
-          _state.value = DashAnimationPhase.dashOut;
-        } else if (state.status == Status.thinkingToResults ||
-            state.status == Status.seeSourceAnswers) {
-          _state.value = DashAnimationPhase.dashIn;
+        if (widget.right) {
+          if (state.status == Status.sourceAnswersBackToResults) {
+            _state.value = DashAnimationPhase.dashOut;
+          } else if (state.status == Status.resultsToSourceAnswers) {
+            _state.value = DashAnimationPhase.dashIn;
+          }
+        } else {
+          if (state.status == Status.resultsToSourceAnswers) {
+            _state.value = DashAnimationPhase.dashOut;
+          } else if (state.status == Status.thinkingToResults ||
+              state.status == Status.sourceAnswersBackToResults) {
+            _state.value = DashAnimationPhase.dashIn;
+          }
         }
       },
       child: DashAnimation(

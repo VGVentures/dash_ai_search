@@ -18,26 +18,20 @@ class HomePage extends StatelessWidget {
 
 class HomeView extends StatelessWidget {
   @visibleForTesting
-  const HomeView({
-    super.key,
-    @visibleForTesting this.dashOnRightStatus = Status.seeSourceAnswers,
-  });
+  const HomeView({super.key});
 
   static const _dashRightKey = Key('dashAnimationContainer_right');
   static const _dashLeftKey = Key('dashAnimationContainer_left');
 
-  final Status dashOnRightStatus;
-
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
+    final status = context.select((HomeBloc bloc) => bloc.state.status);
 
-    final isDashOnRight = state.status == dashOnRightStatus;
     return Scaffold(
       backgroundColor: VertexColors.arctic,
       body: Stack(
         children: [
-          if (state.isWelcomeVisible)
+          if (status.isWelcomeVisible)
             const Positioned(
               top: 0,
               bottom: 0,
@@ -45,16 +39,16 @@ class HomeView extends StatelessWidget {
               right: 0,
               child: Background(),
             ),
-          if (state.isWelcomeVisible) const WelcomeView(),
-          if (state.isQuestionVisible) const QuestionView(),
-          if (state.isThinkingVisible) const ThinkingView(),
-          if (state.isResultsVisible) const ResultsView(),
+          if (status.isWelcomeVisible) const WelcomeView(),
+          if (status.isThinkingVisible) const ThinkingView(),
+          if (status.isQuestionVisible) const QuestionView(),
+          if (status.isResultsVisible) const ResultsView(),
           Positioned(
             top: 40,
             left: 48,
-            child: Logo(hasDarkBackground: state.isSeeSourceAnswersVisible),
+            child: Logo(hasDarkBackground: status.isSeeSourceAnswersVisible),
           ),
-          if (state.isDashVisible && isDashOnRight)
+          if (status.isDashOnRight)
             const Positioned(
               bottom: 50,
               right: 50,
@@ -63,7 +57,7 @@ class HomeView extends StatelessWidget {
                 key: _dashRightKey,
               ),
             ),
-          if (state.isDashVisible && !isDashOnRight)
+          if (status.isDashOnLeft)
             const Positioned(
               bottom: 50,
               left: 50,
@@ -72,6 +66,9 @@ class HomeView extends StatelessWidget {
                 key: _dashLeftKey,
               ),
             ),
+          const Positioned.fill(
+            child: EmojiBubbles(),
+          ),
         ],
       ),
     );

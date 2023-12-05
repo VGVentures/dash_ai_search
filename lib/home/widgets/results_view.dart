@@ -14,7 +14,8 @@ enum ResultsAnimationPhase {
 const _searchBarTopPadding = 90.0;
 const _questionBoxHeight = 84.0;
 const _cardEnterDuration = Duration(seconds: 2);
-const _cardExpandDuration = Duration(milliseconds: 800);
+const _cardExpandDuration = Duration(seconds: 1);
+const _carouselEnterDuration = Duration(seconds: 1);
 
 class ResultsView extends StatefulWidget {
   const ResultsView({super.key});
@@ -69,7 +70,7 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
+    final status = context.select((HomeBloc bloc) => bloc.state.status);
 
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
@@ -88,7 +89,7 @@ class _ResultsView extends StatelessWidget {
                 child: SearchBoxView(),
               ),
             ),
-            if (state.isMovingToSeeSourceAnswers)
+            if (status.isMovingToSeeSourceAnswers)
               Positioned(
                 top: _questionBoxHeight + _searchBarTopPadding + 32,
                 right: 100,
@@ -215,6 +216,11 @@ class BlueContainerState extends State<BlueContainer>
         if (status == AnimationStatus.completed &&
             state.status == Status.resultsToSourceAnswers) {
           context.read<HomeBloc>().add(const SeeResultsSourceAnswers());
+        }
+
+        if (status == AnimationStatus.dismissed &&
+            state.status == Status.sourceAnswersBackToResults) {
+          context.read<HomeBloc>().add(const Results());
         }
       });
   }
@@ -423,7 +429,7 @@ class _AiResponseState extends State<_AiResponse>
                                   );
                             },
                           ),
-                          if (!state.isSeeSourceAnswersVisible)
+                          if (!state.status.isSeeSourceAnswersVisible)
                             const SeeSourceAnswersButton(),
                         ],
                       ),
@@ -581,17 +587,20 @@ class CarouselViewState extends State<CarouselView>
   List<Status> get forwardEnterStatuses => [Status.resultsToSourceAnswers];
 
   @override
+  List<Status> get backExitStatuses => [Status.sourceAnswersBackToResults];
+
+  @override
   void initializeTransitionController() {
     super.initializeTransitionController();
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: _carouselEnterDuration,
     );
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
     );
   }
 
@@ -600,14 +609,14 @@ class CarouselViewState extends State<CarouselView>
     super.initState();
 
     _offsetEnterIn =
-        Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero).animate(
+        Tween<Offset>(begin: const Offset(1.5, 0), end: Offset.zero).animate(
       CurvedAnimation(
         parent: enterTransitionController,
         curve: Curves.decelerate,
       ),
     );
 
-    _rotationEnterIn = Tween<double>(begin: 0.2, end: 0).animate(
+    _rotationEnterIn = Tween<double>(begin: 0.1, end: 0).animate(
       CurvedAnimation(
         parent: enterTransitionController,
         curve: Curves.decelerate,

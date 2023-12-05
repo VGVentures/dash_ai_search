@@ -58,6 +58,16 @@ void main() {
       );
     });
 
+    testWidgets('animates out when exit', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      final forwardExitStatuses = tester
+          .state<ThinkingViewState>(find.byType(ThinkingView))
+          .forwardExitStatuses;
+
+      expect(forwardExitStatuses, equals([Status.thinkingToResults]));
+    });
+
     group('ThinkingAnimationView', () {
       Widget bootstrap(PhasedState<ThinkingAnimationPhase> state) =>
           BlocProvider.value(
