@@ -1,3 +1,4 @@
+import 'package:api_client/api_client.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/animations.dart';
 import 'package:dash_ai_search/home/home.dart';
@@ -44,6 +45,49 @@ void main() {
   });
 
   group('HomeView', () {
+    const response = VertexResponse(
+      summary: 'Flutter is a free and open source software development '
+          "kit (SDK) from Google [1]. It's used to create beautiful, "
+          'fast user experiences, ,,,for mobile, web, and desktop '
+          'applications [1]. Flutter works with existing code and is used '
+          'by developers and organizations around the world [1]. [3]. '
+          'Flutter is a fully open source project [3].',
+      documents: [
+        VertexDocument(
+          id: '1',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '2',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '3',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+        VertexDocument(
+          id: '4',
+          metadata: VertexMetadata(
+            url: 'url',
+            title: 'title',
+            description: 'description',
+          ),
+        ),
+      ],
+    );
+
     late HomeBloc homeBloc;
     late DashAnimations dashAnimations;
 
@@ -106,8 +150,7 @@ void main() {
     });
 
     testWidgets(
-      'renders DashAnimationContainer on the left if dash is '
-      'visible and is not sources',
+      'renders DashAnimationContainer on the left if dash is visible',
       (tester) async {
         when(() => homeBloc.state).thenReturn(
           HomeState(
@@ -125,12 +168,12 @@ void main() {
     );
 
     testWidgets(
-      'renders DashAnimationContainer on the left if dash is '
-      'visible and is not sources',
+      'renders DashAnimationContainer on the right if dash is visible',
       (tester) async {
         when(() => homeBloc.state).thenReturn(
           HomeState(
-            status: Status.results,
+            status: Status.seeSourceAnswers,
+            vertexResponse: response,
           ),
         );
         await tester.pumpApp(
@@ -138,7 +181,7 @@ void main() {
             value: dashAnimations,
             child: BlocProvider.value(
               value: homeBloc,
-              child: HomeView(dashOnRightStatus: Status.results),
+              child: HomeView(),
             ),
           ),
         );
