@@ -13,8 +13,8 @@ class WelcomeView extends StatefulWidget {
 
 class WelcomeViewState extends State<WelcomeView>
     with TickerProviderStateMixin, TransitionScreenMixin {
-  late Animation<Offset> _offset;
-  late Animation<double> _opacity;
+  late Animation<Offset> _offsetIn;
+  late Animation<Offset> _offsetOut;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.welcome];
@@ -28,12 +28,12 @@ class WelcomeViewState extends State<WelcomeView>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
     );
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1200),
     );
   }
 
@@ -41,57 +41,69 @@ class WelcomeViewState extends State<WelcomeView>
   void initState() {
     super.initState();
 
-    _offset = Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
-        .animate(enterTransitionController);
+    _offsetIn =
+        Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: enterTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
 
-    _opacity =
-        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _offset,
-      child: FadeTransition(
-        opacity: _opacity,
-        child: const _WelcomeView(),
+    _offsetOut =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0, -1.5)).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
       ),
     );
   }
-}
-
-class _WelcomeView extends StatelessWidget {
-  const _WelcomeView();
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final l10n = context.l10n;
 
-    final state = context.watch<HomeBloc>().state;
+    final status = context.select((HomeBloc bloc) => bloc.state.status);
 
     return IgnorePointer(
-      ignoring: !state.isWelcomeVisible,
+      ignoring: !status.isWelcomeVisible,
       child: Center(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                l10n.initialScreenTitle,
-                textAlign: TextAlign.center,
-                style: textTheme.displayLarge?.copyWith(
-                  color: VertexColors.flutterNavy,
+              ClipRRect(
+                child: SlideTransition(
+                  position: _offsetIn,
+                  child: SlideTransition(
+                    position: _offsetOut,
+                    child: Text(
+                      l10n.initialScreenTitle,
+                      textAlign: TextAlign.center,
+                      style: textTheme.displayLarge?.copyWith(
+                        color: VertexColors.flutterNavy,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
-              PrimaryIconCTA(
-                icon: vertexIcons.arrowForward.image(
-                  color: VertexColors.googleBlue,
+              ClipRRect(
+                child: SlideTransition(
+                  position: _offsetIn,
+                  child: SlideTransition(
+                    position: _offsetOut,
+                    child: PrimaryIconCTA(
+                      icon: vertexIcons.arrowForward.image(
+                        color: VertexColors.googleBlue,
+                      ),
+                      label: l10n.startAsking,
+                      onPressed: () => context
+                          .read<HomeBloc>()
+                          .add(const FromWelcomeToQuestion()),
+                    ),
+                  ),
                 ),
-                label: l10n.startAsking,
-                onPressed: () =>
-                    context.read<HomeBloc>().add(const FromWelcomeToQuestion()),
               ),
             ],
           ),

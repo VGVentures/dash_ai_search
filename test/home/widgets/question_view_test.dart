@@ -44,6 +44,16 @@ void main() {
       expect(forwardEnterStatuses, equals([Status.welcomeToAskQuestion]));
     });
 
+    testWidgets('animates out when exit', (tester) async {
+      await tester.pumpApp(bootstrap());
+
+      final forwardExitStatuses = tester
+          .state<QuestionViewState>(find.byType(QuestionView))
+          .forwardExitStatuses;
+
+      expect(forwardExitStatuses, equals([Status.askQuestionToThinking]));
+    });
+
     testWidgets(
       'calls AskQuestion writing on enter',
       (WidgetTester tester) async {

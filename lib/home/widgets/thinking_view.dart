@@ -14,11 +14,17 @@ class ThinkingView extends StatefulWidget {
 
 class ThinkingViewState extends State<ThinkingView>
     with TickerProviderStateMixin, TransitionScreenMixin {
-  late Animation<double> _opacity;
+  late Animation<double> _opacityIn;
+  late Animation<double> _opacityOut;
+  late Animation<Offset> _offsetVerticalIn;
+  late Animation<Offset> _offsetVerticalOut;
 
   @override
   List<Status> get forwardEnterStatuses =>
       [Status.askQuestionToThinking, Status.resultsToThinking];
+
+  @override
+  List<Status> get forwardExitStatuses => [Status.thinkingToResults];
 
   @override
   void initializeTransitionController() {
@@ -26,27 +32,71 @@ class ThinkingViewState extends State<ThinkingView>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
     );
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
     );
   }
 
   @override
   void initState() {
     super.initState();
-    _opacity =
+    _opacityIn =
         Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
+
+    _opacityOut =
+        Tween<double>(begin: 1, end: 0).animate(exitTransitionController);
+
+    _offsetVerticalIn =
+        Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: enterTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
+
+    _offsetVerticalOut =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0, -1.5)).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: const ThinkingAnimationView(),
+    final query = context.select((HomeBloc bloc) => bloc.state.query);
+
+    return Stack(
+      children: [
+        FadeTransition(
+          opacity: _opacityIn,
+          child: FadeTransition(
+            opacity: _opacityOut,
+            child: const ThinkingAnimationView(),
+          ),
+        ),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ClipRRect(
+                child: SlideTransition(
+                  position: _offsetVerticalIn,
+                  child: SlideTransition(
+                    position: _offsetVerticalOut,
+                    child: TextArea(query: query),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -99,77 +149,47 @@ class ThinkingAnimation extends Phased<ThinkingAnimationPhase> {
 
   @override
   Widget build(BuildContext context) {
-    final query = context.select((HomeBloc bloc) => bloc.state.query);
-    return Stack(
-      children: [
-        Align(
-          child: CirclesAnimation(
-            state: state,
-          ),
-        ),
-        Align(
-          child: TextArea(query: query, state: state),
-        ),
-      ],
+    return Align(
+      child: CirclesAnimation(
+        state: state,
+      ),
     );
   }
 }
 
 class TextArea extends StatelessWidget {
   @visibleForTesting
-  const TextArea({required this.query, required this.state, super.key});
+  const TextArea({required this.query, super.key});
 
   final String query;
-  final PhasedState<ThinkingAnimationPhase> state;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final textTheme = Theme.of(context).textTheme;
-    const slideDuration = Duration(milliseconds: 1200);
-    const opacityDuration = Duration(milliseconds: 800);
 
-    return AnimatedOpacity(
-      duration: opacityDuration,
-      opacity: state.phaseValue(
-        values: {
-          ThinkingAnimationPhase.thinkingOut: 0,
-        },
-        defaultValue: 1,
-      ),
-      child: AnimatedSlide(
-        curve: Curves.decelerate,
-        duration: slideDuration,
-        offset: state.phaseValue(
-          values: {
-            ThinkingAnimationPhase.initial: const Offset(0, 1),
-          },
-          defaultValue: Offset.zero,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          l10n.thinkingHeadline,
+          textAlign: TextAlign.center,
+          style:
+              textTheme.bodyMedium?.copyWith(color: VertexColors.flutterNavy),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              l10n.thinkingHeadline,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium
-                  ?.copyWith(color: VertexColors.flutterNavy),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 300),
-              child: Text(
-                query,
-                textAlign: TextAlign.center,
-                style: textTheme.displayLarge
-                    ?.copyWith(color: VertexColors.flutterNavy),
-              ),
-            ),
-          ],
+        const SizedBox(
+          height: 30,
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 300),
+          child: Text(
+            query,
+            textAlign: TextAlign.center,
+            style: textTheme.displayLarge
+                ?.copyWith(color: VertexColors.flutterNavy),
+          ),
+        ),
+      ],
     );
   }
 }

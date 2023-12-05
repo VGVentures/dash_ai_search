@@ -70,7 +70,7 @@ class _ResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<HomeBloc>().state;
+    final status = context.select((HomeBloc bloc) => bloc.state.status);
 
     final response =
         context.select((HomeBloc bloc) => bloc.state.vertexResponse);
@@ -89,7 +89,7 @@ class _ResultsView extends StatelessWidget {
                 child: SearchBoxView(),
               ),
             ),
-            if (state.isMovingToSeeSourceAnswers)
+            if (status.isMovingToSeeSourceAnswers)
               Positioned(
                 top: _questionBoxHeight + _searchBarTopPadding + 32,
                 right: 100,
@@ -429,7 +429,7 @@ class _AiResponseState extends State<_AiResponse>
                                   );
                             },
                           ),
-                          if (!state.isSeeSourceAnswersVisible)
+                          if (!state.status.isSeeSourceAnswersVisible)
                             const SeeSourceAnswersButton(),
                         ],
                       ),

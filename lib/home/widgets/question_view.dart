@@ -13,10 +13,14 @@ class QuestionView extends StatefulWidget {
 
 class QuestionViewState extends State<QuestionView>
     with TickerProviderStateMixin, TransitionScreenMixin {
-  late Animation<double> _opacity;
+  late Animation<Offset> _offsetVerticalIn;
+  late Animation<Offset> _offsetVerticalOut;
 
   @override
   List<Status> get forwardEnterStatuses => [Status.welcomeToAskQuestion];
+
+  @override
+  List<Status> get forwardExitStatuses => [Status.askQuestionToThinking];
 
   @override
   void initializeTransitionController() {
@@ -24,7 +28,7 @@ class QuestionViewState extends State<QuestionView>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
           context.read<HomeBloc>().add(const AskQuestion());
@@ -33,29 +37,29 @@ class QuestionViewState extends State<QuestionView>
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 1500),
     );
   }
 
   @override
   void initState() {
     super.initState();
+    _offsetVerticalIn =
+        Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: enterTransitionController,
+        curve: Curves.decelerate,
+      ),
+    );
 
-    _opacity =
-        Tween<double>(begin: 0, end: 1).animate(enterTransitionController);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: const _QuestionView(),
+    _offsetVerticalOut =
+        Tween<Offset>(begin: Offset.zero, end: const Offset(0, -1.5)).animate(
+      CurvedAnimation(
+        parent: exitTransitionController,
+        curve: Curves.decelerate,
+      ),
     );
   }
-}
-
-class _QuestionView extends StatelessWidget {
-  const _QuestionView();
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +72,27 @@ class _QuestionView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              l10n.questionScreenTitle,
-              textAlign: TextAlign.center,
-              style: textTheme.displayLarge
-                  ?.copyWith(color: VertexColors.flutterNavy),
+            ClipRRect(
+              child: SlideTransition(
+                position: _offsetVerticalIn,
+                child: SlideTransition(
+                  position: _offsetVerticalOut,
+                  child: Text(
+                    l10n.questionScreenTitle,
+                    textAlign: TextAlign.center,
+                    style: textTheme.displayLarge
+                        ?.copyWith(color: VertexColors.flutterNavy),
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 40),
-            const SearchBox(),
+            ClipRRect(
+              child: SlideTransition(
+                position: _offsetVerticalOut,
+                child: const SearchBox(),
+              ),
+            ),
           ],
         ),
       ),

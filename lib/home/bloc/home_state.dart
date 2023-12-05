@@ -72,39 +72,6 @@ class HomeState extends Equatable {
     return ParsedSummary(elements: elements);
   }
 
-  bool get isWelcomeVisible =>
-      status == Status.welcome || status == Status.welcomeToAskQuestion;
-  bool get isQuestionVisible =>
-      status == Status.welcomeToAskQuestion || status == Status.askQuestion;
-  bool get isThinkingVisible =>
-      status == Status.askQuestionToThinking ||
-      status == Status.thinking ||
-      status == Status.thinkingToResults ||
-      status == Status.resultsToThinking;
-  bool get isResultsVisible =>
-      status == Status.thinkingToResults ||
-      status == Status.results ||
-      status == Status.resultsToSourceAnswers ||
-      status == Status.seeSourceAnswers ||
-      status == Status.sourceAnswersBackToResults;
-  bool get isMovingToSeeSourceAnswers =>
-      status == Status.resultsToSourceAnswers ||
-      status == Status.seeSourceAnswers ||
-      status == Status.sourceAnswersBackToResults;
-  bool get isSeeSourceAnswersVisible => status == Status.seeSourceAnswers;
-  bool get isDashOnLeft =>
-      status == Status.welcome ||
-      status == Status.welcomeToAskQuestion ||
-      status == Status.askQuestion ||
-      status == Status.askQuestionToThinking ||
-      status == Status.thinking ||
-      status == Status.thinkingToResults ||
-      status == Status.results;
-  bool get isDashOnRight =>
-      status == Status.resultsToSourceAnswers ||
-      status == Status.seeSourceAnswers ||
-      status == Status.sourceAnswersBackToResults;
-
   HomeState copyWith({
     Status? status,
     String? query,
@@ -132,4 +99,41 @@ class HomeState extends Equatable {
         submittedQuery,
         answerFeedbacks,
       ];
+}
+
+extension StatusX on Status {
+  bool get isWelcomeVisible =>
+      this == Status.welcome || this == Status.welcomeToAskQuestion;
+  bool get isQuestionVisible =>
+      this == Status.welcomeToAskQuestion ||
+      this == Status.askQuestion ||
+      this == Status.askQuestionToThinking;
+  bool get isThinkingVisible =>
+      this == Status.askQuestionToThinking ||
+      this == Status.thinking ||
+      this == Status.thinkingToResults ||
+      this == Status.resultsToThinking;
+  bool get isResultsVisible =>
+      this == Status.thinkingToResults ||
+      this == Status.results ||
+      this == Status.resultsToSourceAnswers ||
+      this == Status.seeSourceAnswers ||
+      this == Status.sourceAnswersBackToResults;
+  bool get isMovingToSeeSourceAnswers =>
+      this == Status.resultsToSourceAnswers ||
+      this == Status.seeSourceAnswers ||
+      this == Status.sourceAnswersBackToResults;
+  bool get isSeeSourceAnswersVisible => this == Status.seeSourceAnswers;
+  bool get isDashOnLeft =>
+      this == Status.welcome ||
+      this == Status.welcomeToAskQuestion ||
+      this == Status.askQuestion ||
+      this == Status.askQuestionToThinking ||
+      this == Status.thinking ||
+      this == Status.thinkingToResults ||
+      this == Status.results;
+  bool get isDashOnRight =>
+      this == Status.resultsToSourceAnswers ||
+      this == Status.seeSourceAnswers ||
+      this == Status.sourceAnswersBackToResults;
 }
