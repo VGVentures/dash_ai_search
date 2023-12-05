@@ -63,10 +63,10 @@ class WelcomeViewState extends State<WelcomeView>
     final textTheme = Theme.of(context).textTheme;
     final l10n = context.l10n;
 
-    final state = context.watch<HomeBloc>().state;
+    final status = context.select((HomeBloc bloc) => bloc.state.status);
 
     return IgnorePointer(
-      ignoring: !state.isWelcomeVisible,
+      ignoring: !status.isWelcomeVisible,
       child: Center(
         child: SingleChildScrollView(
           child: Column(
