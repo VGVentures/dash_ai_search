@@ -189,12 +189,19 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         backAnimationController,
       );
     }
+    if (index == 1) {
+      return Tween<Offset>(
+        begin: Offset.zero,
+        end: const Offset(incrementsOffset, 0),
+      ).animate(
+        backAnimationController,
+      );
+    }
+    final startOffset =
+        Offset((incrementsOffset * index) - incrementsOffset, 0);
     return Tween<Offset>(
-      begin: Offset((incrementsOffset * index) - incrementsOffset, 0),
-      end: Offset(
-        (incrementsOffset * index) - incrementsOffset + incrementsOffset,
-        0,
-      ),
+      begin: startOffset,
+      end: startOffset + const Offset(incrementsOffset, 0),
     ).animate(
       backAnimationController,
     );
@@ -227,11 +234,14 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       );
     }
     if (index == 1) {
-      return Tween<double>(begin: 1, end: 1 - decrementScale).animate(
+      return Tween<double>(
+        begin: 1,
+        end: 1 - decrementScale,
+      ).animate(
         backAnimationController,
       );
     }
-    final startScale = 1 - (decrementScale * index);
+    final startScale = 1 - (decrementScale * index) + decrementScale;
     return Tween<double>(
       begin: startScale,
       end: startScale - decrementScale,
@@ -251,7 +261,7 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         nextAnimationController,
       );
     }
-    final startRotation = rotationIncrement * index;
+    final startRotation = (rotationIncrement * index) - rotationIncrement;
     return Tween<double>(
       begin: startRotation,
       end: startRotation - rotationIncrement,
@@ -262,11 +272,18 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   Animation<double> _getRotationBack(int index) {
     if (index == 0) {
-      return Tween<double>(begin: 1, end: 0).animate(
+      return Tween<double>(begin: -1, end: 0).animate(
         backAnimationController,
       );
     }
-    final startRotation = rotationIncrement * index;
+
+    if (index == 1) {
+      return Tween<double>(begin: 0, end: rotationIncrement).animate(
+        backAnimationController,
+      );
+    }
+
+    final startRotation = (rotationIncrement * index) - rotationIncrement;
     return Tween<double>(
       begin: startRotation,
       end: startRotation - rotationIncrement,
