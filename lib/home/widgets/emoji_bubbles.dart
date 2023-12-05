@@ -25,17 +25,35 @@ class Bubble {
 
 class EmojiBubbles extends StatefulWidget {
   const EmojiBubbles({super.key});
+  static const cellebrateImages = [
+    'assets/rating-assets/confetti.png',
+    'assets/rating-assets/heart.png',
+    'assets/rating-assets/star.png',
+    'assets/rating-assets/thumbs-up.png',
+  ];
+  static const beDepressedImages = [
+    'assets/rating-assets/rain.png',
+    'assets/rating-assets/sad.png',
+    'assets/rating-assets/thumbs-down.png',
+  ];
 
   @override
-  State<EmojiBubbles> createState() => _EmojiBubblesState();
+  State<EmojiBubbles> createState() => EmojiBubblesState();
 }
 
-class _EmojiBubblesState extends State<EmojiBubbles>
+@visibleForTesting
+class EmojiBubblesState extends State<EmojiBubbles>
     with SingleTickerProviderStateMixin {
-  late final _controller = AnimationController(
-    vsync: this,
-    duration: Duration(milliseconds: (1000 / 60).round()),
-  )..addListener(_runLoop);
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: (1000 / 60).round()),
+    )..addListener(_runLoop);
+  }
 
   DateTime? _lastUpdate;
   late final List<Bubble> _bubbles = [];
@@ -49,19 +67,8 @@ class _EmojiBubblesState extends State<EmojiBubbles>
         ? VertexColors.deepArctic
         : VertexColors.white;
 
-    const cellebrateImages = [
-      'assets/rating-assets/confetti.png',
-      'assets/rating-assets/heart.png',
-      'assets/rating-assets/star.png',
-      'assets/rating-assets/thumbs-up.png',
-    ];
-    const beDepressedImages = [
-      'assets/rating-assets/rain.png',
-      'assets/rating-assets/sad.png',
-      'assets/rating-assets/thumbs-down.png',
-    ];
-
-    final emojis = happy ? cellebrateImages : beDepressedImages;
+    final emojis =
+        happy ? EmojiBubbles.cellebrateImages : EmojiBubbles.beDepressedImages;
 
     const numberOfBubbles = 15;
 
@@ -99,9 +106,11 @@ class _EmojiBubblesState extends State<EmojiBubbles>
 
   @override
   void dispose() {
-    super.dispose();
+    _controller
+      ..stop()
+      ..dispose();
 
-    _controller.dispose();
+    super.dispose();
   }
 
   void _initAnimation(bool happy) {
@@ -111,6 +120,7 @@ class _EmojiBubblesState extends State<EmojiBubbles>
 
   void _stopAnimation() {
     _controller.stop();
+    setState(() {});
   }
 
   void _runLoop() {
@@ -120,8 +130,10 @@ class _EmojiBubblesState extends State<EmojiBubbles>
         : now.difference(_lastUpdate!).inMilliseconds / 1000;
     _lastUpdate = now;
 
-    _update(dt);
-    setState(() {});
+    update(dt);
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   double _interpolatePosition(Bubble buble, double dt) {
@@ -134,7 +146,7 @@ class _EmojiBubblesState extends State<EmojiBubbles>
     return buble.position.y - speed * dt;
   }
 
-  void _update(double dt) {
+  void update(double dt) {
     for (final bubble in _bubbles) {
       bubble.position.y = _interpolatePosition(bubble, dt);
 
@@ -166,26 +178,40 @@ class _EmojiBubblesState extends State<EmojiBubbles>
               Positioned(
                 left: bubble.position.x,
                 top: bubble.position.y,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: bubble.color,
-                    shape: BoxShape.circle,
-                  ),
-                  child: SizedBox(
-                    width: bubble.size,
-                    height: bubble.size,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(bubble.size / 4),
-                        child: Image.asset(
-                          bubble.emoji,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                child: EmojiBubble(bubble: bubble),
               ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class EmojiBubble extends StatelessWidget {
+  const EmojiBubble({
+    required this.bubble,
+    super.key,
+  });
+
+  final Bubble bubble;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: bubble.color,
+        shape: BoxShape.circle,
+      ),
+      child: SizedBox(
+        width: bubble.size,
+        height: bubble.size,
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(bubble.size / 4),
+            child: Image.asset(
+              bubble.emoji,
+            ),
+          ),
         ),
       ),
     );
