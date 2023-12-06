@@ -37,5 +37,19 @@ void main() {
         equals(HomeAnswerFeedbackAdded(AnswerFeedback.good)),
       );
     });
+
+    test('HomeNavigated supports value equality', () {
+      expect(
+        HomeNavigated(Status.askQuestion),
+        equals(HomeNavigated(Status.askQuestion)),
+      );
+    });
+
+    test('HomeBackToAiSummaryTapped supports value equality', () {
+      expect(
+        HomeBackToAiSummaryTapped(),
+        equals(HomeBackToAiSummaryTapped()),
+      );
+    });
   });
 }

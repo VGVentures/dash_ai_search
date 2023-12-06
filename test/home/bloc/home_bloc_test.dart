@@ -54,6 +54,17 @@ void main() {
       );
     });
 
+    group('HomeNavigated', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits the new status',
+        build: buildBloc,
+        act: (bloc) => bloc.add(HomeNavigated(Status.askQuestion)),
+        expect: () => [
+          HomeState(status: Status.askQuestion),
+        ],
+      );
+    });
+
     group('HomeQuestionAskedAgain', () {
       blocTest<HomeBloc, HomeState>(
         'emits [Status.resultsToThinking, Status.thinkingToResults] '
