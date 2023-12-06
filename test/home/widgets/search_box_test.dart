@@ -45,22 +45,22 @@ void main() {
     );
 
     testWidgets(
-      'calls QuestionAsked clicking on the PrimaryCTA '
+      'calls HomeQuestionAsked clicking on the PrimaryCTA '
       'when askAgain is false',
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap());
         await tester.tap(find.byType(PrimaryCTA));
-        verify(() => homeBloc.add(QuestionAsked(''))).called(1);
+        verify(() => homeBloc.add(HomeQuestionAsked(''))).called(1);
       },
     );
 
     testWidgets(
-      'calls QuestionAskedAgain clicking on the PrimaryCTA '
+      'calls HomeQuestionAskedAgain clicking on the PrimaryCTA '
       'when askAgain is true',
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap(askAgain: true));
         await tester.tap(find.byType(PrimaryCTA));
-        verify(() => homeBloc.add(QuestionAskedAgain(''))).called(1);
+        verify(() => homeBloc.add(HomeQuestionAskedAgain(''))).called(1);
       },
     );
   });

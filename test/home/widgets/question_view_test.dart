@@ -59,7 +59,7 @@ void main() {
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap());
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(AskQuestion())).called(1);
+        verify(() => homeBloc.add(HomeNavigated(Status.askQuestion))).called(1);
       },
     );
 

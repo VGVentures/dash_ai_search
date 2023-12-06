@@ -3,19 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('HomeEvent', () {
-    test('FromWelcomeToQuestion supports value equality', () {
-      expect(
-        FromWelcomeToQuestion(),
-        equals(FromWelcomeToQuestion()),
-      );
-    });
-
-    test('AskQuestion supports value equality', () {
-      expect(
-        AskQuestion(),
-        equals(AskQuestion()),
-      );
-    });
 
     test('QueryUpdated supports value equality', () {
       expect(
@@ -24,45 +11,31 @@ void main() {
       );
     });
 
-    test('QuestionAsked supports value equality', () {
+    test('HomeQuestionAsked supports value equality', () {
       expect(
-        QuestionAsked('query'),
-        equals(QuestionAsked('query')),
+        HomeQuestionAsked('query'),
+        equals(HomeQuestionAsked('query')),
       );
     });
 
-    test('QuestionAskedAgain supports value equality', () {
+    test('HomeQuestionAskedAgain supports value equality', () {
       expect(
-        QuestionAskedAgain('query'),
-        equals(QuestionAskedAgain('query')),
+        HomeQuestionAskedAgain('query'),
+        equals(HomeQuestionAskedAgain('query')),
       );
     });
 
-    test('Results supports value equality', () {
+    test('HomeSeeSourceAnswersRequested supports value equality', () {
       expect(
-        Results(),
-        equals(Results()),
+        HomeSeeSourceAnswersRequested('[1]'),
+        equals(HomeSeeSourceAnswersRequested('[1]')),
       );
     });
 
-    test('SeeSourceAnswersRequested supports value equality', () {
+    test('HomeAnswerFeedbackAdded supports value equality', () {
       expect(
-        SeeSourceAnswersRequested('[1]'),
-        equals(SeeSourceAnswersRequested('[1]')),
-      );
-    });
-
-    test('SeeResultsSourceAnswers supports value equality', () {
-      expect(
-        SeeResultsSourceAnswers(),
-        equals(SeeResultsSourceAnswers()),
-      );
-    });
-
-    test('AddAnswerFeedback supports value equality', () {
-      expect(
-        AddAnswerFeedback(AnswerFeedback.good),
-        equals(AddAnswerFeedback(AnswerFeedback.good)),
+        HomeAnswerFeedbackAdded(AnswerFeedback.good),
+        equals(HomeAnswerFeedbackAdded(AnswerFeedback.good)),
       );
     });
   });

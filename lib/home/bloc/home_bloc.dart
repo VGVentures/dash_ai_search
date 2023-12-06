@@ -10,33 +10,23 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this._questionsRepository) : super(const HomeState()) {
-    on<FromWelcomeToQuestion>(_onFromWelcomeToQuestion);
-    on<AskQuestion>(_onQuestion);
+    on<HomeNavigated>(_onHomeNavigated);
     on<QueryUpdated>(_queryUpdated);
-    on<QuestionAsked>(_questionAsked);
-    on<QuestionAskedAgain>(_questionAskedAgain);
-    on<Results>(_onResults);
-    on<SeeSourceAnswersRequested>(_onSeeSourceAnswersRequested);
-    on<SeeResultsSourceAnswers>(_onSeeSourceAnswers);
-    on<AddAnswerFeedback>(_onAddAnswerFeedback);
-    on<NavigateSourceAnswers>(_navigateSourceAnswers);
-    on<BackToAiSummaryTapped>(_onBackToAiSummaryTapped);
+    on<HomeQuestionAsked>(_questionAsked);
+    on<HomeQuestionAskedAgain>(_questionAskedAgain);
+    on<HomeSeeSourceAnswersRequested>(_onHomeSeeSourceAnswersRequested);
+    on<HomeAnswerFeedbackAdded>(_onHomeAnswerFeedbackAdded);
+    on<HomeSourceAnswersNavigated>(_navigateSourceAnswers);
+    on<HomeBackToAiSummaryTapped>(_onHomeBackToAiSummaryTapped);
   }
 
   final QuestionsRepository _questionsRepository;
 
-  void _onFromWelcomeToQuestion(
-    FromWelcomeToQuestion event,
+  void _onHomeNavigated(
+    HomeNavigated event,
     Emitter<HomeState> emit,
   ) {
-    emit(state.copyWith(status: Status.welcomeToAskQuestion));
-  }
-
-  void _onQuestion(
-    AskQuestion event,
-    Emitter<HomeState> emit,
-  ) {
-    emit(state.copyWith(status: Status.askQuestion));
+    emit(state.copyWith(status: event.status));
   }
 
   void _queryUpdated(QueryUpdated event, Emitter<HomeState> emit) {
@@ -44,7 +34,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _questionAsked(
-    QuestionAsked event,
+    HomeQuestionAsked event,
     Emitter<HomeState> emit,
   ) async {
     emit(
@@ -57,7 +47,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<void> _questionAskedAgain(
-    QuestionAskedAgain event,
+    HomeQuestionAskedAgain event,
     Emitter<HomeState> emit,
   ) async {
     emit(
@@ -79,15 +69,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onResults(
-    Results event,
-    Emitter<HomeState> emit,
-  ) {
-    emit(state.copyWith(status: Status.results));
-  }
-
-  void _onSeeSourceAnswersRequested(
-    SeeSourceAnswersRequested event,
+  void _onHomeSeeSourceAnswersRequested(
+    HomeSeeSourceAnswersRequested event,
     Emitter<HomeState> emit,
   ) {
     final indexParsed = event.index != null ? _getIndex(event.index!) : 0;
@@ -99,15 +82,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onSeeSourceAnswers(
-    SeeResultsSourceAnswers event,
-    Emitter<HomeState> emit,
-  ) {
-    emit(state.copyWith(status: Status.seeSourceAnswers));
-  }
-
-  void _onAddAnswerFeedback(
-    AddAnswerFeedback event,
+  void _onHomeAnswerFeedbackAdded(
+    HomeAnswerFeedbackAdded event,
     Emitter<HomeState> emit,
   ) {
     emit(
@@ -121,7 +97,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr<void> _navigateSourceAnswers(
-    NavigateSourceAnswers event,
+    HomeSourceAnswersNavigated event,
     Emitter<HomeState> emit,
   ) {
     final indexParsed = _getIndex(event.index);
@@ -132,8 +108,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onBackToAiSummaryTapped(
-    BackToAiSummaryTapped event,
+  void _onHomeBackToAiSummaryTapped(
+    HomeBackToAiSummaryTapped event,
     Emitter<HomeState> emit,
   ) {
     emit(state.copyWith(status: Status.sourceAnswersBackToResults));

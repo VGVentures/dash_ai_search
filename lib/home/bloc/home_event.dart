@@ -2,17 +2,15 @@ part of 'home_bloc.dart';
 
 abstract class HomeEvent extends Equatable {
   const HomeEvent();
+}
+
+class HomeNavigated extends HomeEvent {
+  const HomeNavigated(this.status);
+
+  final Status status;
 
   @override
-  List<Object> get props => [];
-}
-
-class FromWelcomeToQuestion extends HomeEvent {
-  const FromWelcomeToQuestion();
-}
-
-class AskQuestion extends HomeEvent {
-  const AskQuestion();
+  List<Object> get props => [status];
 }
 
 class QueryUpdated extends HomeEvent {
@@ -23,8 +21,8 @@ class QueryUpdated extends HomeEvent {
   List<Object> get props => [query];
 }
 
-class QuestionAsked extends HomeEvent {
-  const QuestionAsked(this.submittedQuery);
+class HomeQuestionAsked extends HomeEvent {
+  const HomeQuestionAsked(this.submittedQuery);
 
   final String submittedQuery;
 
@@ -32,8 +30,8 @@ class QuestionAsked extends HomeEvent {
   List<Object> get props => [submittedQuery];
 }
 
-class QuestionAskedAgain extends HomeEvent {
-  const QuestionAskedAgain(this.submittedQuery);
+class HomeQuestionAskedAgain extends HomeEvent {
+  const HomeQuestionAskedAgain(this.submittedQuery);
 
   final String submittedQuery;
 
@@ -41,22 +39,17 @@ class QuestionAskedAgain extends HomeEvent {
   List<Object> get props => [submittedQuery];
 }
 
-class Results extends HomeEvent {
-  const Results();
-}
-
-class SeeSourceAnswersRequested extends HomeEvent {
-  const SeeSourceAnswersRequested(this.index);
+class HomeSeeSourceAnswersRequested extends HomeEvent {
+  const HomeSeeSourceAnswersRequested(this.index);
 
   final String? index;
+
+  @override
+  List<Object?> get props => [index];
 }
 
-class SeeResultsSourceAnswers extends HomeEvent {
-  const SeeResultsSourceAnswers();
-}
-
-class AddAnswerFeedback extends HomeEvent {
-  const AddAnswerFeedback(this.answerFeedback);
+class HomeAnswerFeedbackAdded extends HomeEvent {
+  const HomeAnswerFeedbackAdded(this.answerFeedback);
 
   final AnswerFeedback answerFeedback;
 
@@ -64,12 +57,18 @@ class AddAnswerFeedback extends HomeEvent {
   List<Object> get props => [answerFeedback];
 }
 
-class NavigateSourceAnswers extends HomeEvent {
-  const NavigateSourceAnswers(this.index);
+class HomeSourceAnswersNavigated extends HomeEvent {
+  const HomeSourceAnswersNavigated(this.index);
 
   final String index;
+
+  @override
+  List<Object?> get props => [index];
 }
 
-class BackToAiSummaryTapped extends HomeEvent {
-  const BackToAiSummaryTapped();
+class HomeBackToAiSummaryTapped extends HomeEvent {
+  const HomeBackToAiSummaryTapped();
+
+  @override
+  List<Object?> get props => [];
 }
