@@ -42,6 +42,28 @@ void main() {
       expect(text, equals('test'));
     });
 
+    testWidgets('calls onActionPressed on enter key', (tester) async {
+      var called = false;
+      await tester.pumpApp(
+        Material(
+          child: QuestionInputTextField(
+            icon: SizedBox.shrink(),
+            hint: 'hint',
+            actionText: 'actionText',
+            onActionPressed: () {
+              called = true;
+            },
+            onTextUpdated: (_) {},
+          ),
+        ),
+      );
+
+      await tester.enterText(find.byType(TextField), '');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+
+      expect(called, equals(true));
+    });
+
     group('when shouldDisplayClearTextButton is false', () {
       testWidgets('calls onActionPressed clicking on PrimaryCTA',
           (tester) async {

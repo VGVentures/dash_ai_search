@@ -73,6 +73,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField> {
           color: VertexColors.flutterNavy,
         ),
         autofillHints: null,
+        onSubmitted: (_) => widget.onActionPressed(),
         decoration: InputDecoration(
           filled: true,
           fillColor: VertexColors.arctic,
