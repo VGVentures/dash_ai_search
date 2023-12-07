@@ -148,9 +148,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
               decoration: InputDecoration(
                 filled: true,
                 border: MaterialStateOutlineInputBorder.resolveWith((states) {
-                  if (!widget.shouldDisplayClearTextButton &&
-                      (states.contains(MaterialState.focused) ||
-                          _controller.text.isNotEmpty)) {
+                  if (states.contains(MaterialState.focused)) {
                     return baseBorder.copyWith(
                       borderSide: baseBorder.borderSide.copyWith(
                         color: VertexColors.googleBlue,
