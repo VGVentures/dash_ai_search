@@ -87,9 +87,12 @@ class QuestionViewState extends State<QuestionView>
               ),
             ),
             const SizedBox(height: 40),
-            const ClipRRect(
-              child: SearchBox(
-                shouldAnimate: true,
+            ClipRRect(
+              child: SlideTransition(
+                position: _offsetVerticalOut,
+                child: const SearchBox(
+                  shouldAnimate: true,
+                ),
               ),
             ),
           ],
