@@ -36,20 +36,6 @@ class VertexTheme {
       hintStyle: VertexTextStyles.bodyLargeRegular
           .copyWith(color: VertexColors.mediumGrey),
       isDense: true,
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(100),
-        borderSide: const BorderSide(
-          color: VertexColors.googleBlue,
-          width: 2,
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(100),
-        borderSide: const BorderSide(
-          color: VertexColors.googleBlue,
-          width: 2,
-        ),
-      ),
       contentPadding: const EdgeInsets.symmetric(vertical: 32),
       hoverColor: Colors.transparent,
     );
