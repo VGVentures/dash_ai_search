@@ -13,8 +13,8 @@ class HomeNavigated extends HomeEvent {
   List<Object> get props => [status];
 }
 
-class QueryUpdated extends HomeEvent {
-  const QueryUpdated({required this.query});
+class HomeQueryUpdated extends HomeEvent {
+  const HomeQueryUpdated({required this.query});
 
   final String query;
   @override

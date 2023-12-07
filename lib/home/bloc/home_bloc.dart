@@ -11,12 +11,12 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this._questionsRepository) : super(const HomeState()) {
     on<HomeNavigated>(_onHomeNavigated);
-    on<QueryUpdated>(_queryUpdated);
-    on<HomeQuestionAsked>(_questionAsked);
-    on<HomeQuestionAskedAgain>(_questionAskedAgain);
+    on<HomeQueryUpdated>(_onHomeQueryUpdated);
+    on<HomeQuestionAsked>(_onHomeQuestionAsked);
+    on<HomeQuestionAskedAgain>(_onHomeQuestionAskedAgain);
     on<HomeSeeSourceAnswersRequested>(_onHomeSeeSourceAnswersRequested);
     on<HomeAnswerFeedbackAdded>(_onHomeAnswerFeedbackAdded);
-    on<HomeSourceAnswersNavigated>(_navigateSourceAnswers);
+    on<HomeSourceAnswersNavigated>(_onHomeSourceAnswersNavigated);
     on<HomeBackToAiSummaryTapped>(_onHomeBackToAiSummaryTapped);
   }
 
@@ -29,11 +29,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(status: event.status));
   }
 
-  void _queryUpdated(QueryUpdated event, Emitter<HomeState> emit) {
+  void _onHomeQueryUpdated(HomeQueryUpdated event, Emitter<HomeState> emit) {
     emit(state.copyWith(query: event.query));
   }
 
-  Future<void> _questionAsked(
+  Future<void> _onHomeQuestionAsked(
     HomeQuestionAsked event,
     Emitter<HomeState> emit,
   ) async {
@@ -46,7 +46,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     await _emitVertexResponse(emit);
   }
 
-  Future<void> _questionAskedAgain(
+  Future<void> _onHomeQuestionAskedAgain(
     HomeQuestionAskedAgain event,
     Emitter<HomeState> emit,
   ) async {
@@ -96,7 +96,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  FutureOr<void> _navigateSourceAnswers(
+  FutureOr<void> _onHomeSourceAnswersNavigated(
     HomeSourceAnswersNavigated event,
     Emitter<HomeState> emit,
   ) {

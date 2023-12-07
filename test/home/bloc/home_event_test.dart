@@ -3,10 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('HomeEvent', () {
-    test('QueryUpdated supports value equality', () {
+    test('HomeQueryUpdated supports value equality', () {
       expect(
-        QueryUpdated(query: 'query'),
-        equals(QueryUpdated(query: 'query')),
+        HomeQueryUpdated(query: 'query'),
+        equals(HomeQueryUpdated(query: 'query')),
       );
     });
 

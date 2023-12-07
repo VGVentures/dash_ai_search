@@ -19,11 +19,11 @@ void main() {
       return HomeBloc(questionsRepository);
     }
 
-    group('QueryUpdated', () {
+    group('HomeQueryUpdated', () {
       blocTest<HomeBloc, HomeState>(
         'emits query updated',
         build: buildBloc,
-        act: (bloc) => bloc.add(QueryUpdated(query: 'new query')),
+        act: (bloc) => bloc.add(HomeQueryUpdated(query: 'new query')),
         expect: () => [
           HomeState(query: 'new query'),
         ],
