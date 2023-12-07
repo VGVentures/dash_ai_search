@@ -66,6 +66,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
 
   late Animation<double> _textFieldAnimationSize;
   late Animation<double> _hintAnimationPadding;
+  static const _width = 659.0;
 
   @override
   void initState() {
@@ -84,7 +85,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
     );
     _hintAnimationPadding =
         Tween<double>(begin: 16, end: 600).animate(_hintAnimationController);
-    _textFieldAnimationSize = Tween<double>(begin: 659, end: 0).animate(
+    _textFieldAnimationSize = Tween<double>(begin: _width, end: 0).animate(
       CurvedAnimation(
         parent: _textFieldAnimationController,
         curve: Curves.decelerate,
@@ -114,7 +115,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     return Container(
-      constraints: const BoxConstraints(maxWidth: 659, maxHeight: 100),
+      constraints: const BoxConstraints(maxWidth: _width, maxHeight: 100),
       child: Stack(
         fit: StackFit.expand,
         children: [
