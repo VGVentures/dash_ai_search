@@ -1,4 +1,5 @@
 import 'package:api_client/api_client.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -419,5 +420,61 @@ void main() {
         expect(link, equals(Uri.parse('https://url.com')));
       },
     );
+  });
+
+  group('NavigationButton', () {
+    testWidgets('renders', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      expect(find.byType(InkWell), findsOneWidget);
+    });
+
+    testWidgets('renders', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      expect(find.byType(InkWell), findsOneWidget);
+    });
+
+    testWidgets('adds the hover circle when hovered', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      var decoratedBox = tester.widget<DecoratedBox>(
+        find.byType(DecoratedBox),
+      );
+
+      expect(
+        (decoratedBox.decoration as BoxDecoration).color,
+        Colors.transparent,
+      );
+
+      final inkWell = tester.widget<InkWell>(find.byType(InkWell));
+      inkWell.onHover?.call(true);
+
+      await tester.pump();
+
+      decoratedBox = tester.widget<DecoratedBox>(
+        find.byType(DecoratedBox),
+      );
+
+      expect(
+        (decoratedBox.decoration as BoxDecoration).color,
+        VertexColors.white.withOpacity(0.1),
+      );
+    });
   });
 }
