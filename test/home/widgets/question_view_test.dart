@@ -59,17 +59,17 @@ void main() {
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap());
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(AskQuestion())).called(1);
+        verify(() => homeBloc.add(HomeNavigated(Status.askQuestion))).called(1);
       },
     );
 
     testWidgets(
-      'calls QueryUpdated writing on the TextField',
+      'calls HomeQueryUpdated writing on the TextField',
       (WidgetTester tester) async {
         await tester.pumpApp(bootstrap());
         const newText = 'text';
         await tester.enterText(find.byType(TextField), newText);
-        verify(() => homeBloc.add(QueryUpdated(query: newText))).called(1);
+        verify(() => homeBloc.add(HomeQueryUpdated(query: newText))).called(1);
       },
     );
   });

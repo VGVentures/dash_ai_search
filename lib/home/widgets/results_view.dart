@@ -203,7 +203,7 @@ class BlueContainerState extends State<BlueContainer>
       duration: _cardEnterDuration,
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          context.read<HomeBloc>().add(const Results());
+          context.read<HomeBloc>().add(const HomeNavigated(Status.results));
         }
       });
 
@@ -215,12 +215,16 @@ class BlueContainerState extends State<BlueContainer>
 
         if (status == AnimationStatus.completed &&
             state.status == Status.resultsToSourceAnswers) {
-          context.read<HomeBloc>().add(const SeeResultsSourceAnswers());
+          context.read<HomeBloc>().add(
+                const HomeNavigated(
+                  Status.seeSourceAnswers,
+                ),
+              );
         }
 
         if (status == AnimationStatus.dismissed &&
             state.status == Status.sourceAnswersBackToResults) {
-          context.read<HomeBloc>().add(const Results());
+          context.read<HomeBloc>().add(const HomeNavigated(Status.results));
         }
       });
   }
@@ -416,14 +420,14 @@ class _AiResponseState extends State<_AiResponse>
                           FeedbackButtons(
                             onLike: () {
                               context.read<HomeBloc>().add(
-                                    const AddAnswerFeedback(
+                                    const HomeAnswerFeedbackAdded(
                                       AnswerFeedback.good,
                                     ),
                                   );
                             },
                             onDislike: () {
                               context.read<HomeBloc>().add(
-                                    const AddAnswerFeedback(
+                                    const HomeAnswerFeedbackAdded(
                                       AnswerFeedback.bad,
                                     ),
                                   );
@@ -514,13 +518,13 @@ class _SummaryViewState extends State<SummaryView>
                                   Status.seeSourceAnswers;
                           if (isOnSeeSourceAnswers) {
                             context.read<HomeBloc>().add(
-                                  NavigateSourceAnswers(
+                                  HomeSourceAnswersNavigated(
                                     element.text,
                                   ),
                                 );
                           } else {
                             context.read<HomeBloc>().add(
-                                  SeeSourceAnswersRequested(
+                                  HomeSeeSourceAnswersRequested(
                                     element.text,
                                   ),
                                 );
@@ -697,7 +701,7 @@ class _BackToAnswerButtonState extends State<BackToAnswerButton>
           label: l10n.backToAIAnswer,
           icon: vertexIcons.arrowBack.image(color: VertexColors.white),
           onPressed: () {
-            context.read<HomeBloc>().add(const BackToAiSummaryTapped());
+            context.read<HomeBloc>().add(const HomeBackToAiSummaryTapped());
           },
         ),
       ),
@@ -760,7 +764,7 @@ class _SeeSourceAnswersButtonState extends State<SeeSourceAnswersButton>
           ),
           onPressed: () => context
               .read<HomeBloc>()
-              .add(const SeeSourceAnswersRequested(null)),
+              .add(const HomeSeeSourceAnswersRequested(null)),
         ),
       ),
     );
