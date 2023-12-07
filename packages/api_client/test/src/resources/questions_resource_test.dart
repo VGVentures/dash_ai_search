@@ -24,7 +24,6 @@ void main() {
       questionsResourceApiNotEnabled = QuestionsResource(apiClient: apiClient);
       when(
         () => apiClient.post(
-          any(),
           body: any(named: 'body'),
         ),
       ).thenAnswer((_) async => response);

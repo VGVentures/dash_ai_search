@@ -130,7 +130,7 @@ void main() {
 
     group('post', () {
       test('returns the response', () async {
-        final response = await apiClient.post('/');
+        final response = await apiClient.post();
 
         expect(response.statusCode, equals(expectedResponse.statusCode));
         expect(response.body, equals(expectedResponse.body));
@@ -138,7 +138,6 @@ void main() {
 
       test('sends the request correctly', () async {
         await apiClient.post(
-          '/path/to/endpoint',
           queryParameters: {'param1': 'value1', 'param2': 'value2'},
           body: 'BODY_CONTENT',
         );
