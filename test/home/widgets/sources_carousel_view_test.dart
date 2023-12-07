@@ -209,7 +209,7 @@ void main() {
     );
 
     testWidgets(
-      'navigates back when on the firt index and previouslySelectedIndex gets '
+      'navigates back when on the first index and previouslySelectedIndex gets '
       'updated',
       (WidgetTester tester) async {
         var index = 0;
