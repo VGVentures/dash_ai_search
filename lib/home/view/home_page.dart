@@ -28,7 +28,8 @@ class HomeView extends StatelessWidget {
     final status = context.select((HomeBloc bloc) => bloc.state.status);
 
     return Scaffold(
-      backgroundColor: VertexColors.arctic,
+      backgroundColor:
+          status.isWelcomeVisible ? VertexColors.arctic : VertexColors.white,
       body: Stack(
         children: [
           if (status.isWelcomeVisible)

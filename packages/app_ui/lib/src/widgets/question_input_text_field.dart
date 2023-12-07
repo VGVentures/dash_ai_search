@@ -14,6 +14,7 @@ class QuestionInputTextField extends StatefulWidget {
     required this.onTextUpdated,
     required this.onActionPressed,
     this.shouldDisplayClearTextButton = false,
+    this.shouldAnimate = false,
     this.text,
     super.key,
   });
@@ -40,6 +41,10 @@ class QuestionInputTextField extends StatefulWidget {
   /// that clears the text field
   final bool shouldDisplayClearTextButton;
 
+  /// It indicates if the text field will have animation or not.
+  /// Defaults to `false`
+  final bool shouldAnimate;
+
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
 }
@@ -60,34 +65,38 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
     _controller.addListener(() {
       widget.onTextUpdated(_controller.text);
     });
-    _textFieldAnimationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1200),
-    );
-    _hintAnimationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 2600),
-    );
-    _hintAnimationPadding =
-        Tween<double>(begin: 16, end: 600).animate(_hintAnimationController);
-    _textFieldAnimationSize = Tween<double>(begin: 659, end: 0).animate(
-      CurvedAnimation(
-        parent: _textFieldAnimationController,
-        curve: Curves.decelerate,
-      ),
-    );
-
-    _textFieldAnimationController.forward();
-    _textFieldAnimationController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _hintAnimationController.forward();
-      }
-    });
+    if (widget.shouldAnimate) {
+      _textFieldAnimationController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 1200),
+      );
+      _hintAnimationController = AnimationController(
+        vsync: this,
+        duration: const Duration(milliseconds: 600),
+      );
+      _hintAnimationPadding =
+          Tween<double>(begin: 16, end: 600).animate(_hintAnimationController);
+      _textFieldAnimationSize = Tween<double>(begin: 659, end: 0).animate(
+        CurvedAnimation(
+          parent: _textFieldAnimationController,
+          curve: Curves.decelerate,
+        ),
+      );
+      _textFieldAnimationController
+        ..forward()
+        ..addStatusListener((status) {
+          if (status == AnimationStatus.completed) {
+            _hintAnimationController.forward();
+          }
+        });
+    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _textFieldAnimationController.dispose();
+    _hintAnimationController.dispose();
     super.dispose();
   }
 
@@ -108,7 +117,6 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
               autofillHints: null,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: VertexColors.arctic,
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: widget.icon,
@@ -131,30 +139,32 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: AnimatedBuilder(
-              animation: _textFieldAnimationController,
-              builder: (_, __) => Container(
-                color: VertexColors.arctic,
-                width: _textFieldAnimationSize.value,
-              ),
-            ),
-          ),
-          Align(
-            child: AnimatedBuilder(
-              animation: _hintAnimationController,
-              builder: (_, __) => Container(
-                color: VertexColors.arctic,
-                margin: EdgeInsets.only(
-                  top: 32,
-                  bottom: 32,
-                  right: 120,
-                  left: _hintAnimationPadding.value,
+          if (widget.shouldAnimate) ...[
+            Align(
+              alignment: Alignment.centerRight,
+              child: AnimatedBuilder(
+                animation: _textFieldAnimationController,
+                builder: (_, __) => Container(
+                  color: VertexColors.white,
+                  width: _textFieldAnimationSize.value,
                 ),
               ),
             ),
-          ),
+            Align(
+              child: AnimatedBuilder(
+                animation: _hintAnimationController,
+                builder: (_, __) => Container(
+                  color: VertexColors.white,
+                  margin: EdgeInsets.only(
+                    top: 32,
+                    bottom: 32,
+                    right: 120,
+                    left: _hintAnimationPadding.value,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
