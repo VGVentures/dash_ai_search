@@ -45,6 +45,15 @@ class QuestionInputTextField extends StatefulWidget {
   /// Defaults to `false`
   final bool shouldAnimate;
 
+  /// Key to find the animated builder for the text field. Used for testing.
+  @visibleForTesting
+  static const Key textFieldAnimatedBuilderKey =
+      Key('text_field_animated_builder');
+
+  /// Key to find the animated builder for the hint. Used for testing.
+  @visibleForTesting
+  static const Key hintAnimatedBuilderKey = Key('hint_animated_builder');
+
   @override
   State<QuestionInputTextField> createState() => _QuestionTextFieldState();
 }
@@ -65,23 +74,24 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
     _controller.addListener(() {
       widget.onTextUpdated(_controller.text);
     });
+    _textFieldAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _hintAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    _hintAnimationPadding =
+        Tween<double>(begin: 16, end: 600).animate(_hintAnimationController);
+    _textFieldAnimationSize = Tween<double>(begin: 659, end: 0).animate(
+      CurvedAnimation(
+        parent: _textFieldAnimationController,
+        curve: Curves.decelerate,
+      ),
+    );
+
     if (widget.shouldAnimate) {
-      _textFieldAnimationController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 1200),
-      );
-      _hintAnimationController = AnimationController(
-        vsync: this,
-        duration: const Duration(milliseconds: 600),
-      );
-      _hintAnimationPadding =
-          Tween<double>(begin: 16, end: 600).animate(_hintAnimationController);
-      _textFieldAnimationSize = Tween<double>(begin: 659, end: 0).animate(
-        CurvedAnimation(
-          parent: _textFieldAnimationController,
-          curve: Curves.decelerate,
-        ),
-      );
       _textFieldAnimationController
         ..forward()
         ..addStatusListener((status) {
@@ -143,6 +153,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
             Align(
               alignment: Alignment.centerRight,
               child: AnimatedBuilder(
+                key: QuestionInputTextField.textFieldAnimatedBuilderKey,
                 animation: _textFieldAnimationController,
                 builder: (_, __) => Container(
                   color: VertexColors.white,
@@ -152,6 +163,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
             ),
             Align(
               child: AnimatedBuilder(
+                key: QuestionInputTextField.hintAnimatedBuilderKey,
                 animation: _hintAnimationController,
                 builder: (_, __) => Container(
                   color: VertexColors.white,
