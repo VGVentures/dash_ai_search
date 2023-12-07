@@ -23,7 +23,6 @@ class QuestionsResource {
     String body;
     if (_realApiEnabled) {
       final response = await _apiClient.post(
-        '',
         body: jsonEncode(
           {
             'search_term': query,

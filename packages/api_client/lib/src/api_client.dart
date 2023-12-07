@@ -86,17 +86,13 @@ class ApiClient {
     realApiEnabled: _realApiEnabled,
   );
 
-  /// Sends a POST request to the specified [path] with the given [body].
-  Future<http.Response> post(
-    String path, {
+  /// Sends a POST request with the given [body].
+  Future<http.Response> post({
     Object? body,
     Map<String, String>? queryParameters,
   }) async {
     final response = await _post(
-      _base.replace(
-        path: path,
-        queryParameters: queryParameters,
-      ),
+      _base,
       body: body,
       headers: _headers..addContentTypeJson(),
     );
