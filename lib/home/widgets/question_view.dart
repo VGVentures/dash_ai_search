@@ -90,7 +90,9 @@ class QuestionViewState extends State<QuestionView>
             ClipRRect(
               child: SlideTransition(
                 position: _offsetVerticalOut,
-                child: const SearchBox(),
+                child: const SearchBox(
+                  shouldAnimate: true,
+                ),
               ),
             ),
           ],

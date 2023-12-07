@@ -371,10 +371,12 @@ class _NavigationButtons extends StatelessWidget {
         GoPreviousButton(
           onBackPressed: onBackPressed,
         ),
+        const SizedBox(width: 4),
         Text(
           counter,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
         ),
+        const SizedBox(width: 4),
         GoNextButton(
           onNextPressed: onNextPressed,
         ),
@@ -392,7 +394,7 @@ class GoPreviousButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const color = VertexColors.white;
-    return _NavigationButton(
+    return NavigationButton(
       icon: vertexIcons.arrowBack.image(color: color),
       onTap: onBackPressed,
     );
@@ -408,31 +410,53 @@ class GoNextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const color = VertexColors.white;
-    return _NavigationButton(
+    return NavigationButton(
       icon: vertexIcons.arrowForward.image(color: color),
       onTap: onNextPressed,
     );
   }
 }
 
-class _NavigationButton extends StatelessWidget {
-  const _NavigationButton({
+class NavigationButton extends StatefulWidget {
+  @visibleForTesting
+  const NavigationButton({
     required this.icon,
     required this.onTap,
+    super.key,
   });
 
   final Widget icon;
   final VoidCallback onTap;
 
   @override
+  State<NavigationButton> createState() => _NavigationButtonState();
+}
+
+class _NavigationButtonState extends State<NavigationButton> {
+  var _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onHover: (bool hover) {
+        setState(() {
+          _isHovering = hover;
+        });
+      },
+      onTap: widget.onTap,
       child: SizedBox.square(
         dimension: 48,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: icon,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: _isHovering
+                ? VertexColors.white.withOpacity(.1)
+                : Colors.transparent,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: widget.icon,
+          ),
         ),
       ),
     );
