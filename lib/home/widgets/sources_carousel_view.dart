@@ -102,7 +102,6 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
         remainingAnimationCount = distance;
         animateBack();
       }
-
     }
   }
 
