@@ -335,13 +335,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
               onBackPressed: () {
                 final nextIndex = getDocumentIndex(documents[0]);
                 context.read<HomeBloc>().add(
-                      NavigateSourceAnswers('[$nextIndex]'),
+                      HomeSourceAnswersNavigated('[$nextIndex]'),
                     );
               },
               onNextPressed: () {
                 final nextIndex = getDocumentIndex(documents[2]);
                 context.read<HomeBloc>().add(
-                      NavigateSourceAnswers('[$nextIndex]'),
+                      HomeSourceAnswersNavigated('[$nextIndex]'),
                     );
               },
             ),

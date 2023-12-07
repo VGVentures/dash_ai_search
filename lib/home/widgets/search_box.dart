@@ -28,12 +28,12 @@ class SearchBox extends StatelessWidget {
           hint: l10n.questionHint,
           actionText: l10n.ask,
           onTextUpdated: (String query) =>
-              context.read<HomeBloc>().add(QueryUpdated(query: query)),
+              context.read<HomeBloc>().add(HomeQueryUpdated(query: query)),
           onActionPressed: () {
             if (askAgain) {
-              context.read<HomeBloc>().add(QuestionAskedAgain(searchQuery));
+              context.read<HomeBloc>().add(HomeQuestionAskedAgain(searchQuery));
             } else {
-              context.read<HomeBloc>().add(QuestionAsked(searchQuery));
+              context.read<HomeBloc>().add(HomeQuestionAsked(searchQuery));
             }
           },
           text: searchQuery.isEmpty ? null : searchQuery,

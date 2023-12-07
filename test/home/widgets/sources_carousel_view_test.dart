@@ -69,7 +69,7 @@ void main() {
     );
 
     testWidgets(
-      'calls NavigateSourceAnswers taps on GoPreviousButton',
+      'calls HomeSourceAnswersNavigated taps on GoPreviousButton',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -85,12 +85,12 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(finder);
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(NavigateSourceAnswers('[1]'))).called(1);
+        verify(() => homeBloc.add(HomeSourceAnswersNavigated('[1]'))).called(1);
       },
     );
 
     testWidgets(
-      'calls NavigateSourceAnswers taps on GoNextButton',
+      'calls HomeSourceAnswersNavigated taps on GoNextButton',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -106,7 +106,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(finder);
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(NavigateSourceAnswers('[2]'))).called(1);
+        verify(() => homeBloc.add(HomeSourceAnswersNavigated('[2]'))).called(1);
       },
     );
 

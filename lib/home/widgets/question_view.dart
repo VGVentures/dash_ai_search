@@ -31,7 +31,7 @@ class QuestionViewState extends State<QuestionView>
       duration: const Duration(milliseconds: 1500),
     )..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          context.read<HomeBloc>().add(const AskQuestion());
+          context.read<HomeBloc>().add(const HomeNavigated(Status.askQuestion));
         }
       });
 
