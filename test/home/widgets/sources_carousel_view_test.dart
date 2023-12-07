@@ -1,4 +1,5 @@
 import 'package:api_client/api_client.dart';
+import 'package:app_ui/app_ui.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dash_ai_search/home/home.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ void main() {
     );
 
     testWidgets(
-      'calls NavigateSourceAnswers taps on GoPreviousButton',
+      'calls HomeSourceAnswersNavigated taps on GoPreviousButton',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -84,12 +85,12 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(finder);
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(NavigateSourceAnswers('[1]'))).called(1);
+        verify(() => homeBloc.add(HomeSourceAnswersNavigated('[1]'))).called(1);
       },
     );
 
     testWidgets(
-      'calls NavigateSourceAnswers taps on GoNextButton',
+      'calls HomeSourceAnswersNavigated taps on GoNextButton',
       (WidgetTester tester) async {
         await tester.pumpApp(
           BlocProvider.value(
@@ -105,7 +106,7 @@ void main() {
         await tester.pumpAndSettle();
         await tester.tap(finder);
         await tester.pumpAndSettle();
-        verify(() => homeBloc.add(NavigateSourceAnswers('[2]'))).called(1);
+        verify(() => homeBloc.add(HomeSourceAnswersNavigated('[2]'))).called(1);
       },
     );
 
@@ -144,7 +145,7 @@ void main() {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          index = 2;
+                          index = 1;
                         });
                       },
                       child: Text('Click me'),
@@ -163,7 +164,7 @@ void main() {
         await tester.tap(finder);
         await tester.pumpAndSettle();
 
-        expect(find.text('3/4'), findsOneWidget);
+        expect(find.text('2/4'), findsOneWidget);
       },
     );
 
@@ -172,6 +173,88 @@ void main() {
       'in only both directions',
       (WidgetTester tester) async {
         var index = 2;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = 1;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('3/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('2/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates back when on the first index and previouslySelectedIndex gets '
+      'updated',
+      (WidgetTester tester) async {
+        var index = 0;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = documents.length - 1;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('1/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('4/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates forward when on the last index and previouslySelectedIndex '
+      'gets updated',
+      (WidgetTester tester) async {
+        var index = documents.length - 1;
         await tester.pumpApp(
           StatefulBuilder(
             builder: (context, setState) {
@@ -200,10 +283,91 @@ void main() {
         final finder = find.byType(ElevatedButton);
         await tester.ensureVisible(finder);
         await tester.pumpAndSettle();
+        expect(find.text('4/4'), findsOneWidget);
         await tester.tap(finder);
         await tester.pumpAndSettle();
 
         expect(find.text('1/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates forward multiples indexes',
+      (WidgetTester tester) async {
+        var index = 0;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = 2;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('1/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('3/4'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'navigates forward multiples indexes backwards',
+      (WidgetTester tester) async {
+        var index = documents.length - 1;
+        await tester.pumpApp(
+          StatefulBuilder(
+            builder: (context, setState) {
+              return BlocProvider.value(
+                value: homeBloc,
+                child: Stack(
+                  children: [
+                    SourcesCarouselView(
+                      documents: documents,
+                      previouslySelectedIndex: index,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          index = 1;
+                        });
+                      },
+                      child: Text('Click me'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+        final finder = find.byType(ElevatedButton);
+        await tester.ensureVisible(finder);
+        await tester.pumpAndSettle();
+        expect(find.text('4/4'), findsOneWidget);
+        await tester.tap(finder);
+        await tester.pumpAndSettle();
+
+        expect(find.text('2/4'), findsOneWidget);
       },
     );
   });
@@ -256,5 +420,61 @@ void main() {
         expect(link, equals(Uri.parse('https://url.com')));
       },
     );
+  });
+
+  group('NavigationButton', () {
+    testWidgets('renders', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      expect(find.byType(InkWell), findsOneWidget);
+    });
+
+    testWidgets('renders', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      expect(find.byType(InkWell), findsOneWidget);
+    });
+
+    testWidgets('adds the hover circle when hovered', (tester) async {
+      await tester.pumpApp(
+        NavigationButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onTap: () {},
+        ),
+      );
+
+      var decoratedBox = tester.widget<DecoratedBox>(
+        find.byType(DecoratedBox),
+      );
+
+      expect(
+        (decoratedBox.decoration as BoxDecoration).color,
+        Colors.transparent,
+      );
+
+      final inkWell = tester.widget<InkWell>(find.byType(InkWell));
+      inkWell.onHover?.call(true);
+
+      await tester.pump();
+
+      decoratedBox = tester.widget<DecoratedBox>(
+        find.byType(DecoratedBox),
+      );
+
+      expect(
+        (decoratedBox.decoration as BoxDecoration).color,
+        VertexColors.white.withOpacity(0.1),
+      );
+    });
   });
 }

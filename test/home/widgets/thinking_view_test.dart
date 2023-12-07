@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:phased/phased.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -30,7 +29,7 @@ void main() {
     testWidgets('renders correctly', (tester) async {
       await tester.pumpApp(bootstrap());
 
-      expect(find.byType(CirclesAnimation), findsOneWidget);
+      expect(find.byType(PulseAnimationView), findsOneWidget);
       expect(find.byType(TextArea), findsOneWidget);
     });
 
@@ -38,7 +37,7 @@ void main() {
       tester.setViewSize(size: Size(600, 800));
       await tester.pumpApp(bootstrap());
 
-      expect(find.byType(CirclesAnimation), findsOneWidget);
+      expect(find.byType(PulseAnimationView), findsOneWidget);
       expect(find.byType(TextArea), findsOneWidget);
     });
 
@@ -68,24 +67,17 @@ void main() {
       expect(forwardExitStatuses, equals([Status.thinkingToResults]));
     });
 
-    group('ThinkingAnimationView', () {
-      Widget bootstrap(PhasedState<ThinkingAnimationPhase> state) =>
-          BlocProvider.value(
+    group('PulseAnimationView', () {
+      Widget bootstrap() => BlocProvider.value(
             value: homeBloc,
             child: Material(
-              child: ThinkingAnimationView(
-                animationState: state,
-              ),
+              child: PulseAnimationView(),
             ),
           );
 
       testWidgets(
         'animation changes correctly',
         (tester) async {
-          final animationState = PhasedState<ThinkingAnimationPhase>(
-            values: ThinkingAnimationPhase.values,
-            initialValue: ThinkingAnimationPhase.initial,
-          );
           final streamController = StreamController<HomeState>();
           whenListen(
             homeBloc,
@@ -93,23 +85,12 @@ void main() {
             initialState: const HomeState(),
           );
 
-          expect(animationState.value, equals(ThinkingAnimationPhase.initial));
-          await tester.pumpApp(bootstrap(animationState));
-
-          expect(
-            animationState.value,
-            equals(ThinkingAnimationPhase.thinkingIn),
-          );
+          await tester.pumpApp(bootstrap());
 
           streamController.add(
             const HomeState(status: Status.thinkingToResults),
           );
           await tester.pump();
-
-          expect(
-            animationState.value,
-            equals(ThinkingAnimationPhase.thinkingOut),
-          );
         },
       );
     });

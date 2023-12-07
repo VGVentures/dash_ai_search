@@ -19,48 +19,18 @@ void main() {
       return HomeBloc(questionsRepository);
     }
 
-    group('FromWelcomeToQuestion', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits [welcomeToAskQuestion]',
-        build: buildBloc,
-        act: (bloc) => bloc.add(FromWelcomeToQuestion()),
-        expect: () => [
-          isA<HomeState>().having(
-            (element) => element.status,
-            'status',
-            Status.welcomeToAskQuestion,
-          ),
-        ],
-      );
-    });
-
-    group('AskQuestion', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits [askQuestion]',
-        build: buildBloc,
-        act: (bloc) => bloc.add(AskQuestion()),
-        expect: () => [
-          isA<HomeState>().having(
-            (element) => element.status,
-            'status',
-            Status.askQuestion,
-          ),
-        ],
-      );
-    });
-
-    group('QueryUpdated', () {
+    group('HomeQueryUpdated', () {
       blocTest<HomeBloc, HomeState>(
         'emits query updated',
         build: buildBloc,
-        act: (bloc) => bloc.add(QueryUpdated(query: 'new query')),
+        act: (bloc) => bloc.add(HomeQueryUpdated(query: 'new query')),
         expect: () => [
           HomeState(query: 'new query'),
         ],
       );
     });
 
-    group('QuestionAsked', () {
+    group('HomeQuestionAsked', () {
       blocTest<HomeBloc, HomeState>(
         'emits [Status.askQuestionToThinking, Status.thinkingToResults] '
         'with vertex response from _questionsRepository.getVertexResponse',
@@ -69,7 +39,7 @@ void main() {
               .thenAnswer((_) async => VertexResponse.empty());
         },
         build: buildBloc,
-        act: (bloc) => bloc.add(QuestionAsked('query')),
+        act: (bloc) => bloc.add(HomeQuestionAsked('query')),
         expect: () => [
           HomeState(
             status: Status.askQuestionToThinking,
@@ -84,7 +54,18 @@ void main() {
       );
     });
 
-    group('QuestionAskedAgain', () {
+    group('HomeNavigated', () {
+      blocTest<HomeBloc, HomeState>(
+        'emits the new status',
+        build: buildBloc,
+        act: (bloc) => bloc.add(HomeNavigated(Status.askQuestion)),
+        expect: () => [
+          HomeState(status: Status.askQuestion),
+        ],
+      );
+    });
+
+    group('HomeQuestionAskedAgain', () {
       blocTest<HomeBloc, HomeState>(
         'emits [Status.resultsToThinking, Status.thinkingToResults] '
         'with vertex response from _questionsRepository.getVertexResponse',
@@ -93,7 +74,7 @@ void main() {
               .thenAnswer((_) async => VertexResponse.empty());
         },
         build: buildBloc,
-        act: (bloc) => bloc.add(QuestionAskedAgain('query')),
+        act: (bloc) => bloc.add(HomeQuestionAskedAgain('query')),
         expect: () => [
           HomeState(
             status: Status.resultsToThinking,
@@ -108,35 +89,13 @@ void main() {
       );
     });
 
-    group('Results', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits Status.results',
-        build: buildBloc,
-        act: (bloc) => bloc.add(Results()),
-        expect: () => [
-          HomeState(status: Status.results),
-        ],
-      );
-    });
-
-    group('SeeSourceAnswersRequested', () {
+    group('HomeSeeSourceAnswersRequested', () {
       blocTest<HomeBloc, HomeState>(
         'emits Status.resultsToSourceAnswers',
         build: buildBloc,
-        act: (bloc) => bloc.add(SeeSourceAnswersRequested('[1]')),
+        act: (bloc) => bloc.add(HomeSeeSourceAnswersRequested('[1]')),
         expect: () => [
           HomeState(status: Status.resultsToSourceAnswers),
-        ],
-      );
-    });
-
-    group('SeeResultsSourceAnswers', () {
-      blocTest<HomeBloc, HomeState>(
-        'emits Status.seeSourceAnswers',
-        build: buildBloc,
-        act: (bloc) => bloc.add(SeeResultsSourceAnswers()),
-        expect: () => [
-          HomeState(status: Status.seeSourceAnswers),
         ],
       );
     });
@@ -145,18 +104,18 @@ void main() {
       blocTest<HomeBloc, HomeState>(
         'emits Status.sourceAnswersBackToResults',
         build: buildBloc,
-        act: (bloc) => bloc.add(BackToAiSummaryTapped()),
+        act: (bloc) => bloc.add(HomeBackToAiSummaryTapped()),
         expect: () => [
           HomeState(status: Status.sourceAnswersBackToResults),
         ],
       );
     });
 
-    group('AddAnswerFeedback', () {
+    group('HomeAnswerFeedbackAdded', () {
       blocTest<HomeBloc, HomeState>(
         'emits the new feedback',
         build: buildBloc,
-        act: (bloc) => bloc.add(AddAnswerFeedback(AnswerFeedback.good)),
+        act: (bloc) => bloc.add(HomeAnswerFeedbackAdded(AnswerFeedback.good)),
         expect: () => [
           HomeState(
             answerFeedbacks: const [AnswerFeedback.good],
@@ -165,11 +124,11 @@ void main() {
       );
     });
 
-    group('NavigateSourceAnswers', () {
+    group('HomeSourceAnswersNavigated', () {
       blocTest<HomeBloc, HomeState>(
         'emits updated selectedIndex',
         build: buildBloc,
-        act: (bloc) => bloc.add(NavigateSourceAnswers('[2]')),
+        act: (bloc) => bloc.add(HomeSourceAnswersNavigated('[2]')),
         expect: () => [
           HomeState(
             selectedIndex: 1,

@@ -98,9 +98,9 @@ class WelcomeViewState extends State<WelcomeView>
                         color: VertexColors.googleBlue,
                       ),
                       label: l10n.startAsking,
-                      onPressed: () => context
-                          .read<HomeBloc>()
-                          .add(const FromWelcomeToQuestion()),
+                      onPressed: () => context.read<HomeBloc>().add(
+                            const HomeNavigated(Status.welcomeToAskQuestion),
+                          ),
                     ),
                   ),
                 ),

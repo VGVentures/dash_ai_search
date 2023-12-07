@@ -32,7 +32,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   List<AnimatedBox> animatedBoxes = <AnimatedBox>[];
   List<VertexDocument> documents = [];
   bool isAnimating = false;
+  bool isResetingList = false;
+  bool isResetingListBackwards = false;
 
+  bool goingForward = true;
   int remainingAnimationCount = 0;
 
   static const fastAnimationDuration = Duration(milliseconds: 250);
@@ -71,27 +74,43 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   @override
   void didUpdateWidget(covariant SourcesCarouselView oldWidget) {
     super.didUpdateWidget(oldWidget);
+
     if (oldWidget.previouslySelectedIndex != widget.previouslySelectedIndex) {
-      final diff =
+      final distance =
           widget.previouslySelectedIndex - oldWidget.previouslySelectedIndex;
-      remainingAnimationCount = diff;
-      if (remainingAnimationCount > 0) {
+
+      if (oldWidget.previouslySelectedIndex == widget.documents.length - 1 &&
+          widget.previouslySelectedIndex == 0) {
+        // We are at the end and we need to go to the beginning
+        remainingAnimationCount = 1;
+        animateForward();
+        isResetingList = true;
+      } else if (oldWidget.previouslySelectedIndex == 0 &&
+          widget.previouslySelectedIndex == widget.documents.length - 1) {
+        // We are at the beginning and we need to go to the end
+        remainingAnimationCount = -1;
+        animateBack();
+        isResetingListBackwards = true;
+      } else if (widget.previouslySelectedIndex >=
+          oldWidget.previouslySelectedIndex) {
         // We animate normal
+        remainingAnimationCount = distance;
         animateForward();
       } else {
         // We need to animate "back"
+        remainingAnimationCount = distance;
         animateBack();
       }
-      //
     }
   }
 
   void animateForward() {
     nextAnimationController
-      ..duration = remainingAnimationCount > 1
+      ..duration = remainingAnimationCount.abs() > 1
           ? fastAnimationDuration
           : slowAnimationDuration
       ..forward(from: 0);
+
     setState(() {
       remainingAnimationCount = remainingAnimationCount - 1;
     });
@@ -99,10 +118,11 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
 
   void animateBack() {
     backAnimationController
-      ..duration = remainingAnimationCount > 1
+      ..duration = remainingAnimationCount.abs() > 1
           ? fastAnimationDuration
           : slowAnimationDuration
       ..forward(from: 0);
+
     setState(() {
       remainingAnimationCount = remainingAnimationCount + 1;
     });
@@ -130,7 +150,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
       });
       if (status == AnimationStatus.completed) {
         setState(() {
-          moveDocumentForward();
+          if (!isResetingList) {
+            moveDocumentForward();
+          } else {
+            documents = List.from(widget.documents);
+            isResetingList = false;
+            moveDocumentBackwards();
+          }
           setupAnimatedBoxes();
           if (remainingAnimationCount != 0) {
             animateForward();
@@ -142,7 +168,20 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     backAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         setState(() {
-          moveDocumentBackwards();
+          if (!isResetingListBackwards) {
+            moveDocumentBackwards();
+          } else {
+            final newList =
+                List<VertexDocument>.from(widget.documents).toList();
+            final lastElement = newList.removeLast();
+            final previousToLastElement = newList.removeLast();
+            documents = [
+              previousToLastElement,
+              lastElement,
+              ...newList,
+            ];
+            isResetingListBackwards = false;
+          }
           setupAnimatedBoxes();
           if (remainingAnimationCount != 0) {
             animateBack();
@@ -335,13 +374,13 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
               onBackPressed: () {
                 final nextIndex = getDocumentIndex(documents[0]);
                 context.read<HomeBloc>().add(
-                      NavigateSourceAnswers('[$nextIndex]'),
+                      HomeSourceAnswersNavigated('[$nextIndex]'),
                     );
               },
               onNextPressed: () {
                 final nextIndex = getDocumentIndex(documents[2]);
                 context.read<HomeBloc>().add(
-                      NavigateSourceAnswers('[$nextIndex]'),
+                      HomeSourceAnswersNavigated('[$nextIndex]'),
                     );
               },
             ),
@@ -371,10 +410,12 @@ class _NavigationButtons extends StatelessWidget {
         GoPreviousButton(
           onBackPressed: onBackPressed,
         ),
+        const SizedBox(width: 4),
         Text(
           counter,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
         ),
+        const SizedBox(width: 4),
         GoNextButton(
           onNextPressed: onNextPressed,
         ),
@@ -392,7 +433,7 @@ class GoPreviousButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const color = VertexColors.white;
-    return _NavigationButton(
+    return NavigationButton(
       icon: vertexIcons.arrowBack.image(color: color),
       onTap: onBackPressed,
     );
@@ -408,31 +449,53 @@ class GoNextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const color = VertexColors.white;
-    return _NavigationButton(
+    return NavigationButton(
       icon: vertexIcons.arrowForward.image(color: color),
       onTap: onNextPressed,
     );
   }
 }
 
-class _NavigationButton extends StatelessWidget {
-  const _NavigationButton({
+class NavigationButton extends StatefulWidget {
+  @visibleForTesting
+  const NavigationButton({
     required this.icon,
     required this.onTap,
+    super.key,
   });
 
   final Widget icon;
   final VoidCallback onTap;
 
   @override
+  State<NavigationButton> createState() => _NavigationButtonState();
+}
+
+class _NavigationButtonState extends State<NavigationButton> {
+  var _isHovering = false;
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onHover: (bool hover) {
+        setState(() {
+          _isHovering = hover;
+        });
+      },
+      onTap: widget.onTap,
       child: SizedBox.square(
         dimension: 48,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: icon,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: _isHovering
+                ? VertexColors.white.withOpacity(.1)
+                : Colors.transparent,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: widget.icon,
+          ),
         ),
       ),
     );
