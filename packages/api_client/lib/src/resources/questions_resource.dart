@@ -22,7 +22,7 @@ class QuestionsResource {
   Future<VertexResponse> getVertexResponse(String query) async {
     String body;
     if (_realApiEnabled) {
-      final response = await _apiClient.get(
+      final response = await _apiClient.post(
         // TODO(oscar): update with real API once is enabled
         // and add possible failures.
         'google.es',

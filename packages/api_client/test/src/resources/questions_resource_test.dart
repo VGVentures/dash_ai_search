@@ -23,7 +23,7 @@ void main() {
           QuestionsResource(apiClient: apiClient, realApiEnabled: true);
       questionsResourceApiNotEnabled = QuestionsResource(apiClient: apiClient);
       when(
-        () => apiClient.get(
+        () => apiClient.post(
           any(),
           queryParameters: any(named: 'queryParameters'),
         ),
