@@ -3,66 +3,52 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('HomeEvent', () {
-    test('FromWelcomeToQuestion supports value equality', () {
+    test('HomeQueryUpdated supports value equality', () {
       expect(
-        FromWelcomeToQuestion(),
-        equals(FromWelcomeToQuestion()),
+        HomeQueryUpdated(query: 'query'),
+        equals(HomeQueryUpdated(query: 'query')),
       );
     });
 
-    test('AskQuestion supports value equality', () {
+    test('HomeQuestionAsked supports value equality', () {
       expect(
-        AskQuestion(),
-        equals(AskQuestion()),
+        HomeQuestionAsked('query'),
+        equals(HomeQuestionAsked('query')),
       );
     });
 
-    test('QueryUpdated supports value equality', () {
+    test('HomeQuestionAskedAgain supports value equality', () {
       expect(
-        QueryUpdated(query: 'query'),
-        equals(QueryUpdated(query: 'query')),
+        HomeQuestionAskedAgain('query'),
+        equals(HomeQuestionAskedAgain('query')),
       );
     });
 
-    test('QuestionAsked supports value equality', () {
+    test('HomeSeeSourceAnswersRequested supports value equality', () {
       expect(
-        QuestionAsked('query'),
-        equals(QuestionAsked('query')),
+        HomeSeeSourceAnswersRequested('[1]'),
+        equals(HomeSeeSourceAnswersRequested('[1]')),
       );
     });
 
-    test('QuestionAskedAgain supports value equality', () {
+    test('HomeAnswerFeedbackAdded supports value equality', () {
       expect(
-        QuestionAskedAgain('query'),
-        equals(QuestionAskedAgain('query')),
+        HomeAnswerFeedbackAdded(AnswerFeedback.good),
+        equals(HomeAnswerFeedbackAdded(AnswerFeedback.good)),
       );
     });
 
-    test('Results supports value equality', () {
+    test('HomeNavigated supports value equality', () {
       expect(
-        Results(),
-        equals(Results()),
+        HomeNavigated(Status.askQuestion),
+        equals(HomeNavigated(Status.askQuestion)),
       );
     });
 
-    test('SeeSourceAnswersRequested supports value equality', () {
+    test('HomeBackToAiSummaryTapped supports value equality', () {
       expect(
-        SeeSourceAnswersRequested('[1]'),
-        equals(SeeSourceAnswersRequested('[1]')),
-      );
-    });
-
-    test('SeeResultsSourceAnswers supports value equality', () {
-      expect(
-        SeeResultsSourceAnswers(),
-        equals(SeeResultsSourceAnswers()),
-      );
-    });
-
-    test('AddAnswerFeedback supports value equality', () {
-      expect(
-        AddAnswerFeedback(AnswerFeedback.good),
-        equals(AddAnswerFeedback(AnswerFeedback.good)),
+        HomeBackToAiSummaryTapped(),
+        equals(HomeBackToAiSummaryTapped()),
       );
     });
   });

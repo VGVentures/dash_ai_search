@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SearchBox extends StatelessWidget {
-  const SearchBox({this.askAgain = false, super.key});
+  const SearchBox({
+    this.shouldAnimate = false,
+    this.askAgain = false,
+    super.key,
+  });
 
   final bool askAgain;
+  final bool shouldAnimate;
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +22,18 @@ class SearchBox extends StatelessWidget {
         final searchQuery = state.query;
         final submittedQuery = state.submittedQuery;
         return QuestionInputTextField(
+          shouldAnimate: shouldAnimate,
           shouldDisplayClearTextButton: searchQuery == submittedQuery,
           icon: vertexIcons.stars.image(),
           hint: l10n.questionHint,
           actionText: l10n.ask,
           onTextUpdated: (String query) =>
-              context.read<HomeBloc>().add(QueryUpdated(query: query)),
+              context.read<HomeBloc>().add(HomeQueryUpdated(query: query)),
           onActionPressed: () {
             if (askAgain) {
-              context.read<HomeBloc>().add(QuestionAskedAgain(searchQuery));
+              context.read<HomeBloc>().add(HomeQuestionAskedAgain(searchQuery));
             } else {
-              context.read<HomeBloc>().add(QuestionAsked(searchQuery));
+              context.read<HomeBloc>().add(HomeQuestionAsked(searchQuery));
             }
           },
           text: searchQuery.isEmpty ? null : searchQuery,
