@@ -73,10 +73,7 @@ void main() {
 
       apiClient = ApiClient(
         baseUrl: baseUrl,
-        getCall: httpClient.get,
         postCall: httpClient.post,
-        patchCall: httpClient.patch,
-        putCall: httpClient.put,
       );
     });
 
@@ -91,41 +88,6 @@ void main() {
 
     test('returns a QuestionsResource instance', () {
       expect(apiClient.questionsResource, isA<QuestionsResource>());
-    });
-
-    group('get', () {
-      setUp(() {
-        when(
-          () => httpClient.get(
-            any(),
-            headers: any(named: 'headers'),
-          ),
-        ).thenAnswer((_) async => expectedResponse);
-      });
-
-      test('returns the response', () async {
-        final response = await apiClient.get('/');
-
-        expect(response.statusCode, equals(expectedResponse.statusCode));
-        expect(response.body, equals(expectedResponse.body));
-      });
-
-      test('sends the request correctly', () async {
-        await apiClient.get(
-          '/path/to/endpoint',
-          queryParameters: {
-            'param1': 'value1',
-            'param2': 'value2',
-          },
-        );
-
-        verify(
-          () => httpClient.get(
-            Uri.parse('$baseUrl/path/to/endpoint?param1=value1&param2=value2'),
-            headers: {},
-          ),
-        ).called(1);
-      });
     });
 
     group('post', () {
@@ -146,55 +108,6 @@ void main() {
         verify(
           () => httpClient.post(
             Uri.parse('$baseUrl/path/to/endpoint?param1=value1&param2=value2'),
-            body: 'BODY_CONTENT',
-            headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
-          ),
-        ).called(1);
-      });
-    });
-
-    group('patch', () {
-      test('returns the response', () async {
-        final response = await apiClient.patch('/');
-
-        expect(response.statusCode, equals(expectedResponse.statusCode));
-        expect(response.body, equals(expectedResponse.body));
-      });
-
-      test('sends the request correctly', () async {
-        await apiClient.patch(
-          '/path/to/endpoint',
-          queryParameters: {'param1': 'value1', 'param2': 'value2'},
-          body: 'BODY_CONTENT',
-        );
-
-        verify(
-          () => httpClient.patch(
-            Uri.parse('$baseUrl/path/to/endpoint?param1=value1&param2=value2'),
-            body: 'BODY_CONTENT',
-            headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
-          ),
-        ).called(1);
-      });
-    });
-
-    group('put', () {
-      test('returns the response', () async {
-        final response = await apiClient.put('/');
-
-        expect(response.statusCode, equals(expectedResponse.statusCode));
-        expect(response.body, equals(expectedResponse.body));
-      });
-
-      test('sends the request correctly', () async {
-        await apiClient.put(
-          '/path/to/endpoint',
-          body: 'BODY_CONTENT',
-        );
-
-        verify(
-          () => httpClient.put(
-            Uri.parse('$baseUrl/path/to/endpoint'),
             body: 'BODY_CONTENT',
             headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
           ),
