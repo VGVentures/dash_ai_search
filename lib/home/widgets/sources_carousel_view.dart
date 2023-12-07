@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:api_client/api_client.dart';
 import 'package:app_ui/app_ui.dart';
 import 'package:dash_ai_search/home/home.dart';
@@ -35,6 +36,10 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
   bool isResetingList = false;
   bool isResetingListBackwards = false;
 
+  bool goingForward = true;
+  int remainingAnimationCount = 0;
+
+  static const fastAnimationDuration = Duration(milliseconds: 250);
   static const slowAnimationDuration = Duration(milliseconds: 800);
 
   @override
@@ -72,37 +77,57 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.previouslySelectedIndex != widget.previouslySelectedIndex) {
+      final distance =
+          widget.previouslySelectedIndex - oldWidget.previouslySelectedIndex;
+
       if (oldWidget.previouslySelectedIndex == widget.documents.length - 1 &&
           widget.previouslySelectedIndex == 0) {
         // We are at the end and we need to go to the beginning
+        remainingAnimationCount = 1;
         animateForward();
         isResetingList = true;
       } else if (oldWidget.previouslySelectedIndex == 0 &&
           widget.previouslySelectedIndex == widget.documents.length - 1) {
         // We are at the beginning and we need to go to the end
+        remainingAnimationCount = -1;
         animateBack();
         isResetingListBackwards = true;
       } else if (widget.previouslySelectedIndex >=
           oldWidget.previouslySelectedIndex) {
         // We animate normal
+        remainingAnimationCount = distance;
         animateForward();
       } else {
         // We need to animate "back"
+        remainingAnimationCount = distance;
         animateBack();
       }
+
     }
   }
 
   void animateForward() {
     nextAnimationController
-      ..duration = slowAnimationDuration
+      ..duration = remainingAnimationCount.abs() > 1
+          ? fastAnimationDuration
+          : slowAnimationDuration
       ..forward(from: 0);
+
+    setState(() {
+      remainingAnimationCount = remainingAnimationCount - 1;
+    });
   }
 
   void animateBack() {
     backAnimationController
-      ..duration = slowAnimationDuration
+      ..duration = remainingAnimationCount.abs() > 1
+          ? fastAnimationDuration
+          : slowAnimationDuration
       ..forward(from: 0);
+
+    setState(() {
+      remainingAnimationCount = remainingAnimationCount + 1;
+    });
   }
 
   void moveDocumentForward() {
@@ -135,6 +160,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
             moveDocumentBackwards();
           }
           setupAnimatedBoxes();
+          if (remainingAnimationCount != 0) {
+            animateForward();
+          }
         });
       }
     });
@@ -157,6 +185,9 @@ class _SourcesCarouselViewState extends State<SourcesCarouselView>
             isResetingListBackwards = false;
           }
           setupAnimatedBoxes();
+          if (remainingAnimationCount != 0) {
+            animateBack();
+          }
         });
       }
     });
