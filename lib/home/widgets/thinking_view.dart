@@ -11,6 +11,8 @@ class ThinkingView extends StatefulWidget {
   State<ThinkingView> createState() => ThinkingViewState();
 }
 
+const _thinkingDuration = Duration(milliseconds: 1500);
+
 class ThinkingViewState extends State<ThinkingView>
     with TickerProviderStateMixin, TransitionScreenMixin {
   late Animation<double> _opacityIn;
@@ -31,12 +33,12 @@ class ThinkingViewState extends State<ThinkingView>
 
     enterTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: _thinkingDuration,
     );
 
     exitTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: _thinkingDuration,
     );
   }
 
@@ -107,6 +109,8 @@ class PulseAnimationView extends StatefulWidget {
   State<PulseAnimationView> createState() => _PulseAnimationViewState();
 }
 
+const _pulseDuration = Duration(milliseconds: 2000);
+
 class _PulseAnimationViewState extends State<PulseAnimationView>
     with SingleTickerProviderStateMixin {
   late AnimationController pulseTransitionController;
@@ -118,7 +122,7 @@ class _PulseAnimationViewState extends State<PulseAnimationView>
 
     pulseTransitionController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: _pulseDuration,
     );
 
     _scale =
