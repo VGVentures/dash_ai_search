@@ -60,7 +60,6 @@ class ApiClient {
   /// Sends a POST request with the given [body].
   Future<http.Response> post({
     Object? body,
-    Map<String, String>? queryParameters,
   }) async {
     final response = await _post(
       _base,

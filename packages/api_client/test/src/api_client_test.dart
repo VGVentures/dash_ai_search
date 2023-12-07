@@ -100,13 +100,12 @@ void main() {
 
       test('sends the request correctly', () async {
         await apiClient.post(
-          queryParameters: {'param1': 'value1', 'param2': 'value2'},
           body: 'BODY_CONTENT',
         );
 
         verify(
           () => httpClient.post(
-            Uri.parse('$baseUrl/path/to/endpoint?param1=value1&param2=value2'),
+            Uri.parse(baseUrl),
             body: 'BODY_CONTENT',
             headers: {HttpHeaders.contentTypeHeader: ContentType.json.value},
           ),
