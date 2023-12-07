@@ -160,7 +160,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 12),
                   child: vertexIcons.stars.image(
-                    color: _focus.hasFocus
+                    color: _controller.text.isNotEmpty
                         ? VertexColors.googleBlue
                         : VertexColors.mediumGrey,
                   ),
