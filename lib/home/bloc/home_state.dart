@@ -37,7 +37,7 @@ enum AnswerFeedback {
 
 class HomeState extends Equatable {
   const HomeState({
-    this.status = Status.askQuestion,
+    this.status = Status.welcome,
     this.query = '',
     this.vertexResponse = const VertexResponse.empty(),
     this.submittedQuery,

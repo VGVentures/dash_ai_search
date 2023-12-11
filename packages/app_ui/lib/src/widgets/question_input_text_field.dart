@@ -1,5 +1,4 @@
 import 'package:app_ui/app_ui.dart';
-import 'package:app_ui/src/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
 
 /// {@template question_input_text_field}
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 class QuestionInputTextField extends StatefulWidget {
   /// {@macro question_input_text_field}
   const QuestionInputTextField({
-    required this.icon,
     required this.hint,
     required this.actionText,
     required this.onTextUpdated,
@@ -19,9 +17,6 @@ class QuestionInputTextField extends StatefulWidget {
     this.text,
     super.key,
   });
-
-  /// The icon to display on the left side of the text field.
-  final AssetGenImage icon;
 
   /// The hint text to display in the text field.
   final String hint;
