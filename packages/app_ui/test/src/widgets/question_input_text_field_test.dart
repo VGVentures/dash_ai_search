@@ -10,7 +10,6 @@ void main() {
       await tester.pumpApp(
         Material(
           child: QuestionInputTextField(
-            icon: SizedBox.shrink(),
             hint: 'hint',
             actionText: 'actionText',
             onActionPressed: () {},
@@ -27,7 +26,6 @@ void main() {
       await tester.pumpApp(
         Material(
           child: QuestionInputTextField(
-            icon: SizedBox.shrink(),
             hint: 'hint',
             actionText: 'actionText',
             onActionPressed: () {},
@@ -64,7 +62,6 @@ void main() {
       await tester.pumpApp(
         Material(
           child: QuestionInputTextField(
-            icon: SizedBox.shrink(),
             hint: 'hint',
             actionText: 'actionText',
             onActionPressed: () {},
@@ -83,7 +80,6 @@ void main() {
       await tester.pumpApp(
         Material(
           child: QuestionInputTextField(
-            icon: SizedBox.shrink(),
             hint: 'hint',
             actionText: 'actionText',
             onActionPressed: () {
@@ -107,7 +103,6 @@ void main() {
         await tester.pumpApp(
           Material(
             child: QuestionInputTextField(
-              icon: SizedBox.shrink(),
               hint: 'hint',
               actionText: 'actionText',
               onActionPressed: () {
@@ -131,7 +126,6 @@ void main() {
             child: QuestionInputTextField(
               text: 'hello world',
               shouldDisplayClearTextButton: true,
-              icon: SizedBox.shrink(),
               hint: 'hint',
               actionText: 'actionText',
               onActionPressed: () {},

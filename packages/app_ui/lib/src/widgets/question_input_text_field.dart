@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class QuestionInputTextField extends StatefulWidget {
   /// {@macro question_input_text_field}
   const QuestionInputTextField({
-    required this.icon,
     required this.hint,
     required this.actionText,
     required this.onTextUpdated,
@@ -18,9 +17,6 @@ class QuestionInputTextField extends StatefulWidget {
     this.text,
     super.key,
   });
-
-  /// The icon to display on the left side of the text field.
-  final Widget icon;
 
   /// The hint text to display in the text field.
   final String hint;
@@ -68,6 +64,8 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
   late Animation<double> _hintAnimationPadding;
   static const _width = 659.0;
 
+  final FocusNode _focus = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +99,12 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
           }
         });
     }
+
+    _focus.addListener(_onFocusChange);
+  }
+
+  void _onFocusChange() {
+    setState(() {});
   }
 
   @override
@@ -108,12 +112,20 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
     _controller.dispose();
     _textFieldAnimationController.dispose();
     _hintAnimationController.dispose();
+    _focus.removeListener(() {});
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final baseBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(100),
+      borderSide: const BorderSide(
+        color: VertexColors.lightGrey,
+        width: 2,
+      ),
+    );
     return Container(
       constraints: const BoxConstraints(maxWidth: _width, maxHeight: 100),
       child: Stack(
@@ -121,6 +133,7 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
         children: [
           Align(
             child: TextField(
+              focusNode: _focus,
               controller: _controller,
               style: textTheme.bodyMedium?.copyWith(
                 color: VertexColors.flutterNavy,
@@ -129,9 +142,23 @@ class _QuestionTextFieldState extends State<QuestionInputTextField>
               onSubmitted: (_) => widget.onActionPressed(),
               decoration: InputDecoration(
                 filled: true,
+                border: MaterialStateOutlineInputBorder.resolveWith((states) {
+                  if (states.contains(MaterialState.focused)) {
+                    return baseBorder.copyWith(
+                      borderSide: baseBorder.borderSide.copyWith(
+                        color: VertexColors.googleBlue,
+                      ),
+                    );
+                  }
+                  return baseBorder;
+                }),
                 prefixIcon: Padding(
                   padding: const EdgeInsets.only(left: 12),
-                  child: widget.icon,
+                  child: vertexIcons.stars.image(
+                    color: _controller.text.isNotEmpty
+                        ? VertexColors.googleBlue
+                        : VertexColors.mediumGrey,
+                  ),
                 ),
                 hintText: widget.hint,
                 suffixIcon: Padding(

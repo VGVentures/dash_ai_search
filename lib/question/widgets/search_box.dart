@@ -24,7 +24,6 @@ class SearchBox extends StatelessWidget {
         return QuestionInputTextField(
           shouldAnimate: shouldAnimate,
           shouldDisplayClearTextButton: searchQuery == submittedQuery,
-          icon: vertexIcons.stars.image(),
           hint: l10n.questionHint,
           actionText: l10n.ask,
           onTextUpdated: (String query) =>
