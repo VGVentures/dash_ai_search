@@ -64,19 +64,26 @@ void main() {
       expect(forwardExitStatuses, equals([Status.welcomeToAskQuestion]));
     });
 
-    testWidgets('calls FromWelcomeToQuestion on PrimaryCTA tapped',
-        (tester) async {
-      await tester.pumpApp(
-        BlocProvider.value(
-          value: homeBloc,
-          child: WelcomeView(),
-        ),
-      );
+    testWidgets(
+      'calls HomeNavigated(welcomeToAskQuestion) on PrimaryCTA '
+      'tapped',
+      (tester) async {
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: homeBloc,
+            child: WelcomeView(),
+          ),
+        );
 
-      await tester.pumpAndSettle();
-      await tester.tap(find.byType(PrimaryIconCTA));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(PrimaryIconCTA));
 
-      verify(() => homeBloc.add(const FromWelcomeToQuestion())).called(1);
-    });
+        verify(
+          () => homeBloc.add(
+            const HomeNavigated(Status.welcomeToAskQuestion),
+          ),
+        ).called(1);
+      },
+    );
   });
 }

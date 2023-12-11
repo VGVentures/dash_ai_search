@@ -22,22 +22,13 @@ class QuestionsResource {
   Future<VertexResponse> getVertexResponse(String query) async {
     String body;
     if (_realApiEnabled) {
-      final response = await _apiClient.get(
-        // TODO(oscar): update with real API once is enabled
-        // and add possible failures.
-        'google.es',
-        queryParameters: {
-          'query': query,
-        },
+      final response = await _apiClient.post(
+        body: jsonEncode(
+          {
+            'search_term': query,
+          },
+        ),
       );
-      if (response.statusCode != 200) {
-        throw ApiClientError(
-          'GET getVertexResponse with query=$query '
-          'returned status ${response.statusCode} '
-          'with the following response: "${response.body}"',
-          StackTrace.current,
-        );
-      }
       body = response.body;
     } else {
       await Future<void>.delayed(const Duration(seconds: 2));

@@ -91,7 +91,7 @@ void main() {
       expect(find.byType(CarouselView), findsOneWidget);
     });
 
-    testWidgets('calls BackToAiSummaryTapped on backToAiResults tapped',
+    testWidgets('calls HomeBackToAiSummaryTapped on backToAiResults tapped',
         (tester) async {
       when(() => homeBloc.state).thenReturn(
         HomeState(vertexResponse: response, status: Status.seeSourceAnswers),
@@ -101,7 +101,7 @@ void main() {
       final button =
           tester.widget<TertiaryCTA>(find.byKey(Key('backToAnswerButtonKey')));
       button.onPressed!();
-      verify(() => homeBloc.add(const BackToAiSummaryTapped())).called(1);
+      verify(() => homeBloc.add(const HomeBackToAiSummaryTapped())).called(1);
     });
 
     testWidgets('animates in search box when enter', (tester) async {
@@ -152,7 +152,7 @@ void main() {
     });
 
     testWidgets(
-      'calls SeeResultsSourceAnswers on exit',
+      'calls HomeNavigated(seeSourceAnswers) on exit',
       (WidgetTester tester) async {
         final controller = StreamController<HomeState>();
         whenListen(
@@ -172,7 +172,8 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        verify(() => homeBloc.add(SeeResultsSourceAnswers())).called(1);
+        verify(() => homeBloc.add(HomeNavigated(Status.seeSourceAnswers)))
+            .called(1);
       },
     );
 
@@ -208,7 +209,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
-        verify(() => homeBloc.add(Results())).called(2);
+        verify(() => homeBloc.add(HomeNavigated(Status.results))).called(2);
       },
     );
 
@@ -236,7 +237,7 @@ void main() {
     });
 
     testWidgets(
-        'calls SeeSourceAnswersRequested on SeeSourceAnswersButton tapped',
+        'calls HomeSeeSourceAnswersRequested on SeeSourceAnswersButton tapped',
         (tester) async {
       await tester.pumpApp(bootstrap());
 
@@ -253,7 +254,7 @@ void main() {
           .onPressed
           ?.call();
 
-      verify(() => homeBloc.add(const SeeSourceAnswersRequested(null)))
+      verify(() => homeBloc.add(const HomeSeeSourceAnswersRequested(null)))
           .called(1);
     });
 
@@ -268,7 +269,7 @@ void main() {
 
       verify(
         () => homeBloc.add(
-          const AddAnswerFeedback(AnswerFeedback.good),
+          const HomeAnswerFeedbackAdded(AnswerFeedback.good),
         ),
       ).called(1);
     });
@@ -284,7 +285,7 @@ void main() {
 
       verify(
         () => homeBloc.add(
-          const AddAnswerFeedback(AnswerFeedback.bad),
+          const HomeAnswerFeedbackAdded(AnswerFeedback.bad),
         ),
       ).called(1);
     });
@@ -348,7 +349,7 @@ void main() {
     });
 
     testWidgets(
-      'adds NavigateSourceAnswers tapping on the link if state '
+      'adds HomeSourceAnswersNavigated tapping on the link if state '
       'Status.seeSourceAnswers',
       (WidgetTester tester) async {
         when(() => homeBloc.state).thenReturn(
@@ -357,12 +358,12 @@ void main() {
         await tester.pumpApp(bootstrap());
         final widget = tester.widget<InkWell>(find.byType(InkWell).first);
         widget.onTap?.call();
-        verify(() => homeBloc.add(NavigateSourceAnswers('[1]'))).called(1);
+        verify(() => homeBloc.add(HomeSourceAnswersNavigated('[1]'))).called(1);
       },
     );
 
     testWidgets(
-      'adds SeeSourceAnswersRequested tapping on the link if state '
+      'adds HomeSeeSourceAnswersRequested tapping on the link if state '
       'is not Status.seeSourceAnswers',
       (WidgetTester tester) async {
         when(() => homeBloc.state).thenReturn(
@@ -371,7 +372,8 @@ void main() {
         await tester.pumpApp(bootstrap());
         final widget = tester.widget<InkWell>(find.byType(InkWell).first);
         widget.onTap?.call();
-        verify(() => homeBloc.add(SeeSourceAnswersRequested('[1]'))).called(1);
+        verify(() => homeBloc.add(HomeSeeSourceAnswersRequested('[1]')))
+            .called(1);
       },
     );
   });
