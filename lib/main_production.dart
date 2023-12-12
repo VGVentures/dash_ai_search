@@ -8,8 +8,7 @@ void main() async {
   await bootstrap(
     () async {
       final apiClient = ApiClient(
-        realApiEnabled: true,
-        baseUrl: const String.fromEnvironment('AI_API_URL'),
+        baseUrl: 'http://production',
       );
 
       final questionsRepository =
