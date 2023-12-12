@@ -8,7 +8,7 @@ void main() async {
   await bootstrap(
     () async {
       final apiClient = ApiClient(
-        baseUrl: 'http://production',
+        baseUrl: 'http://staging',
       );
 
       final questionsRepository =
