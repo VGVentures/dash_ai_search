@@ -3,7 +3,6 @@ import 'package:dash_ai_search/question/question.dart';
 import 'package:flutter/material.dart';
 
 class SearchBoxView extends StatefulWidget {
-  @visibleForTesting
   const SearchBoxView({super.key});
 
   @override

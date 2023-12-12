@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SeeSourceAnswersButton extends StatefulWidget {
-  @visibleForTesting
   const SeeSourceAnswersButton({super.key});
 
   @override
