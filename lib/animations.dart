@@ -73,8 +73,8 @@ class DashAnimations {
     thinkingAnimation = SpriteAnimation.fromFrameData(
       thinking,
       SpriteAnimationData.sequenced(
-        amount: 12,
-        amountPerRow: 4,
+        amount: 24,
+        amountPerRow: 5,
         stepTime: 0.07,
         textureSize: Vector2.all(1500),
         loop: false,
