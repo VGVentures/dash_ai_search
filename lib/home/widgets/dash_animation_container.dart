@@ -41,8 +41,7 @@ class _DashAnimationContainerState extends State<DashAnimationContainer> {
         } else {
           if (state.status == Status.resultsToSourceAnswers) {
             _state.value = DashAnimationPhase.dashOut;
-          } else if (state.status == Status.thinkingToResults ||
-              state.status == Status.sourceAnswersBackToResults) {
+          } else if (state.status == Status.sourceAnswersBackToResults) {
             _state.value = DashAnimationPhase.dashIn;
           }
         }
@@ -173,7 +172,7 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
           BlocListener<HomeBloc, HomeState>(
             listenWhen: (previous, current) =>
                 previous.status != current.status &&
-                current.status == Status.askQuestionToThinking,
+                (current.status.isThinking),
             listener: (context, state) {
               thinkingTicker = animations.thinkingAnimation.createTicker();
             },
@@ -217,11 +216,11 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
               );
             }
 
-            final idleAnimation = state.status == Status.askQuestionToThinking
+            final idleAnimation = state.status.isThinking
                 ? animations.thinkingAnimation
                 : animations.idleAnimation;
 
-            final idleTicker = state.status == Status.askQuestionToThinking
+            final idleTicker = state.status.isThinking
                 ? thinkingTicker
                 : idleAnimation.createTicker();
 

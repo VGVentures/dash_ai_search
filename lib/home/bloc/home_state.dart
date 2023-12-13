@@ -124,6 +124,8 @@ extension StatusX on Status {
       this == Status.seeSourceAnswers ||
       this == Status.sourceAnswersBackToResults;
   bool get isSeeSourceAnswersVisible => this == Status.seeSourceAnswers;
+  bool get isThinking =>
+      this == Status.askQuestionToThinking || this == Status.resultsToThinking;
   bool get isDashOnLeft =>
       this == Status.welcome ||
       this == Status.welcomeToAskQuestion ||
@@ -131,7 +133,8 @@ extension StatusX on Status {
       this == Status.askQuestionToThinking ||
       this == Status.thinking ||
       this == Status.thinkingToResults ||
-      this == Status.results;
+      this == Status.results ||
+      this == Status.resultsToThinking;
   bool get isDashOnRight =>
       this == Status.resultsToSourceAnswers ||
       this == Status.seeSourceAnswers ||
