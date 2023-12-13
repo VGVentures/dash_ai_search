@@ -177,16 +177,6 @@ class DashSpriteAnimationState extends State<DashSpriteAnimation> {
               thinkingTicker = animations.thinkingAnimation.createTicker();
             },
           ),
-          BlocListener<HomeBloc, HomeState>(
-            listenWhen: (previous, current) =>
-                previous.status != current.status &&
-                current.status == Status.thinkingToResults,
-            listener: (context, state) {
-              setState(() {
-                _reaction = animations.thinkingAnimation.reversed();
-              });
-            },
-          ),
         ],
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
