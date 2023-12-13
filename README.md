@@ -47,10 +47,14 @@ To control access to your API you can set up authentication using Cloud IAM, but
 
 ## Testing Flutter frontend
 
-Follow these questions to try the demo and see how the API responds! The live API will not be hit at this time.
+Follow these questions to try the demo and see how the API would respond! A live API for dev is not provided in the source, but you can set up a sample to try for yourself in Google Cloud. Learn more about how to set up Vertex AI Search on their website.
 
 1. What is flutter?
 2. What platforms does flutter support today?
 3. What language do you use to write flutter apps?
 4. How does hot reload work in flutter?
 5. Do you like cupcakes?
+
+For more information, check out our blog post
+
+https://medium.com/flutter/how-we-built-it-ask-dash-a-generative-ai-flutter-application-79a836ced058
