@@ -2,11 +2,35 @@
 
 ## Overview
 
-To set up the LLM Search backend for the demo, you'll need the following:
+As part of the [Google Cloud Applied AI Summit](https://cloudonair.withgoogle.com/events/summit-applied-ml-summit-23?talk=t1_s5_vertexaisearchandconversation), the Flutter and Vertex AI teams collaborated with Very Good Ventures to create an AI-powered Flutter demo app, Ask Dash, using [Vertex AI Search and Conversation](https://cloud.google.com/vertex-ai-search-and-conversation) by Google Cloud.
 
-- A Datastore with the website you want to index
-- An App to access that data
-- A Cloud Function to act as an API wrapper
+For more information, check out our blog post:
+https://medium.com/flutter/how-we-built-it-ask-dash-a-generative-ai-flutter-application-79a836ced058
+
+## Vertex AI Search Backend Setup
+
+A live API for dev is not provided in the source, but you can follow these steps to setup one and try for yourself in Google Cloud. Learn more about how to set up Vertex AI Search on their [website](https://cloud.google.com/vertex-ai-search-and-conversation).
+
+To set up the Flutter app to use your API you need to make sure ApiClient has:
+
+ - `realApiEnabled` setup as `true`.
+ - `baseUrl` has the URL for your API.
+
+To set up the Search backend for the demo, you'll need the following:
+
+ - A Datastore with the website you want to index
+ - An App to access that data
+ - A Cloud Function to act as an API wrapper
+
+Alternatively, we have provided 5 sample questions hardcoded into the repo that can be used for testing the full flow and run the Flutter app locally without access to Vertex Search. Try these questions to see how the API would respond:
+
+ - What is flutter?
+ - What platforms does flutter support today?
+ - What language do you use to write flutter apps?
+ - How does hot reload work in flutter?
+ - Do you like cupcakes?
+
+Note that it might take up to 4 hours to fully index your website.
 
 ## Create a Datastore
 
@@ -44,17 +68,3 @@ Your Search backend is now ready to go! To validate it's working correctly, on t
 If everything is set up correctly you'll see the response in the Output box, which includes a natural language summary, citations, and short summaries of all the pages it references. If there are any problems check the logs on the same page to troubleshoot.
 
 To control access to your API you can set up authentication using Cloud IAM, but that is beyond the scope of this tutorial.
-
-## Testing Flutter frontend
-
-Follow these questions to try the demo and see how the API would respond! A live API for dev is not provided in the source, but you can set up a sample to try for yourself in Google Cloud. Learn more about how to set up Vertex AI Search on their [website](https://cloud.google.com/vertex-ai-search-and-conversation).
-
-1. What is flutter?
-2. What platforms does flutter support today?
-3. What language do you use to write flutter apps?
-4. How does hot reload work in flutter?
-5. Do you like cupcakes?
-
-For more information, check out our blog post
-
-https://medium.com/flutter/how-we-built-it-ask-dash-a-generative-ai-flutter-application-79a836ced058
