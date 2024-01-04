@@ -34,7 +34,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.0
-  plugin_platform_interface: ^2.1.7
+  plugin_platform_interface: ^2.1.8
   url_launcher_platform_interface: ^2.2.0
   very_good_analysis: ^5.1.0
 
